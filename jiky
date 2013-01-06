@@ -1,0 +1,275 @@
+#!/usr/bin/env node
+
+var express = require('express')
+  , http = require('http')
+  , path = require('path')
+  , passport = require('passport')
+  , Git = require("./lib/gitmech")
+  , expValidator = require('express-validator')
+  , gravatar = require("gravatar")
+  , Fs = require("fs")
+  , Url    = require("url")
+  , Marked = require('marked')
+  , GoogleStrategy = require('passport-google').Strategy
+  , yaml = require("yaml")
+  , program = require('commander');
+
+program.version('0.1.0')
+       .option('-c, --config <path>', 'Specify the config file')
+       .option('-s, --sample-config', 'Dumps a config file template and exits')
+       .parse(process.argv);
+
+if (program.sampleConfig) {
+  console.log(sampleConfig());
+  process.exit(0);
+}
+
+if (!program.config || !Fs.existsSync(program.config)) {
+  program.help();
+  process.exit(-1);
+}
+
+var config = yaml.eval(Fs.readFileSync(program.config).toString());
+
+if (!config.application || !config.server) {
+  console.log("A problem exists on the config file. Cannot continue.");
+  process.exit(-1);
+}
+
+var repo = config.application.repository;
+
+try {
+  Git.init(repo);
+} catch(e) {
+  console.log(e.message)
+  console.log("Please specify a valid git repository");
+  program.help()
+  process.exit(-1);
+}
+
+// Global to be accessed from the routes module
+global.app = express();
+app.locals.Git = Git;
+app.locals.repo = repo;
+app.locals._sidebar;
+app.locals._footer;
+app.locals._style;
+app.locals._script;
+app.locals.appTitle = config.application.title || "Jiky";
+app.locals.port = config.server.port || process.env.PORT || 6067;
+app.locals.hostname = config.server.hostname || "localhost";
+app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
+
+app.locals.coalesce = function(value, def) {
+  return typeof value === 'undefined' ? def : value;
+}
+
+var routes = require("./routes");
+
+app.configure('development', function() {
+  app.use(express.errorHandler());
+  app.locals.pretty = true; // Pretty HTML output from Jade
+});
+
+app.configure('production', function() {
+});
+
+app.configure(function() {
+  app.set('port', app.locals.port);
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(express.favicon());
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.logger('default'));
+  app.use(express.cookieParser("mille1000"));
+  app.use(express.cookieSession({ secret: 'tobo!', cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }})); // a Month
+  app.use(express.bodyParser());
+  app.use(expValidator);
+  app.use(express.methodOverride());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(function (req, res, next) {
+    res.locals({
+      get user() {
+        return req.user;
+      },
+      isAnonymous: function () {
+        return !req.user;
+      },
+      _sidebar: null,
+      _footer: null,
+      _style: null,
+      _script: null,
+      gravatar: function(email) {
+        return gravatar;
+      },
+      // FIXME: we need to handle these has* better, because we're hitting the
+      // fs for every single request even if we cache the sidebar/footer/etc
+      hasSidebar: function() {
+        return Fs.existsSync(app.locals.repo + "/" + "_sidebar.md");
+      },
+      hasFooter: function() {
+        return Fs.existsSync(app.locals.repo + "/" + "_footer.md");
+      },
+      hasCustomStyle: function() {
+        return Fs.existsSync(app.locals.repo + "/" + "_style.css");
+      },
+      hasCustomScript: function() {
+        return Fs.existsSync(app.locals.repo + "/" + "_script.js");
+      }
+    });
+
+    next();
+  });
+
+  // Logic to include custom _footer, _sidebar, _script and _style.css
+  app.use(function (req, res, next) {
+
+    if (res.locals.hasSidebar()) {
+      if (!app.locals._sidebar) {
+        Git.readFile("_sidebar.md", "HEAD", function(err, content) {
+          if (!err) {
+            res.locals._sidebar = app.locals._sidebar = Marked(content.split("\n").splice(1).join("\n"));
+          }
+        });
+      } else {
+        res.locals._sidebar = app.locals._sidebar;
+      }
+    } else {
+      res.locals._sidebar = app.locals._sidebar = null;
+    }
+
+    if (res.locals.hasFooter()) {
+      if (!app.locals._footer) {
+        Git.readFile("_footer.md", "HEAD", function(err, content) {
+          if (!err) {
+            res.locals._footer = app.locals._footer = Marked(content.split("\n").splice(1).join("\n"));
+          }
+        });
+      } else {
+        res.locals._footer = app.locals._footer;
+      }
+    } else {
+      res.locals._footer = app.locals._footer = null;
+    }
+
+    if (res.locals.hasCustomStyle()) {
+      if (!app.locals._style) {
+        // Read sync because this info is needed by the layout
+        res.locals._style = app.locals._style = Fs.readFileSync(app.locals.repo + "/" + "_style.css");
+      } else {
+        res.locals._style = app.locals._style;
+      }
+    } else {
+      res.locals._style = app.locals._style = null;
+    }
+
+    if (res.locals.hasCustomScript()) {
+      if (!app.locals._script) {
+        // Read sync because this info is needed by the layout
+        res.locals._script = app.locals._script = Fs.readFileSync(app.locals.repo + "/" + "_script.js");
+      } else {
+        res.locals._script = app.locals._script;
+      }
+    } else {
+      res.locals._script = app.locals._script = null;
+    }
+
+    next();
+  });
+
+  app.use(app.router);
+});
+
+function requireAuthentication(req, res, next) {
+  if (!res.locals.user) {
+    res.redirect("/login");
+    /*
+    res.statusCode = 403;
+    res.end('<h1>Forbidden</h1>');
+    */
+  } else {
+    next();
+  }
+}
+
+/* 
+ * Passport configuration
+ */
+
+passport.use(new GoogleStrategy({
+    returnURL: 'http://' + app.locals.hostname + ':' + app.locals.port + '/auth/google/return',
+    realm: 'http://' + app.locals.hostname + ':' + app.locals.port
+  },
+
+  function(identifier, profile, done) {
+    done(undefined, profile);
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  user.asGitAuthor = user.displayName + " <" + user.emails[0].value + ">"; 
+  done(undefined, user);
+});
+
+app.all("/pages/*", requireAuthentication);
+
+if (!app.locals.authorization.anonRead) {
+  app.all("/wiki/*", requireAuthentication);
+  app.all("/search", requireAuthentication);
+}
+
+app.get    ("/",                      routes.index);
+app.get    ("/wiki",                  routes.pageList);
+app.get    ("/wiki/:page",            routes.pageShow);
+app.get    ("/wiki/:page/history",    routes.pageHistory);
+app.get    ("/wiki/:page/:version",   routes.pageShow);
+app.get    ("/wiki/:page/compare/:revisions", routes.pageCompare);
+
+app.get    ("/search",                routes.pageSearch);
+
+app.get    ("/pages/new",             routes.pageNew);
+app.get    ("/pages/new/:page",       routes.pageNew);
+app.post   ("/pages",                 routes.pageCreate);
+
+app.get    ("/pages/:page/edit",      routes.pageEdit);
+app.put    ("/pages/:page",           routes.pageUpdate);
+app.delete ("/pages/:page",           routes.pageDestroy);
+
+app.post   ("/misc/preview",          routes.miscPreview);
+app.get    ("/misc/syntax-reference", routes.miscSyntaxReference);
+app.get    ("/misc/existence",        routes.miscExistence);
+
+app.get    ("/login",                 routes.login);
+app.get    ("/logout",                routes.logout);
+
+app.get    ("/auth/google",           passport.authenticate('google'));
+app.get    ("/auth/google/return",    passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+app.get    ("/auth/done",             routes.authDone);
+
+app.all('*', routes.error404);
+
+http.createServer(app).listen(app.get('port'), function(){
+  console.log((new Date()) + " - Jiky server listening on port " + app.get('port'));
+});
+
+// Dumps a sample config file
+function sampleConfig() {
+  return "\
+---\n\
+  # Configuration sample file for Jiky (YAML)\n\
+  application:\n\
+    repository: \"/home/user/test\"\n\
+    title: \"Jiky\"\n\
+  server:\n\
+    hostname: \"jiky.org\"\n\
+    port: 6067\n\
+  authorization:\n\
+    anonRead: true\n\
+    validMatches: \".+\"\
+";
+}

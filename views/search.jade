@@ -1,0 +1,16 @@
+extends layout
+
+include mixins/form
+
+block content
+  h2 #{title} for 
+    b.page-param #{query}
+
+  mixin warning()
+
+  dl.search-results
+    each match in matches
+      dt 
+        a(href="/wiki/#{match.pageName}") #{match.pageName}
+        span.nl #{match.line}
+      dd #{match.text}

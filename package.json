@@ -1,0 +1,36 @@
+{
+  "name":        "Jiky",
+  "version":     "0.1.0",
+  "description": "A nodejs based wiki engine",
+  "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
+  "main":        "jiky.js",
+  "bin":         "./jiky.js",
+  "repository" :
+    { "type" : "git",
+      "url" : "https://github.com/claudioc/jiky"
+    },
+  "directories" : { "lib" : "./lib/" },  
+  "dependencies": {
+    "express": "3.x",
+    "jade": "*",
+    "passport": "*",
+    "passport-google": "*",
+    "iconv": "*",
+    "marked": ">= 0.2.x",
+    "node-syntaxhighlighter": "*",
+    "gravatar": ">= 1.0.6",
+    "express-validator": ">= 0.3.0",
+    "commander": "*",
+    "yaml": "*",
+    "chai": "*"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  },
+  "licenses":
+   [ { "type" : "MIT"
+     , "url" : "http://github.com/claudioc/jiky/raw/master/LICENSE"
+    }
+   ]  
+}

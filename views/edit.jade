@@ -1,0 +1,41 @@
+extends layout
+
+include mixins/form
+
+block styles
+  mixin markitupStylesheets()
+
+block content
+  ul.page-actions
+    if pageName != 'home'
+      li
+        form(action="/pages/#{pageName}", method="post", style="display:inline")
+          input(type="hidden", name="_method", value="delete")
+          input(type="submit", value="Delete page").confirm-delete-page.btn.btn-small
+    li
+
+  h2 #{title}
+
+  mixin errors()
+  mixin warning()
+
+  form(action='/pages/#{pageName}', method='post')
+
+    div
+      label Page title
+      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle.span8
+      input(type="hidden", name="_method", value="put")
+
+    div
+      textarea(name="content", rows=25)#editor.span8 #{coalesce(formData.content, '')}
+
+    mixin saveAndCancel()
+
+  #preview.modal.hide
+    mixin dialogBox("Page preview")
+
+  #syntax-reference.modal.hide.fade
+    mixin dialogBox("Markdown cheatsheet")
+
+block scripts
+  mixin markitupJavaScripts()

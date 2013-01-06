@@ -1,0 +1,42 @@
+
+mixin saveAndCancel()
+  .form-actions
+    input(type='submit',value='Save').btn.btn-primary
+    &nbsp;
+    a(href="/").btn Cancel
+
+mixin errors()
+  -var errors = locals.errors;
+  - if (typeof(errors) != 'undefined')
+    .alert.alert-block.alert-error
+      ul
+        each v in errors
+          li
+            b= v.msg
+
+mixin markitupStylesheets()
+  link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")
+  link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")
+
+mixin markitupJavaScripts()
+  script(src="/vendor/markitup/jquery.markitup.js")
+  script(src="/vendor/markitup/sets/markdown/set.js")
+  script
+    $('#editor').markItUp(markdownSettings);
+
+mixin warning()
+  -var warning = locals.warning;
+  - if (typeof(warning) != 'undefined')
+    .alert.alert-block !{warning}
+
+mixin notice()
+  -var notice = locals.notice;
+  - if (typeof(notice) != 'undefined')
+    .alert.alert-block.alert-info !{notice}
+
+mixin dialogBox(h)
+  .modal-header
+    button(data-dismiss="modal",aria-hidden="true").close &times;
+    h3 #{h}
+  .modal-body
+  .modal-footer

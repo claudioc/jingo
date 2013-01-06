@@ -1,0 +1,33 @@
+extends layout
+
+include mixins/form
+
+block styles
+  mixin markitupStylesheets()
+
+block content
+  h2 #{title}
+
+  mixin errors()
+
+  form(action='/pages', method='post')
+
+    input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
+
+    div
+      label Page title
+      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle.span8
+
+    div
+      textarea(name="content", rows=25)#editor.span8 #{coalesce(formData.content, '')}
+
+    mixin saveAndCancel()
+
+  #preview.modal.hide
+    mixin dialogBox("Page preview")
+
+  #syntax-reference.modal.hide.fade
+    mixin dialogBox("Markdown cheatsheet")
+
+block scripts
+  mixin markitupJavaScripts()

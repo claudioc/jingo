@@ -1,0 +1,26 @@
+extends layout
+
+include mixins/form
+
+block content
+  mixin notice()
+  mixin warning()
+  ul.page-actions
+    if !isAnonymous()
+      li 
+        a(href="/pages/new").btn.btn-small New page
+    if !isAnonymous() && canEdit
+      li 
+        a(href="/pages/#{pageName}/edit").btn.btn-small Edit page
+    li
+      a(href="/wiki/#{pageName}/history").btn.btn-small Page History
+    li 
+      a(href="/wiki").btn.btn-small All pages
+
+  #content!=content
+
+  p.footer Last updated by 
+    img(src=gravatar().url("#{metadata.email}", {s:16}))
+    b  #{metadata.author}, 
+    b(title="#{metadata.date}") #{metadata.relDate} 
+    | &ndash; #{metadata.hash}

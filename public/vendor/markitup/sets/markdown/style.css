@@ -1,0 +1,44 @@
+/* -------------------------------------------------------------------
+// markItUp!
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// Icon set from http://www.gentleface.com/free_icon_set.html design@gentleface.com
+// ------------------------------------------------------------------*/
+.markItUp .markItUpButton1 a {
+	background-image:url(images/h2.png);
+}
+.markItUp .markItUpButton2 a {
+	background-image:url(images/h3.png); 
+}
+.markItUp .markItUpButton3 a {
+	background-image:url(images/h4.png); 
+}
+.markItUp .markItUpButton4 a {
+	background-image:url(images/link_16.png); 
+}
+.markItUp .markItUpButton5 a {
+	background-image:url(images/picture_16.png); 
+}
+.markItUp .markItUpButton6 a {
+	background-image:url(images/bold_16.png); 
+}
+.markItUp .markItUpButton7 a {
+	background-image:url(images/italic_16.png);
+}
+.markItUp .markItUpButton8 a {
+	background-image:url(images/code_16.png);
+}
+.markItUp .markItUpButton9 a {
+	background-image:url(images/list-bullet_16.png);
+}
+.markItUp .markItUpButton10 a {
+	background-image:url(images/list-numeric_16.png);
+}
+.markItUp .markItUpButton11 a {
+	background-image:url(images/quotes_16.png); 
+}
+.markItUp .markItUpButton12 a {
+	background-image:url(images/info_16.png); 
+}
+.markItUp .markItUpButton13 a {
+	background-image:url(images/preview_16.png); 
+}

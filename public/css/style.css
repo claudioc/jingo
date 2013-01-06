@@ -1,0 +1,150 @@
+ body {
+  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+p.user {
+  float: right;
+  color: white;
+  padding: 10px 0 0;
+}
+
+hr {
+  border-color: #e1e1e1;
+}
+
+dl.search-results dd {
+  margin-bottom: 15px;
+}
+
+.history td:first-child {
+  width: 10px;
+}
+
+.page-param {
+  color: #145AB0;
+}
+
+.compare {
+  font-family: Consolas, monospace;
+  font-size: 12px;
+}
+
+.compare td {
+  padding: 0 3px;
+  border-top-width: 0
+}
+
+.compare .gd {
+  background-color: #ffdddd;
+}
+
+.compare .gc {
+  color: #999999;
+  background-color: #EAF2F5;
+}
+
+.compare .gi {
+  background-color: #ddffdd;
+}
+
+.compare .ln {
+  color: #999999;
+  background-color: #EAF2F5;
+  text-align: right;
+  border-bottom-color: transparent;
+}
+
+/* Overrides Bootstrap */
+pre {
+  background-color: transparent;
+  border-width: 0;
+  padding: 0;
+}
+
+pre code {
+  white-space: nowrap;
+}
+
+code {
+  white-space: auto;
+}
+
+ul.doc-list {
+  margin: 0;
+  padding: 0;
+}
+
+ul.doc-list > li {
+  list-style-type: none;
+  padding: 10px 10px 0 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.footer {
+  margin-top: 20px;
+  border-top: 1px dashed #d1d1d1;
+  color: #c1c1c1;
+  padding: 5px 0;
+  font-size: 90%;
+}
+
+.page-actions {
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+.page-actions > li {
+  display: inline;
+  list-style-type: none;
+}
+
+body #syntax-reference,
+body #preview {
+  width: 50%; /* desired relative width */
+  left: 25%; /* (100%-width)/2 */
+  margin: auto auto auto auto; /* place center */
+}
+
+.markItUpEditor {
+  height: 500px !important;
+  font-family: Consolas, monospace !important;
+}
+
+input#pageTitle {
+  font-weight: bold;
+  font-size: 130%;
+}
+
+.cheatsheet-content .col {
+  float: left;
+  width: 30%;
+  margin-left: 10px;
+}
+
+.cheatsheet-content pre {
+  border: 1px solid #ddd;
+  background-color: #eee;
+  border-radius: 3px;
+  width: 100%;
+  padding: 5px;
+  font-size: 12px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cheatsheet-content hr {
+  clear: both;
+}
+
+.search-results .nl {
+  color: #aaa;
+}
+
+a.unknown {
+  color: red;
+}
