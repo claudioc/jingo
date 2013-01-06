@@ -1,5 +1,5 @@
 {
-  "name":        "Jingo",
+  "name":        "jingo",
   "version":     "0.1.0",
   "description": "A nodejs based wiki engine",
   "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
