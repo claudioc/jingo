@@ -55,7 +55,7 @@ app.locals._sidebar;
 app.locals._footer;
 app.locals._style;
 app.locals._script;
-app.locals.appTitle = config.application.title || "Jiky";
+app.locals.appTitle = config.application.title || "Jingo";
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
 app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
@@ -254,19 +254,19 @@ app.get    ("/auth/done",             routes.authDone);
 app.all('*', routes.error404);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log((new Date()) + " - Jiky server listening on port " + app.get('port'));
+  console.log((new Date()) + " - Jingo server listening on port " + app.get('port'));
 });
 
 // Dumps a sample config file
 function sampleConfig() {
   return "\
 ---\n\
-  # Configuration sample file for Jiky (YAML)\n\
+  # Configuration sample file for Jingo (YAML)\n\
   application:\n\
     repository: \"/home/user/test\"\n\
-    title: \"Jiky\"\n\
+    title: \"Jingo\"\n\
   server:\n\
-    hostname: \"jiky.org\"\n\
+    hostname: \"jingo-wiki.org\"\n\
     port: 6067\n\
   authorization:\n\
     anonRead: true\n\

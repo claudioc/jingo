@@ -3,7 +3,7 @@
 
   var cheatsheetShown = false;
 
-  var Jiky = {
+  var Jingo = {
 
     init: function() {
 
@@ -77,6 +77,6 @@
 
   }
 
-  window.Jiky = Jiky;
+  window.Jingo = Jingo;
 
 })(this);

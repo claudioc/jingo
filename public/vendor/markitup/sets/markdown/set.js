@@ -32,8 +32,8 @@ markdownSettings = {
 		{separator:'---------------' },
 		{name:'Quotes', openWith:'> '},
 		{separator:'---------------' },
-		{name:'Syntax help', key: 'M', call:'Jiky.markdownSyntax'},
-		{name:'Preview', key: 'P', call:'Jiky.preview'}
+		{name:'Syntax help', key: 'M', call:'Jingo.markdownSyntax'},
+		{name:'Preview', key: 'P', call:'Jingo.preview'}
 	]
 }
 

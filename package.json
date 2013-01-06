@@ -1,13 +1,13 @@
 {
-  "name":        "Jiky",
+  "name":        "Jingo",
   "version":     "0.1.0",
   "description": "A nodejs based wiki engine",
   "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
-  "main":        "jiky.js",
-  "bin":         "./jiky.js",
+  "main":        "jingo",
+  "bin":         "./jingo",
   "repository" :
     { "type" : "git",
-      "url" : "https://github.com/claudioc/jiky"
+      "url" : "https://github.com/claudioc/jingo"
     },
   "directories" : { "lib" : "./lib/" },  
   "dependencies": {
@@ -30,7 +30,7 @@
   },
   "licenses":
    [ { "type" : "MIT"
-     , "url" : "http://github.com/claudioc/jiky/raw/master/LICENSE"
+     , "url" : "http://github.com/claudioc/jingo/raw/master/LICENSE"
     }
    ]  
 }
