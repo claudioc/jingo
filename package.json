@@ -1,10 +1,12 @@
 {
   "name":        "jingo",
-  "version":     "0.1.1",
+  "version":     "0.1.2",
   "description": "A nodejs based wiki engine",
   "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
   "main":        "jingo",
-  "bin":         "./jingo",
+  "bin": {
+    "jingo": "./jingo"
+  },
   "repository" :
     { "type" : "git",
       "url" : "https://github.com/claudioc/jingo"

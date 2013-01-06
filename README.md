@@ -33,7 +33,7 @@ Known limitations
 Installation
 ------------
 
-`npm install jingo`
+`npm install jingo` or download the whole thing and run "npm install"
 
 Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it. The config file contains all the available configuration keys. Be sure to provide a valid server hostname (like wiki.mycompany.com) for Google Auth to be able to get back to you.
 
