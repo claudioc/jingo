@@ -453,6 +453,7 @@ exports.miscExistence = function(req, res) {
 }
 
 exports.authDone = function(req, res) {
+
   if (!res.locals.user) {
     res.redirect("/");
     return;
