@@ -14,7 +14,7 @@ var express = require('express')
   , yaml = require("yaml")
   , program = require('commander');
 
-program.version('0.1.4')
+program.version('0.1.5')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-s, --sample-config', 'Dumps a config file template and exits')
        .parse(process.argv);
@@ -30,19 +30,18 @@ if (!program.config || !Fs.existsSync(program.config)) {
 }
 
 var config = yaml.eval(Fs.readFileSync(program.config).toString());
-
 if (!config.application || !config.server) {
-  console.log("A problem exists on the config file. Cannot continue.");
+  console.log("Error: a problem exists in the config file. Cannot continue.");
   process.exit(-1);
 }
 
 var repo = config.application.repository;
 
 try {
-  Git.init(repo);
+  Git.setup(repo);
 } catch(e) {
   console.log(e.message)
-  console.log("Please specify a valid git repository");
+  console.log("Error: please specify a valid git repository");
   program.help()
   process.exit(-1);
 }
@@ -60,7 +59,8 @@ app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
 app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
 app.locals.secret = config.application.secret || "jingo-secret-67";
-
+app.locals.remote = config.application.remote ? config.application.remote.trim() : "";
+app.locals.pushInterval = config.application.pushInterval ? parseInt(config.application.pushInterval, 10) * 1000 : 30000;
 app.locals.coalesce = function(value, def) {
   return typeof value === 'undefined' ? def : value;
 }
@@ -258,17 +258,29 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log((new Date()) + " - Jingo server listening on port " + app.get('port'));
 });
 
+if (app.locals.remote != "") {
+  setInterval(function() {
+    Git.push(app.locals.remote, "master", function(err) {
+      if (err) {
+        console.log("Error: " + err);
+      }
+    });
+  }, app.locals.pushInterval);
+}
+
 // Dumps a sample config file
 function sampleConfig() {
   return "\
 ---\n\
   # Configuration sample file for Jingo (YAML)\n\
   application:\n\
-    repository: \"/home/user/test\"\n\
     title: \"Jingo\"\n\
+    repository: \"/path/to/your/repo\"\n\
+    remote: \"\"\n\
+    pushInterval: 30\n\
     secret: \"change me\"\n\
   server:\n\
-    hostname: \"jingo-wiki.org\"\n\
+    hostname: \"localhost\"\n\
     port: 6067\n\
   authorization:\n\
     anonRead: true\n\

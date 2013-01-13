@@ -21,6 +21,7 @@ Features
 - Can use custom css and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (will appear in red)
+- Automatically push to a remote
 
 Known limitations
 -----------------
@@ -28,7 +29,11 @@ Known limitations
 - There is only one authentication method (Google)
 - The repository is "flat" (no directories or namespaces)
 - Authorization is only based on a regexp'ed white list with matches on the user email address
+- There is one authorization level only (no "administrators")
 - At the moment there is no "restore previous revision"
+- No scheduled pull or fetch from the remote is provided (because handling conflicts would be a bit too... interesting)
+
+Please note that at the moment it is quite "risky" to have someone else, other than jingo itself, has write access to the remote jingo is pushing to. The push operation is supposed to always be successfull and there is no pull or fetch. You can of course manage to handle pull requests yourself.
 
 Installation
 ------------
@@ -37,11 +42,15 @@ Installation
 
 Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it. The config file contains all the available configuration keys. Be sure to provide a valid server hostname (like wiki.mycompany.com) for Google Auth to be able to get back to you.
 
+If you define a `remote` to push to, then jingo will automatically issue a push to that remote every `pushInterval` seconds. The branch (local and remote) will be always `master`.
+
 The basic command to run the wiki will then be
 
-`jingo -c config.yaml`
+`jingo -c /path/to/config.yaml`
 
 Before running jingo you need to initialize its git repository somewhere (`git init` is enough).
+
+If you define a remote to push to, be sure that the user who'll push has the right to do so.
 
 Authentication
 --------------
