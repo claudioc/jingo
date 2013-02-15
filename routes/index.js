@@ -1,20 +1,11 @@
 
 var Fs     = require("fs")
   , Namer  = require("../lib/namer")
-  , Marked = require('marked')
+  , Renderer = require('../lib/renderer')
   , Locker = require("../lib/locker")
   , Tools  = require("../lib/tools")
   , Url    = require("url")
   , Nsh    = require('node-syntaxhighlighter');
-
-Marked.setOptions({
-  gfm: true,
-  pedantic: false,
-  sanitize: false, // To be able to add iframes 
-  highlight: function(code, lang) {
-    return Nsh.highlight(code, Nsh.getLanguage(lang));
-  }
-});
 
 exports.index = function(req, res) {
   res.redirect('/wiki/home');
@@ -130,7 +121,7 @@ exports.pageShow = function(req, res) {
 
         res.render('show', {
           title:   app.locals.appTitle + " &ndash; " + content.split("\n")[0].substr(1),
-          content: Marked(content),
+          content: Renderer.render(content),
           pageName: pageName,
           metadata: metadata
         });
@@ -419,7 +410,7 @@ exports.pageHistory = function(req, res) {
 
 exports.miscPreview = function(req, res) {
   res.render('preview', {
-    content: Marked(req.body.data)
+    content: Renderer.render(req.body.data)
   });
 }
 

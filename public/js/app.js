@@ -36,7 +36,7 @@
 
         $.getJSON("/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href=" + a + "]").addClass("unknown");
+            $("#content a[href=" + a + "]").addClass("absent");
           });
         });
       }
