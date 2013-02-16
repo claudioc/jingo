@@ -148,3 +148,18 @@ input#pageTitle {
 a.absent {
   color: red;
 }
+
+form.edit {
+  border-radius: 4px;
+  background-color: #eee;
+  padding: 2%;
+  padding-bottom: 1%;
+  width: 96%;
+}
+
+form.edit input[type=text] {
+  width: 98%;
+}
+form.edit textarea {
+  width: 103%;
+}

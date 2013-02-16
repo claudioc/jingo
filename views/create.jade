@@ -10,16 +10,16 @@ block content
 
   mixin errors()
 
-  form(action='/pages', method='post')
+  form(action='/pages', method='post', class='edit')
 
     input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
     div
       label Page title
-      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle.span8
+      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
 
     div
-      textarea(name="content", rows=25)#editor.span8 #{coalesce(formData.content, '')}
+      textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
 
     mixin saveAndCancel()
 

@@ -1,6 +1,6 @@
 {
   "name":        "jingo",
-  "version":     "0.1.5",
+  "version":     "0.2.0",
   "description": "A nodejs based wiki engine",
   "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
   "main":        "jingo",

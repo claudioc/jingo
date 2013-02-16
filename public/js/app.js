@@ -26,22 +26,30 @@
         return false;
       });
 
-      if (window.location.pathname.match(/^\/wiki\//)) {
-        var pages = $.map($("#content a[href]").filter(function(i, a) {
-          var href = $(a).attr("href");
-          return !(href[0] == '/' || href.match(/^(f|ht)tps?:/));
-        }), function(a) {
-          return a.getAttribute("href").split("#")[0];
+      if (/^\/wiki\//.test(window.location.pathname)) {
+        var pages = []
+          , match
+          , href;
+
+        $("#content a.internal").each(function(i, a) {
+          href = $(a).attr("href");
+          if (match = /\/wiki\/(.+)/.exec(href)) {
+            pages.push(match[1]);
+          }
         });
 
         $.getJSON("/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href=" + a + "]").addClass("absent");
+            $("#content a[href=\\/wiki\\/" + a + "]").addClass("absent");
           });
         });
       }
 
       function toggleCompareCheckboxes() {
+        if ($hCol1.find(":checkbox").length == 1) {
+          $hCol1.find(":checkbox").hide();
+          return;
+        }
         if ($hCol1.find(":checked").length == 2) {
           $hCol1.find(":not(:checked)")
                 .hide();

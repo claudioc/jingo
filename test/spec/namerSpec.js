@@ -14,7 +14,7 @@ describe ("Namer", function() {
     expect(Namer.normalize("CoffeE")).to.equal("coffee");
     expect(Namer.normalize("Caffé")).to.equal("caffe");
     expect(Namer.normalize("Caffé corretto!")).to.equal("caffe-corretto");
-    expect(Namer.normalize("Caff<p>e</p> senza schiuma")).to.equal("caffpep-senza-schiuma");
+    expect(Namer.normalize("Caff<p>e</p> senza schiuma")).to.equal("caffpe-p-senza-schiuma");
     expect(Namer.normalize("Per favore: nessun, dico; E un punto...")).to.equal("per-favore-nessun-dico-e-un-punto");
   });
 

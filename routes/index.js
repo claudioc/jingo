@@ -239,6 +239,7 @@ exports.pageUpdate = function(req, res) {
   var pageName = res.locals.pageName = Namer.normalize(req.params.page)
     , errors
     , pageFile
+    , message
     , content;
 
   req.check('pageTitle', 'Page title cannot be empty').notEmpty();
@@ -255,12 +256,15 @@ exports.pageUpdate = function(req, res) {
 
   req.sanitize('pageTitle').trim();
   req.sanitize('content').trim();
+  req.sanitize('message').trim();
 
   content = "#" + req.body.pageTitle + "\n" + req.body.content;
   pageFile = app.locals.repo + "/" + pageName + ".md";
 
+  message = (req.body.message == "") ? "Content updated (" + pageName + ")" : req.body.message;
+
   Fs.writeFile(pageFile, content, function() {
-    app.locals.Git.add(pageName + ".md", "Content updated (" + pageName + ")", req.user.asGitAuthor, function(err) {
+    app.locals.Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {
       Locker.unlock(pageName);
       if (pageName == '_footer') {
         app.locals._footer = null;
@@ -418,7 +422,7 @@ exports.miscSyntaxReference = function(req, res) {
   res.render('syntax');
 }
 
-// Filters out pages that does not exist in the index
+// Filters out pages that do not exist in the index
 exports.miscExistence = function(req, res) {
 
   if (!req.query.data) {

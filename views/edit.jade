@@ -19,15 +19,18 @@ block content
   mixin errors()
   mixin warning()
 
-  form(action='/pages/#{pageName}', method='post')
+  form(action='/pages/#{pageName}', method='post', class='edit')
 
     div
       label Page title
-      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle.span8
+      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
       input(type="hidden", name="_method", value="put")
 
     div
-      textarea(name="content", rows=25)#editor.span8 #{coalesce(formData.content, '')}
+      textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+
+    div
+      input(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
 
     mixin saveAndCancel()
 

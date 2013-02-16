@@ -18,7 +18,7 @@ Features
 - Show differences between document revisions
 - Search through the content and the page names
 - Layout accepts custom sidebar and footer
-- Can use custom css and JavaScript scripts
+- Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (will appear in red)
 - Automatically push to a remote
@@ -72,3 +72,24 @@ You can customize jingo in four different ways:
 All those files are cached (thus, not re-read for every page load, but kept in memory). This means that for every modification in _style.css and _script.js you need to restart the server (sorry, working on that). This is not true for the footer and the sidebar but ONLY IF you edit those pages from jingo (which in that case will clear the cache by itself).
 
 jingo uses twitter Bootstrap and jQuery as its front-end components. 
+
+Editing
+-------
+
+To link to another Jingo wiki page, use the Jingo Page Link Tag.
+
+    [[Jingo Works]]
+
+The above tag will create a link to the corresponding page file named
+`jingo-works.md`. The conversion is as follows:
+
+  1. Replace any spaces (U+0020) with dashes (U+002D)
+  2. Replace any slashes (U+002F) with dashes (U+002D)
+
+If you'd like the link text to be something that doesn't map directly to the
+page name, you can specify the actual page name after a pipe:
+
+    [[How Jingo works|Jingo Works]]
+
+The above tag will link to `jingo-works.md` using "How Jingo Works" as the link text.
+
