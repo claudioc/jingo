@@ -48,6 +48,7 @@
       function toggleCompareCheckboxes() {
         if ($hCol1.find(":checkbox").length == 1) {
           $hCol1.find(":checkbox").hide();
+          $('#rev-compare').hide();
           return;
         }
         if ($hCol1.find(":checked").length == 2) {

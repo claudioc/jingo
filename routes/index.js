@@ -4,8 +4,7 @@ var Fs     = require("fs")
   , Renderer = require('../lib/renderer')
   , Locker = require("../lib/locker")
   , Tools  = require("../lib/tools")
-  , Url    = require("url")
-  , Nsh    = require('node-syntaxhighlighter');
+  , Url    = require("url");
 
 exports.index = function(req, res) {
   res.redirect('/wiki/home');

@@ -16,6 +16,32 @@ dl.search-results dd {
   margin-bottom: 15px;
 }
 
+h2,
+h1 {
+  border-bottom: 1px solid #ddd;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+code {
+  color: gray;
+}
+
+hr {
+  background: transparent url(/img/hr-bg.png) repeat-x 0 0;
+  border: 0 none;
+  color: #ccc;
+  height: 4px;
+  padding: 0;
+  margin: 10px 0;
+}
+
 .history td:first-child {
   width: 10px;
 }
