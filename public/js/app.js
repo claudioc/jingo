@@ -13,6 +13,8 @@
 
       var $hCol1 = $('.history td:first-child');
 
+      $("#pageTitle").focus();
+
       toggleCompareCheckboxes();
       $hCol1.find('input').on('click', function() {
         toggleCompareCheckboxes();

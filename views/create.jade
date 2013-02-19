@@ -16,7 +16,7 @@ block content
 
     div
       label Page title
-      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
+      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
     div
       textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}

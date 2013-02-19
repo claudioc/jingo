@@ -147,7 +147,8 @@ exports.pageNew = function(req, res) {
   delete req.session.formData;
 
   res.render('create', {
-    "title": "Create a new page"
+    "title": "Create a new page",
+    "pageTitle": Namer.denormalize(res.locals.pageName)
   });
 }
 
