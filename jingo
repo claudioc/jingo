@@ -14,7 +14,7 @@ var express = require('express')
   , yaml = require("yaml")
   , program = require('commander');
 
-program.version('0.2.2')
+program.version('0.2.3')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-s, --sample-config', 'Dumps a config file template and exits')
        .parse(process.argv);

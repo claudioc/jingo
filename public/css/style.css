@@ -29,6 +29,10 @@ h2 {
   font-size: 24px;
 }
 
+h3 {
+  font-size: 18px;
+}
+
 code {
   color: gray;
 }
@@ -188,4 +192,8 @@ form.edit input[type=text] {
 }
 form.edit textarea {
   width: 103%;
+}
+
+li {
+  margin-bottom: 5px;
 }
