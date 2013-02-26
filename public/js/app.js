@@ -1,11 +1,27 @@
 
-!(function(window, undefined) {
+!(function(window, $, undefined) {
 
   var cheatsheetShown = false;
 
   var Jingo = {
 
     init: function() {
+
+      if ($(".page-actions:not(.pull-right)").length > 0) {
+        var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
+        var pahTo;
+        $pah.on("mouseover", function() {
+          $pah.parent().animate({"margin-top": "-1em"})
+        });
+        $(".page-actions").on("mouseenter", function() {
+          clearTimeout(pahTo);
+        }).on("mouseleave", function() {
+          pahTo = setTimeout(function() {
+            $pah.parent().animate({"margin-top": "-3.5em"})
+          }, 2000);
+        });
+        $(".page-actions:not(.pull-right)").append($pah);
+      }
 
       $('.confirm-delete-page').on("click", function(evt) {
         return confirm("Do you really want to delete this page?");
@@ -90,4 +106,4 @@
 
   window.Jingo = Jingo;
 
-})(this);
+})(this, jQuery);

@@ -122,9 +122,33 @@ ul.doc-list > li {
 }
 
 .page-actions {
+  position: relative;
   text-align: right;
   margin: 0;
   padding: 0;
+  min-height: 1.75em;
+}
+
+.page-actions {
+  padding: 5px;
+  background-color: #f2f2f2;
+  margin-top: -3.5em;
+  border-bottom-left-radius: 5px;
+}
+
+.page-actions-handle {
+  background-color: silver;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  width: 35px;
+  height: 14px;
+  right: 0;
+  color: white;
+  top: 35px;
+  text-align: center;
+  font-size: 9px;
+  line-height: 12px;
 }
 
 .page-actions > li {
