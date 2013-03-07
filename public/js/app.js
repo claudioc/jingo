@@ -11,13 +11,13 @@
         var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
-          $pah.parent().animate({"margin-top": "-1em"})
+          $("#main").animate({"margin-top": "-1em"})
         });
         $(".page-actions").on("mouseenter", function() {
           clearTimeout(pahTo);
         }).on("mouseleave", function() {
           pahTo = setTimeout(function() {
-            $pah.parent().animate({"margin-top": "-3.5em"})
+            $("#main").animate({"margin-top": "-3.5em"})
           }, 2000);
         });
         $(".page-actions:not(.pull-right)").append($pah);

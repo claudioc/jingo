@@ -1,11 +1,29 @@
  body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+  font-family: "Ubuntu";
+  background-color: #f2f2f2;
 }
-
+a {
+  color: #4183c4;
+}
 p.user {
   float: right;
   color: white;
   padding: 10px 0 0;
+  margin-bottom: 10px;
+}
+
+#main {
+  overflow: auto;
+  margin-top: -3.5em;
+}
+
+#content {
+  padding-top: 1em;
+}
+
+p {
+  margin-bottom: 20px;
 }
 
 hr {
@@ -19,6 +37,7 @@ dl.search-results dd {
 h2,
 h1 {
   border-bottom: 1px solid #ddd;
+  font-family:"Ubuntu Condensed"
 }
 
 h1 {
@@ -34,7 +53,7 @@ h3 {
 }
 
 code {
-  color: gray;
+  color: #666;
 }
 
 hr {
@@ -132,7 +151,9 @@ ul.doc-list > li {
 .page-actions {
   padding: 5px;
   background-color: #f2f2f2;
+  /*
   margin-top: -3.5em;
+  */
   border-bottom-left-radius: 5px;
 }
 
