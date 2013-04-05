@@ -2,9 +2,7 @@ extends layout
 
 include mixins/form
 
-block content
-  mixin notice()
-  mixin warning()
+block page-actions
   ul.page-actions
     if !isAnonymous()
       li 
@@ -16,6 +14,11 @@ block content
       a(href="/wiki/#{pageName}/history").btn.btn-small Page History
     li 
       a(href="/wiki").btn.btn-small All pages
+
+block content
+
+  mixin notice()
+  mixin warning()
 
   #content!=content
 

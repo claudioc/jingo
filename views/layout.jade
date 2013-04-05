@@ -29,13 +29,16 @@ html
                 b &nbsp;#{user.displayName}&nbsp;
                 a(href='/logout', title='Become anonymous') [Logout]
 
-
     .container
-      if hasSidebar()
-        .span2 !{_sidebar}
+      .row.page-actions-row.hidden-phone.hidden-tablet
+        block page-actions
 
-      #main.span8
-        block content
+      .row
+        if hasSidebar()
+          .span2 !{_sidebar}
+
+        #main.hide-tools.span8
+          block content
 
       if hasFooter()
         .row.span10 !{_footer}

@@ -6,21 +6,29 @@
   var Jingo = {
 
     init: function() {
+      var navh = $(".navbar").height(),
+          $par = $(".page-actions-row");
+
+      $(".page-actions-row").height(navh);
 
       if ($(".page-actions:not(.pull-right)").length > 0) {
         var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
-          $("#main").animate({"margin-top": "-1em"})
+          $(".alert").hide();
+          $par.animate({"margin-top": "-20px"})
+          $pah.slideUp();
         });
-        $(".page-actions").on("mouseenter", function() {
+        $par.on("mouseenter", function() {
           clearTimeout(pahTo);
         }).on("mouseleave", function() {
           pahTo = setTimeout(function() {
-            $("#main").animate({"margin-top": "-3.5em"})
+            $par.animate({"margin-top": "-62"})
+            $pah.slideDown();
           }, 2000);
         });
         $(".page-actions:not(.pull-right)").append($pah);
+      } else {
       }
 
       $('.confirm-delete-page').on("click", function(evt) {

@@ -5,7 +5,7 @@ include mixins/form
 block styles
   mixin markitupStylesheets()
 
-block content
+block page-actions
   ul.page-actions
     if pageName != 'home'
       li
@@ -13,6 +13,8 @@ block content
           input(type="hidden", name="_method", value="delete")
           input(type="submit", value="Delete page").confirm-delete-page.btn.btn-small
     li
+
+block content
 
   h2 #{title}
 
