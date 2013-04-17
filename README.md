@@ -1,4 +1,4 @@
-JINGO 
+JINGO
 =====
 
 A simple git based wiki engine written for Node.js.
@@ -16,8 +16,9 @@ Features
 - Uses [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
 - Inspired by the well known github [Gollum](https://github.com/github/gollum) wiki
 - Show differences between document revisions
-- Search through the content and the page names
+- Search through the content _and_ the page names
 - Layout accepts custom sidebar and footer
+- Can include <iframe>s in the document (es: embed a Google Drive document)
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (will appear in red)
@@ -26,14 +27,14 @@ Features
 Known limitations
 -----------------
 
-- There is only one authentication method (Google)
+- There is only one authentication method (Google), and it is mandatory (no anonymous writing so far)
 - The repository is "flat" (no directories or namespaces)
 - Authorization is only based on a regexp'ed white list with matches on the user email address
-- There is one authorization level only (no "administrators")
-- At the moment there is no "restore previous revision"
-- No scheduled pull or fetch from the remote is provided (because handling conflicts would be a bit too... interesting)
+- There is one authorization level only (no "administrators" and "editors")
+- At the moment there is no "restore previous revision", just a revision browser
+- No scheduled pull or fetch from the remote is provided (because handling conflicts would be a bit too... _interesting_)
 
-Please note that at the moment it is quite "risky" to have someone else, other than jingo itself, has write access to the remote jingo is pushing to. The push operation is supposed to always be successfull and there is no pull or fetch. You can of course manage to handle pull requests yourself.
+Please note that at the moment it is quite "risky" to have someone else, other than jingo itself, have write access to the remote jingo is pushing to. The push operation is supposed to always be successfull and there is no pull or fetch. You can of course manage to handle pull requests yourself.
 
 Installation
 ------------
@@ -55,9 +56,12 @@ If you define a remote to push to, be sure that the user who'll push has the rig
 Authentication
 --------------
 
-The _authentication_ section of the config file has two keys: anonRead and validMatches. If the anonRead is true, then anyone can read anything. If anonRead is false you need to authenticate also for reading, and then the email of the user MUST match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
+The _authentication_ section of the config file has two keys: anonRead and validMatches. If the anonRead is true, then anyone can read anything.
+If anonRead is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions
+provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
 
-The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
+The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the 
+authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
 
 Customization
 -------------
