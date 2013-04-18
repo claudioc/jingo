@@ -11,7 +11,7 @@
 
       $(".page-actions-row").height(navh);
 
-      if ($(".page-actions:not(.pull-right)").length > 0) {
+      if ($(".page-actions:not(.pull-right)").length > 0 && $(".page-actions li").length > 0) {
         var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {

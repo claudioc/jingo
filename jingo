@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+/*
+ * Jingo, wiki engine
+ * http://github.com/claudioc/jingo
+ *
+ * Copyright 2013 Claudio Cicali <claudio.cicali@gmail.com>
+ * Released under the MIT license
+ */
+
 var express = require('express')
   , http = require('http')
   , path = require('path')
@@ -14,7 +22,7 @@ var express = require('express')
   , yaml = require("yaml")
   , program = require('commander');
 
-program.version('0.2.5')
+program.version('0.2.6')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-s, --sample-config', 'Dumps a config file template and exits')
        .parse(process.argv);
@@ -35,13 +43,10 @@ if (!config.application || !config.server) {
   process.exit(-1);
 }
 
-var repo = config.application.repository;
-
 try {
-  Git.setup(repo);
+  Git.setup(config.application.repository, config.application.docSubdir || "");
 } catch(e) {
   console.log(e.message)
-  console.log("Error: please specify a valid git repository");
   program.help()
   process.exit(-1);
 }
@@ -49,7 +54,6 @@ try {
 // Global to be accessed from the routes module
 global.app = express();
 app.locals.Git = Git;
-app.locals.repo = repo;
 app.locals._sidebar;
 app.locals._footer;
 app.locals._style;
@@ -107,16 +111,16 @@ app.configure(function() {
       // FIXME: we need to handle these has* better, because we're hitting the
       // fs for every single request even if we cache the sidebar/footer/etc
       hasSidebar: function() {
-        return Fs.existsSync(app.locals.repo + "/" + "_sidebar.md");
+        return Fs.existsSync(Git.absPath("_sidebar.md"));
       },
       hasFooter: function() {
-        return Fs.existsSync(app.locals.repo + "/" + "_footer.md");
+        return Fs.existsSync(Git.absPath("_footer.md"));
       },
       hasCustomStyle: function() {
-        return Fs.existsSync(app.locals.repo + "/" + "_style.css");
+        return Fs.existsSync(Git.absPath("_style.css"));
       },
       hasCustomScript: function() {
-        return Fs.existsSync(app.locals.repo + "/" + "_script.js");
+        return Fs.existsSync(Git.absPath("_script.js"));
       }
     });
 
@@ -157,7 +161,7 @@ app.configure(function() {
     if (res.locals.hasCustomStyle()) {
       if (!app.locals._style) {
         // Read sync because this info is needed by the layout
-        res.locals._style = app.locals._style = Fs.readFileSync(app.locals.repo + "/" + "_style.css");
+        res.locals._style = app.locals._style = Fs.readFileSync(Git.absPath("_style.css"));
       } else {
         res.locals._style = app.locals._style;
       }
@@ -168,7 +172,7 @@ app.configure(function() {
     if (res.locals.hasCustomScript()) {
       if (!app.locals._script) {
         // Read sync because this info is needed by the layout
-        res.locals._script = app.locals._script = Fs.readFileSync(app.locals.repo + "/" + "_script.js");
+        res.locals._script = app.locals._script = Fs.readFileSync(Git.absPath("_script.js"));
       } else {
         res.locals._script = app.locals._script;
       }
@@ -275,7 +279,8 @@ function sampleConfig() {
   # Configuration sample file for Jingo (YAML)\n\
   application:\n\
     title: \"Jingo\"\n\
-    repository: \"/path/to/your/repo\"\n\
+    repository: \"/absolute/path/to/your/repo\"\n\
+    docSubdir: \"\"\n\
     remote: \"\"\n\
     pushInterval: 30\n\
     secret: \"change me\"\n\

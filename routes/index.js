@@ -1,10 +1,13 @@
 
 var Fs     = require("fs")
   , Namer  = require("../lib/namer")
+  , Path   = require("path")
   , Renderer = require('../lib/renderer')
   , Locker = require("../lib/locker")
   , Tools  = require("../lib/tools")
   , Url    = require("url");
+
+var Git = app.locals.Git;
 
 exports.index = function(req, res) {
   res.redirect('/wiki/home');
@@ -19,11 +22,11 @@ exports.pageSearch = function(req, res) {
   res.locals.query = req.query.query.trim();
 
   if (res.locals.query.length < 2) {
-    res.locals.warning = "Search string is too short, sorry.";
+    res.locals.warning = "Search string is too short.";
     renderResults();
   } else {
 
-    app.locals.Git.grep(res.locals.query, function(err, items) {
+    Git.grep(res.locals.query, function(err, items) {
 
       items.forEach(function(item) {
         if (item.trim() != "") {
@@ -52,15 +55,17 @@ exports.pageList = function(req, res) {
   var items = []
     , title;
 
-  app.locals.Git.ls(function(err, list) {
+  Git.ls(function(err, list) {
 
     list.forEach(function(page) {
 
-      app.locals.Git.readFile(page, "HEAD", function(err, content) {
+      page = Path.basename(page);
+
+      Git.readFile(page, "HEAD", function(err, content) {
 
         (function(title) {
 
-          app.locals.Git.log(page, "HEAD", function(err, metadata) {
+          Git.log(page, "HEAD", function(err, metadata) {
 
             items.push({
               pageTitle: title,
@@ -88,7 +93,7 @@ exports.pageShow = function(req, res) {
   var pageName = req.params.page
     , pageVersion = req.params.version || "HEAD";
 
-  app.locals.Git.readFile(pageName + ".md", pageVersion, function(err, content) {
+  Git.readFile(pageName + ".md", pageVersion, function(err, content) {
 
     if (err) {
       if (req.user) {
@@ -107,7 +112,7 @@ exports.pageShow = function(req, res) {
 
     } else {
 
-      app.locals.Git.log(pageName + ".md", pageVersion, function(err, metadata) {
+      Git.log(pageName + ".md", pageVersion, function(err, metadata) {
 
         res.locals.canEdit = true;
         if (pageVersion != 'HEAD') {
@@ -135,7 +140,7 @@ exports.pageNew = function(req, res) {
   res.locals.pageName = Namer.normalize(req.params.page);
 
   if (res.locals.pageName) {
-    if (Fs.existsSync(app.locals.repo + "/" + res.locals.pageName + ".md")) {
+    if (Fs.existsSync(Git.absPath(res.locals.pageName + ".md"))) {
       res.redirect("/wiki/" + res.locals.pageName);
       return;
     }
@@ -176,7 +181,7 @@ exports.pageCreate = function(req, res) {
   req.sanitize('pageTitle').trim();
   req.sanitize('content').trim();
 
-  pageFile = app.locals.repo + "/" + pageName + ".md";
+  pageFile = Git.absPath(pageName + ".md");
 
   if (Fs.existsSync(pageFile)) {
     req.session.errors = [{msg: "A document with this title already exists"}];
@@ -185,7 +190,7 @@ exports.pageCreate = function(req, res) {
   }
 
   Fs.writeFile(pageFile, "#" + req.body.pageTitle + "\n" + req.body.content, function() {
-    app.locals.Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
+    Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
       req.session.notice = "Page has been created successfully";
       res.redirect("/wiki/" + pageName);
     });
@@ -204,7 +209,7 @@ exports.pageEdit = function(req, res) {
     }
   }
 
-  app.locals.Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
 
     if (err) {
       res.redirect('/pages/new/' + pageName);
@@ -227,6 +232,7 @@ exports.pageEdit = function(req, res) {
 
       delete req.session.errors;
       delete req.session.formData;
+
       res.render('edit', {
         title: 'Edit page'
       });
@@ -259,12 +265,12 @@ exports.pageUpdate = function(req, res) {
   req.sanitize('message').trim();
 
   content = "#" + req.body.pageTitle + "\n" + req.body.content;
-  pageFile = app.locals.repo + "/" + pageName + ".md";
+  pageFile = Git.absPath(pageName + ".md");
 
   message = (req.body.message == "") ? "Content updated (" + pageName + ")" : req.body.message;
 
   Fs.writeFile(pageFile, content, function() {
-    app.locals.Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {
+    Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {
       Locker.unlock(pageName);
       if (pageName == '_footer') {
         app.locals._footer = null;
@@ -287,7 +293,7 @@ exports.pageDestroy = function(req, res) {
     return;
   }
 
-  app.locals.Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
+  Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
     Locker.unlock(pageName);
     if (pageName == '_footer') {
       app.locals._footer = null;
@@ -308,7 +314,7 @@ exports.pageCompare = function(req, res) {
   res.locals.revisions = revisions.split("..");
   res.locals.lines = [];
 
-  app.locals.Git.diff(pageName + ".md", revisions, function(err, diff) {
+  Git.diff(pageName + ".md", revisions, function(err, diff) {
 
     diff.split("\n").slice(4).forEach(function(line) {
 
@@ -396,12 +402,12 @@ exports.pageHistory = function(req, res) {
   var pageName = req.params.page
     , pageTitle;
 
-  app.locals.Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
 
     // FIXME This is a 404
     if (err) { res.redirect('/'); }
 
-    app.locals.Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
+    Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
       res.locals.pageTitle = content.split("\n")[0].substr(1);
       res.locals.pageName = pageName;
       res.locals.items = metadata;
@@ -435,14 +441,12 @@ exports.miscExistence = function(req, res) {
 
   req.query.data.forEach(function(pageName, idx) {
     (function(page, index) {
-      app.locals.Git.log(page + ".md", "HEAD", function(err, metadata) {
-        if (!metadata) {
-          result.push(page);
-        }
-        if (index == (n - 1)) {
-          res.send(JSON.stringify({data: result}));
-        }
-      });
+      if (!Fs.existsSync(Git.absPath(page + ".md"))) {
+        result.push(page);
+      }
+      if (index == (n - 1)) {
+        res.send(JSON.stringify({data: result}));
+      }
     })(pageName, idx);
   });
 }
