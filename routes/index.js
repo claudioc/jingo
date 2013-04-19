@@ -32,7 +32,7 @@ exports.pageSearch = function(req, res) {
         if (item.trim() != "") {
           record = item.split(":");
           res.locals.matches.push({
-            pageName: record[0].split(".")[0],
+            pageName: Path.basename(record[0].split(".")[0]),
             line: record[1] ? ":" + record[1] : "",
             text: record.slice(2).join('')
           });
