@@ -12,6 +12,8 @@ a stand-alone and complete system than gollum is.
 Think of jingo as "the github wiki, without github but with more features". "Jingo" 
 means "Jingo is not Gollum" for a reason.
 
+There is a demo server running at http://jingo.cicali.cc:6067/wiki/home
+
 Features
 --------
 
