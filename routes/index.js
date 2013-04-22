@@ -124,7 +124,7 @@ exports.pageShow = function(req, res) {
         delete req.session.notice;
 
         res.render('show', {
-          title:   app.locals.appTitle + " &ndash; " + content.split("\n")[0].substr(1),
+          title:   app.locals.appTitle + " – " + content.split("\n")[0].substr(1),
           content: Renderer.render(content),
           pageName: pageName,
           metadata: metadata

@@ -35,10 +35,10 @@ block content
 
     mixin saveAndCancel()
 
-  #preview.modal.hide
+  #preview(tabindex="-1").modal.hide
     mixin dialogBox("Page preview")
 
-  #syntax-reference.modal.hide.fade
+  #syntax-reference(tabindex="-1").modal.hide
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts
