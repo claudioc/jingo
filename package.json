@@ -11,7 +11,7 @@
     { "type" : "git",
       "url" : "https://github.com/claudioc/jingo"
     },
-  "directories" : { "lib" : "./lib/" },  
+  "directories" : { "lib" : "./lib/" },
   "dependencies": {
     "express": "3.x",
     "jade": "*",
@@ -23,8 +23,14 @@
     "gravatar": ">= 1.0.6",
     "express-validator": ">= 0.3.0",
     "commander": "*",
-    "yaml": "*",
-    "chai": "*"
+    "yaml": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha test/spec"
   },
   "engines": {
     "node": "0.8.x",
@@ -34,5 +40,5 @@
    [ { "type" : "MIT"
      , "url" : "http://github.com/claudioc/jingo/raw/master/LICENSE"
     }
-   ]  
+   ]
 }
