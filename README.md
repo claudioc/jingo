@@ -4,7 +4,7 @@ JINGO
 A simple git based wiki engine written for Node.js.
 
 The aim of this wiki engine is to provide a very easy way to create a centralized
-documentation area for people used to work with git and markdown. It should fit well
+documentation area for people used to working with git and markdown. It should fit well
 into a development team without the need to learn or install ad-hoc servers or applications. 
 Jingo is very much inspired by the github wiki system (gollum), but tries to be more 
 a stand-alone and complete system than gollum is.
