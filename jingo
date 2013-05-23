@@ -8,22 +8,26 @@
  * Released under the MIT license
  */
 
-var express = require('express')
-  , http = require('http')
-  , path = require('path')
-  , passport = require('passport')
-  , Git = require("./lib/gitmech")
-  , expValidator = require('express-validator')
-  , gravatar = require("gravatar")
-  , Fs = require("fs")
-  , Url    = require("url")
-  , Marked = require('marked')
+var express        = require('express')
+  , http           = require('http')
+  , path           = require('path')
+  , passport       = require('passport')
+  , Git            = require('./lib/gitmech')
+  , Tools          = require("./lib/tools")
+  , expValidator   = require('express-validator')
+  , gravatar       = require('gravatar')
+  , Fs             = require('fs')
+  , Url            = require('url')
+  , Marked         = require('marked')
   , GoogleStrategy = require('passport-google').Strategy
-  , yaml = require("yaml")
-  , program = require('commander');
+  , LocalStrategy  = require('passport-local').Strategy
+  , yaml           = require('yaml-js')
+  , program        = require('commander');
 
-program.version('0.2.8')
+program.version('0.3.0')
        .option('-c, --config <path>', 'Specify the config file')
+       .option('-h, --hashify <string>', 'Create an hash for a string')
+       .option('-l, --local', 'Listen on localhost only')
        .option('-s, --sample-config', 'Dumps a config file template and exits')
        .parse(process.argv);
 
@@ -32,12 +36,18 @@ if (program.sampleConfig) {
   process.exit(0);
 }
 
+if (program.hashify) {
+  console.log(Tools.hashify(program.hashify));
+  process.exit(0);
+}
+
 if (!program.config || !Fs.existsSync(program.config)) {
   program.help();
   process.exit(-1);
 }
 
-var config = yaml.eval(Fs.readFileSync(program.config).toString());
+var config = yaml.load(Fs.readFileSync(program.config).toString());
+
 if (!config.application || !config.server) {
   console.log("Error: a problem exists in the config file. Cannot continue.");
   process.exit(-1);
@@ -61,25 +71,32 @@ app.locals._script;
 app.locals.appTitle = config.application.title || "Jingo";
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
-app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
 app.locals.secret = config.application.secret || "jingo-secret-67";
 app.locals.remote = config.application.remote ? config.application.remote.trim() : "";
 app.locals.pushInterval = config.application.pushInterval ? parseInt(config.application.pushInterval, 10) * 1000 : 30000;
 app.locals.coalesce = function(value, def) {
   return typeof value === 'undefined' ? def : value;
 }
+app.locals.pretty = true; // Pretty HTML output from Jade
+
+if (!config.application || !config.server) {
+  console.log("Error: a problem exists in the config file. Cannot continue.");
+  process.exit(-1);
+}
+
+app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
+var auth = app.locals.authentication = config.authentication || { google: { enabled: true }, alone: { enabled: false } };
+
+if ( (!auth.google || !auth.google.enabled) && 
+     (!auth.alone  || !auth.alone.enabled) ) {
+  console.log("Error: no authentication method provided. Cannot continue.");
+  process.exit(-1);
+}
 
 var routes = require("./routes");
 
-app.configure('development', function() {
-  app.use(express.errorHandler());
-  app.locals.pretty = true; // Pretty HTML output from Jade
-});
-
-app.configure('production', function() {
-});
-
 app.configure(function() {
+  app.use(express.errorHandler());
   app.set('port', app.locals.port);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -208,7 +225,36 @@ passport.use(new GoogleStrategy({
   },
 
   function(identifier, profile, done) {
+    usedAuthentication("google");
     done(undefined, profile);
+  }
+));
+
+passport.use(new LocalStrategy(
+
+  function(username, password, done) {
+
+    var user = {
+      displayName: auth.alone.username,
+      email: auth.alone.email || ""
+    };
+
+    console.log(config.authentication);
+    console.log(auth);
+
+    usedAuthentication("alone");
+
+    return done(null, user);
+/*
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+*/
   }
 ));
 
@@ -217,9 +263,19 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
-  user.asGitAuthor = user.displayName + " <" + user.emails[0].value + ">"; 
+  if (user.emails && user.emails.length > 0) { // Google
+    user.email = user.emails[0].value;
+    delete user.emails;
+  }
+  user.asGitAuthor = user.displayName + " <" + user.email + ">"; 
   done(undefined, user);
 });
+
+function usedAuthentication(name) {
+  for (var a in app.locals.authentication) {
+    app.locals.authentication[a].used = (a == name);
+  }
+}
 
 app.all("/pages/*", requireAuthentication);
 
@@ -249,6 +305,7 @@ app.post   ("/misc/preview",          routes.miscPreview);
 app.get    ("/misc/syntax-reference", routes.miscSyntaxReference);
 app.get    ("/misc/existence",        routes.miscExistence);
 
+app.post   ("/login",                 passport.authenticate('local', { successRedirect: '/auth/done', failureRedirect: '/login' }));
 app.get    ("/login",                 routes.login);
 app.get    ("/logout",                routes.logout);
 
@@ -258,8 +315,13 @@ app.get    ("/auth/done",             routes.authDone);
 
 app.all('*', routes.error404);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log((new Date()) + " - Jingo server listening on port " + app.get('port'));
+var listenAddr = process.env.NW_ADDR || "";
+if (config.server.localOnly) {
+  listenAddr = "localhost";
+}
+
+http.createServer(app).listen(app.get('port'), listenAddr, function(){
+  console.log((new Date()) + " - Jingo%sserver listening on port %s", config.server.localOnly ? " (local) " : " ", app.get('port'));
 });
 
 if (app.locals.remote != "") {
@@ -287,8 +349,17 @@ function sampleConfig() {
   server:\n\
     hostname: \"localhost\"\n\
     port: 6067\n\
+    localOnly: false\n\
   authorization:\n\
     anonRead: true\n\
     validMatches: \".+\"\
+  authentication:\n\
+    google:\n\
+      enabled: true\n\
+    alone:\n\
+      enabled: false\n\
+      name: \"\"\n\
+      passwordHash: \"\"\n\
+      email: \"\"\n\
 ";
 }

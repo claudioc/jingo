@@ -1,7 +1,7 @@
 
-mixin saveAndCancel()
+mixin saveAndCancel(saveText)
   .form-actions
-    input(type='submit',value='Save').btn.btn-primary
+    input(type='submit',value=saveText || 'Save').btn.btn-primary
     &nbsp;
     a(href="/").btn Cancel
 

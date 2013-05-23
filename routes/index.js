@@ -458,7 +458,7 @@ exports.authDone = function(req, res) {
     return;
   }
 
-  if (!Tools.isAuthorized(res.locals.user.emails[0].value, app.locals.authorization.validMatches)) {
+  if (!app.locals.authentication.alone.used && !Tools.isAuthorized(res.locals.user.email, app.locals.authorization.validMatches)) {
     req.logout();
     req.session = null;
     res.statusCode = 403;
@@ -482,7 +482,8 @@ exports.login = function(req, res) {
   }
 
   res.render('login', {
-    title: app.locals.appTitle
+    title: app.locals.appTitle,
+    auth: app.locals.authentication
   });
 };
 

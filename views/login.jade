@@ -1,6 +1,32 @@
 extends layout
 
+include mixins/form
+
 block content
-  p Choose your authentication method
-  p
-    a(href="/auth/google") Google login
+  h2 Choose your authentication method
+
+  if (auth.google.enabled)
+    p
+      b Authenticate via 
+      a.btn.btn-primary(href="/auth/google") Google login
+    hr
+
+  if (auth.alone.enabled)
+
+    p
+      b Authenticate locally
+
+    form(action='/login', method='post')
+
+      div
+        label Username
+        input(type='text', name='username')}")
+
+      div
+        label Password
+        input(type='password', name='password')}")
+
+      mixin saveAndCancel('Login')
+
+    hr
+   

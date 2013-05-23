@@ -28,7 +28,7 @@ html
                 a(href='/login', title='Access login page') logged in
             else
               p.user
-                img(src=gravatar().url("#{user.emails[0].value}", {s:24}))
+                img(src=gravatar().url("#{user.email}", {s:24}))
                 b &nbsp;#{user.displayName}&nbsp;
                 a(href='/logout', title='Become anonymous') [Logout]
 

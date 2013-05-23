@@ -25,6 +25,7 @@ Features
 - Show differences between document revisions
 - Search through the content _and_ the page names
 - Layout accepts custom sidebar and footer
+- Gravatar support
 - Can include <iframe>s in the document (es: embed a Google Drive document)
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
@@ -71,6 +72,8 @@ If you define a remote to push to, be sure that the user who'll push has the rig
 If your documents reside in subdirectory of your repository, you need to specify its name using the 
 `docSubdir` configuration option. The `repository` path _must_ be an absolute path pointing to the 
 root of the repository.
+
+If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
 
 Authentication
 --------------
