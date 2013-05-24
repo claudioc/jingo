@@ -24,6 +24,7 @@
     "gravatar": ">= 1.0.6",
     "express-validator": ">= 0.3.0",
     "commander": "*",
+    "connect-flash": "*",
     "yaml-js": "*"
   },
   "devDependencies": {

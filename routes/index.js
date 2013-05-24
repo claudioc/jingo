@@ -481,6 +481,8 @@ exports.login = function(req, res) {
     req.session.destination = '/';
   }
 
+  res.locals.errors = req.flash();
+
   res.render('login', {
     title: app.locals.appTitle,
     auth: app.locals.authentication

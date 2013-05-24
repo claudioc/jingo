@@ -3,6 +3,8 @@ extends layout
 include mixins/form
 
 block content
+
+
   h2 Choose your authentication method
 
   if (auth.google.enabled)
@@ -15,6 +17,8 @@ block content
 
     p
       b Authenticate locally
+
+    mixin errors()
 
     form(action='/login', method='post')
 

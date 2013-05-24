@@ -5,14 +5,14 @@ mixin saveAndCancel(saveText)
     &nbsp;
     a(href="/").btn Cancel
 
-mixin errors()
+mixin errors(err)
   -var errors = locals.errors;
-  - if (typeof(errors) != 'undefined')
+  - if (typeof(errors) != 'undefined' && Object.keys(errors).length > 0)
     .alert.alert-block.alert-error
       ul
         each v in errors
           li
-            b= v.msg
+            b= v.msg || v
 
 mixin markitupStylesheets()
   link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")

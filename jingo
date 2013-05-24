@@ -22,11 +22,12 @@ var express        = require('express')
   , GoogleStrategy = require('passport-google').Strategy
   , LocalStrategy  = require('passport-local').Strategy
   , yaml           = require('yaml-js')
+  , Flash          = require('connect-flash')
   , program        = require('commander');
 
 program.version('0.3.0')
        .option('-c, --config <path>', 'Specify the config file')
-       .option('-h, --hashify <string>', 'Create an hash for a string')
+       .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')
        .option('-s, --sample-config', 'Dumps a config file template and exits')
        .parse(process.argv);
@@ -36,8 +37,8 @@ if (program.sampleConfig) {
   process.exit(0);
 }
 
-if (program.hashify) {
-  console.log(Tools.hashify(program.hashify));
+if (program.hashString) {
+  console.log(Tools.hashify(program.hashString));
   process.exit(0);
 }
 
@@ -110,6 +111,7 @@ app.configure(function() {
   app.use(express.methodOverride());
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(Flash());
   app.use(function (req, res, next) {
     res.locals({
       get user() {
@@ -239,22 +241,13 @@ passport.use(new LocalStrategy(
       email: auth.alone.email || ""
     };
 
-    console.log(config.authentication);
-    console.log(auth);
+    if (username != auth.alone.username || Tools.hashify(password) != auth.alone.passwordHash) {
+      return done(null, false, { message: 'Incorrect username or password' });
+    }
 
     usedAuthentication("alone");
 
     return done(null, user);
-/*
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-*/
   }
 ));
 
@@ -305,7 +298,7 @@ app.post   ("/misc/preview",          routes.miscPreview);
 app.get    ("/misc/syntax-reference", routes.miscSyntaxReference);
 app.get    ("/misc/existence",        routes.miscExistence);
 
-app.post   ("/login",                 passport.authenticate('local', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+app.post   ("/login",                 passport.authenticate('local', { successRedirect: '/auth/done', failureRedirect: '/login', failureFlash: true }));
 app.get    ("/login",                 routes.login);
 app.get    ("/logout",                routes.logout);
 
@@ -352,13 +345,13 @@ function sampleConfig() {
     localOnly: false\n\
   authorization:\n\
     anonRead: true\n\
-    validMatches: \".+\"\
+    validMatches: \".+\"\n\
   authentication:\n\
     google:\n\
       enabled: true\n\
     alone:\n\
       enabled: false\n\
-      name: \"\"\n\
+      username: \"\"\n\
       passwordHash: \"\"\n\
       email: \"\"\n\
 ";

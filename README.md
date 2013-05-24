@@ -18,7 +18,7 @@ Features
 --------
 
 - No database: uses a git repository as the document archive
-- No user management: authentication provided (only) via with Google logins
+- No user management: authentication provided via with Google logins or simple login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
 - Uses [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
 - Inspired by the well known github [Gollum](https://github.com/github/gollum) wiki
@@ -35,8 +35,7 @@ Features
 Known limitations
 -----------------
 
-- There is only one authentication method (Google), and it is mandatory (no anonymous writing 
-  so far. See also issue #4)
+- The authentication is mandatory (no anonymous writing allowed). See also issue #4
 - The repository is "flat" (no directories or namespaces)
 - Authorization is only based on a regexp'ed white list with matches on the user email address
 - There is one authorization level only (no "administrators" and "editors")
@@ -63,7 +62,7 @@ If you define a `remote` to push to, then jingo will automatically issue a push 
 
 The basic command to run the wiki will then be
 
-`jingo -c /path/to/config.yaml`
+`jingo -c /path/to/config.yaml` (using `forever -w` is highly recommended, though)
 
 Before running jingo you need to initialize its git repository somewhere (`git init` is enough).
 
@@ -75,10 +74,10 @@ root of the repository.
 
 If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
 
-Authentication
---------------
+Authentication and Authorization
+--------------------------------
 
-The _authentication_ section of the config file has two keys: anonRead and validMatches. If the 
+The _authorization_ section of the config file has two keys: anonRead and validMatches. If the 
 anonRead is true, then anyone can read anything.
 If anonRead is false you need to authenticate also for reading and then the email of the user _must_ 
 match at least one of the regular expressions provided via validMatches, which is a comma separated 
@@ -87,6 +86,21 @@ list. There is no "anonWrite", though. To edit a page the user must be authentic
 The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository;
 that means that you could skip the authentication altogether and edit pages with your editor and push 
 to the remote that jingo is serving.
+
+You can enable two authentication methodologies: _Google logins_ or a simple, locally verified 
+username/password credentials match (called "alone").
+
+If you use the _alone_ method, you can have _only one user_ accessing the wiki (thus the name).
+
+The _Google Login_ doesn't need any configuration option: just enable it in the config file (it's enabled by default),
+but assure yourself that the `server.hostname` and `server.port` point to something that Google can reach (localhost:6067 is fine).
+
+The _alone_ method uses a `username`, a `passwordHash` and optionally an `email`. The password is hashed
+using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have
+a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once
+you get the hash, copy it in the config file.
+
+You can enable both authentication options at the same time. The `alone` is disabled by default.
 
 Customization
 -------------
