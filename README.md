@@ -32,6 +32,9 @@ Features
 - Detects unwritten pages (will appear in red)
 - Automatically push to a remote
 
+For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the
+list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
+
 Known limitations
 -----------------
 
