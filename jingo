@@ -25,7 +25,7 @@ var express        = require('express')
   , Flash          = require('connect-flash')
   , program        = require('commander');
 
-program.version('0.3.1')
+program.version('0.3.2')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')
@@ -72,6 +72,9 @@ app.locals._script;
 app.locals.appTitle = config.application.title || "Jingo";
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
+// baseUrl is used as the public url
+app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
+app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
 app.locals.secret = config.application.secret || "jingo-secret-67";
 app.locals.remote = config.application.remote ? config.application.remote.trim() : "";
 app.locals.pushInterval = config.application.pushInterval ? parseInt(config.application.pushInterval, 10) * 1000 : 30000;
@@ -222,8 +225,8 @@ function requireAuthentication(req, res, next) {
  */
 
 passport.use(new GoogleStrategy({
-    returnURL: 'http://' + app.locals.hostname + ':' + app.locals.port + '/auth/google/return',
-    realm: 'http://' + app.locals.hostname + ':' + app.locals.port
+    returnURL: app.locals.baseUrl + '/auth/google/return',
+    realm: app.locals.baseUrl
   },
 
   function(identifier, profile, done) {
@@ -343,6 +346,7 @@ function sampleConfig() {
     hostname: \"localhost\"\n\
     port: 6067\n\
     localOnly: false\n\
+    baseUrl: \"http://localhost:6067\"\n\
   authorization:\n\
     anonRead: true\n\
     validMatches: \".+\"\n\

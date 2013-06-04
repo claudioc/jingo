@@ -96,7 +96,8 @@ username/password credentials match (called "alone").
 If you use the _alone_ method, you can have _only one user_ accessing the wiki (thus the name).
 
 The _Google Login_ doesn't need any configuration option: just enable it in the config file (it's enabled by default),
-but assure yourself that the `server.hostname` and `server.port` point to something that Google can reach (localhost:6067 is fine).
+but assure yourself that the `baseUrl` configuration variable  points to something that Google can reach ("http://localhost:6067"
+is fine but you could have Jingo proxied via another web server which listens on the :80, for example).
 
 The _alone_ method uses a `username`, a `passwordHash` and optionally an `email`. The password is hashed
 using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have
