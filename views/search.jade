@@ -11,6 +11,6 @@ block content
   dl.search-results
     each match in matches
       dt 
-        a(href="/wiki/#{match.pageName}") #{match.pageName}
+        a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(query)}") #{match.pageName}
         span.nl #{match.line}
       dd #{match.text}

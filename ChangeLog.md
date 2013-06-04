@@ -1,4 +1,11 @@
-Version 0.3.2, June 4th, 2013
+
+Version 0.3.4, June 5th, 2013
+-----------------------------
+
+- Support for search word highlight
+- Makes the "tools" drawer fixed positioned
+
+Version 0.3.3, June 4th, 2013
 Version 0.3.2, June 4th, 2013
 -----------------------------
 
