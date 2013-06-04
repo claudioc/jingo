@@ -1,7 +1,9 @@
 Version 0.3.2, June 4th, 2013
+Version 0.3.2, June 4th, 2013
 -----------------------------
 
 - Adds the baseUrl configuration key
+- Fixes a bug on the renderer
 
 Version 0.3.1, May 26th, 2013
 -----------------------------
