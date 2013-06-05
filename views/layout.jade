@@ -15,7 +15,7 @@ html
       style.
         !{_style}
   body
-    -var term_ph = term || ""
+    -var term_ph = (typeof term == "undefined" ? "" : term)
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container

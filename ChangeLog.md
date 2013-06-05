@@ -1,5 +1,5 @@
 
-Version 0.3.5, June 5th, 2013
+Version 0.3.5, 0.3.6, June 5th, 2013
 -----------------------------
 
 - Bug fixes
