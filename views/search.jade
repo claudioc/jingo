@@ -4,13 +4,13 @@ include mixins/form
 
 block content
   h2 #{title} for 
-    b.page-param #{query}
+    b.page-param #{term}
 
   mixin warning()
 
   dl.search-results
     each match in matches
       dt 
-        a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(query)}") #{match.pageName}
+        a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
         span.nl #{match.line}
       dd #{match.text}

@@ -137,11 +137,11 @@ ul.doc-list > li {
 
 .page-actions-row {
   position: fixed;
-  width: 100%;
   margin-top: -62px;
   background-color: white;
   border: 1px solid silver;
-  padding-right: 5px;
+  padding: 0 5px;
+  margin-left: 25%;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }

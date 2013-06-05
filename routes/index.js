@@ -19,14 +19,14 @@ exports.pageSearch = function(req, res) {
     , record;
 
   res.locals.matches = [];
-  res.locals.query = req.query.query.trim();
+  res.locals.term = req.query.term.trim();
 
-  if (res.locals.query.length < 2) {
+  if (res.locals.term.length < 2) {
     res.locals.warning = "Search string is too short.";
     renderResults();
   } else {
 
-    Git.grep(res.locals.query, function(err, items) {
+    Git.grep(res.locals.term, function(err, items) {
 
       items.forEach(function(item) {
         if (item.trim() != "") {

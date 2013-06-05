@@ -12,17 +12,17 @@ html
     link(rel="stylesheet", href="/css/shCoreDefault.css")
     block styles
     if hasCustomStyle()
-      style
+      style.
         !{_style}
   body
-    -var query = query || ""
+    -var term_ph = term || ""
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container
           a(href="/").brand #{appTitle}
           .nav-collapse.collapse
             form(action="/search").navbar-search.pull-left
-              input(type="text",name="query",placeholder="Search", value="#{query}").search-query
+              input(type="text",name="term",placeholder="Search", value="#{term_ph}").search-query
             if isAnonymous()
               p.user You're not 
                 a(href='/login', title='Access login page') logged in
@@ -48,13 +48,13 @@ html
         .row.span10 !{_footer}
 
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
-    script
+    script.
       window.jQuery || document.write("<sc" + "ript src='/vendor/jquery.min.js'></scr" + "ipt>");
     script(src="/vendor/bootstrap/js/bootstrap.min.js")
     script(src="/js/app.js")
-    script
+    script.
       Jingo.init();
     block scripts
     if hasCustomScript()
-      script
+      script.
         !{_script}
