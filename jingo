@@ -76,7 +76,16 @@ app.locals.hostname = config.server.hostname || "localhost";
 app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
 app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
 app.locals.secret = config.application.secret || "jingo-secret-67";
-app.locals.remote = config.application.remote ? config.application.remote.trim() : "";
+
+var refspec = config.application.remote ? config.application.remote.split(/\s+/) : "";
+if (!refspec) {
+  app.locals.remote = "";
+  app.locals.branch = "";
+} else {
+  app.locals.remote = refspec[0].trim();
+  app.locals.branch = refspec[1] ? refspec[1].trim() : "master";
+}
+
 app.locals.pushInterval = config.application.pushInterval ? parseInt(config.application.pushInterval, 10) * 1000 : 30000;
 app.locals.coalesce = function(value, def) {
   return typeof value === 'undefined' ? def : value;
@@ -322,9 +331,15 @@ http.createServer(app).listen(app.get('port'), listenAddr, function(){
 
 if (app.locals.remote != "") {
   setInterval(function() {
-    Git.push(app.locals.remote, "master", function(err) {
+    Git.pull(app.locals.remote, app.locals.branch, function(err) {
       if (err) {
         console.log("Error: " + err);
+      } else {
+        Git.push(app.locals.remote, app.locals.branch, function(err) {
+          if (err) {
+            console.log("Error: " + err);
+          }
+        });
       }
     });
   }, app.locals.pushInterval);
