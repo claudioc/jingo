@@ -2,6 +2,7 @@
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
   font-family: "Ubuntu";
   background-color: #f2f2f2;
+  background-image: url(/img/bodybg.png);
 }
 a {
   color: #4183c4;
