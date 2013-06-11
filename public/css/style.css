@@ -24,8 +24,13 @@ p.user {
   padding: 20px
 }
 
+label {
+  font-weight: bold;
+}
+
 p {
   margin-bottom: 20px;
+  line-height: 1.62;
 }
 
 hr {
@@ -59,8 +64,16 @@ h1 {
   margin: 0 0 20px 0;
 }
 
+h3 {
+  margin: 0 0 10px 0;
+}
+
 #main > h2 {
   margin: 20px;
+}
+
+#content > h2 {
+  margin-top: 40px;
 }
 
 code {
