@@ -20,20 +20,21 @@ block content
   mixin errors()
   mixin warning()
 
-  form(action='/pages/#{pageName}', method='post', class='edit')
+  #content
+    form(action='/pages/#{pageName}', method='post', class='edit')
 
-    div
-      label Page title
-      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
-      input(type="hidden", name="_method", value="put")
+      div
+        label Page title
+        input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
+        input(type="hidden", name="_method", value="put")
 
-    div
-      textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+      div
+        textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
 
-    div
-      input(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
+      div
+        input(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
 
-    mixin saveAndCancel()
+      mixin saveAndCancel()
 
   #preview(tabindex="-1").modal.hide
     mixin dialogBox("Page preview")

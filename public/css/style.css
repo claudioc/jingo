@@ -15,6 +15,12 @@ p.user {
 
 #main {
   overflow: auto;
+  background-color: white;
+  box-shadow: 0 0 5px silver;
+}
+
+#content {
+  padding: 20px
 }
 
 p {
@@ -45,6 +51,15 @@ h2 {
 
 h3 {
   font-size: 18px;
+}
+
+h1 {
+  margin: 0 0 20px 0;
+}
+
+h2 {
+  padding: 20px;
+  margin: 0;
 }
 
 code {
@@ -105,6 +120,10 @@ pre {
   padding: 0;
 }
 
+.alert {
+ margin: 20px 20px 0 20px;
+}
+
 pre code {
   white-space: nowrap;
 }
@@ -128,11 +147,15 @@ ul.doc-list > li {
 }
 
 .footer {
-  margin-top: 20px;
   border-top: 1px dashed #d1d1d1;
   color: #c1c1c1;
-  padding: 5px 0;
+  padding: 20px;
+  margin: 0;
   font-size: 90%;
+}
+
+.doc-list .footer {
+  padding: 10px 0;
 }
 
 .page-actions-row {
@@ -226,9 +249,6 @@ a.absent {
 
 form.edit {
   border-radius: 4px;
-  background-color: #eee;
-  padding: 2%;
-  padding-bottom: 1%;
   width: 96%;
 }
 

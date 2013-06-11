@@ -1,21 +1,22 @@
 extends layout
 
 block content
-  h3 #{title} 
-    b.page-param «#{pageTitle}»
-  p
-    button(id="rev-compare", data-pageName="#{pageName}").btn Compare Revisions
+  #content
+    h3 #{title} 
+      b.page-param «#{pageTitle}»
+    p
+      button(id="rev-compare", data-pageName="#{pageName}").btn Compare Revisions
 
-  table.history.table.table-striped.table-bordered.table-hover.table-condensed
-    each item in items
-      tr
-        td
-          input(type="checkbox", value="#{item.fullhash}")
-        td 
-          img(src=gravatar().url("#{item.email}", {s:16}))
-          &nbsp; #{item.author}
-        td #{item.relDate}
-        td #{item.subject}
-        td 
-          a(href="/wiki/#{item.name}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
+    table.history.table.table-striped.table-bordered.table-hover.table-condensed
+      each item in items
+        tr
+          td
+            input(type="checkbox", value="#{item.fullhash}")
+          td 
+            img(src=gravatar().url("#{item.email}", {s:16}))
+            &nbsp; #{item.author}
+          td #{item.relDate}
+          td #{item.subject}
+          td 
+            a(href="/wiki/#{item.name}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
 

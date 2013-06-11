@@ -9,19 +9,20 @@ block content
   h2 #{title}
 
   mixin errors()
+  #content
 
-  form(action='/pages', method='post', class='edit')
+    form(action='/pages', method='post', class='edit')
 
-    input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
+      input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
-    div
-      label Page title
-      input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
+      div
+        label Page title
+        input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
-    div
-      textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+      div
+        textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
 
-    mixin saveAndCancel()
+      mixin saveAndCancel()
 
   #preview.modal.hide
     mixin dialogBox("Page preview")
