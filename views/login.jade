@@ -4,33 +4,33 @@ include mixins/form
 
 block content
 
-
   h2 Choose your authentication method
 
-  if (auth.google.enabled)
-    p
-      b Authenticate via 
-      a.btn.btn-primary(href="/auth/google") Google login
-    hr
+  #content
 
-  if (auth.alone.enabled)
+    if (auth.google.enabled)
+      p
+        b Authenticate via 
+        a.btn.btn-primary(href="/auth/google") Google login
+      hr
 
-    p
-      b Authenticate locally
+    if (auth.alone.enabled)
 
-    mixin errors()
+      p
+        b Authenticate locally
 
-    form(action='/login', method='post')
+      mixin errors()
 
-      div
-        label Username
-        input(type='text', name='username')}")
+      form(action='/login', method='post')
 
-      div
-        label Password
-        input(type='password', name='password')}")
+        div
+          label Username
+          input(type='text', name='username')}")
 
-      mixin saveAndCancel('Login')
+        div
+          label Password
+          input(type='password', name='password')}")
 
-    hr
-   
+        mixin saveAndCancel('Login')
+
+      hr
