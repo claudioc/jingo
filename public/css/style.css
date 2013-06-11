@@ -53,13 +53,13 @@ h3 {
   font-size: 18px;
 }
 
+h2,
 h1 {
   margin: 0 0 20px 0;
 }
 
-h2 {
-  padding: 20px;
-  margin: 0;
+#main > h2 {
+  margin: 20px;
 }
 
 code {
@@ -130,6 +130,10 @@ pre code {
 
 code {
   white-space: auto;
+}
+
+ul > li {
+  margin-top: 8px;
 }
 
 ul.doc-list {
