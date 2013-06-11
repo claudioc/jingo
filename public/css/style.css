@@ -197,6 +197,7 @@ ul.doc-list > li {
   text-align: center;
   font-size: 9px;
   line-height: 12px;
+  margin: 0;
 }
 
 .page-actions > li {
