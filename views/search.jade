@@ -8,9 +8,10 @@ block content
 
   mixin warning()
 
-  dl.search-results
-    each match in matches
-      dt 
-        a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
-        span.nl #{match.line}
-      dd #{match.text}
+  #content
+    dl.search-results
+      each match in matches
+        dt 
+          a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
+          span.nl #{match.line}
+        dd #{match.text}

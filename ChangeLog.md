@@ -1,4 +1,12 @@
 
+Version 0.4.0, June 11th, 2013
+------------------------------
+
+- The main content is now centered
+- Better typography
+- Added WideArea support
+- Added the ability to specify the branch within the remote
+
 Version 0.3.5, 0.3.6, June 5th, 2013
 -----------------------------
 

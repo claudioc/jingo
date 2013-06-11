@@ -4,6 +4,7 @@ include mixins/form
 
 block styles
   mixin markitupStylesheets()
+  mixin wideareaStylesheets()
 
 block page-actions
   ul.page-actions
@@ -29,7 +30,7 @@ block content
         input(type="hidden", name="_method", value="put")
 
       div
-        textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+        textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
 
       div
         input(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
@@ -44,3 +45,4 @@ block content
 
 block scripts
   mixin markitupJavaScripts()
+  mixin wideareaJavaScripts()

@@ -4,6 +4,7 @@ include mixins/form
 
 block styles
   mixin markitupStylesheets()
+  mixin wideareaStylesheets()
 
 block content
   h2 #{title}
@@ -20,7 +21,7 @@ block content
         input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
       div
-        textarea(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+        textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
 
       mixin saveAndCancel()
 
@@ -32,3 +33,4 @@ block content
 
 block scripts
   mixin markitupJavaScripts()
+  mixin wideareaJavaScripts()

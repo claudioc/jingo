@@ -21,6 +21,7 @@ Features
 - No user management: authentication provided via with Google logins or simple login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
 - Uses [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
+- Uses [WideArea](http://usablica.github.io/widearea/) for a "distraction free" mode
 - Inspired by the well known github [Gollum](https://github.com/github/gollum) wiki
 - Show differences between document revisions
 - Search through the content _and_ the page names
@@ -61,7 +62,10 @@ Be sure to provide a valid server hostname (like wiki.mycompany.com) for Google 
 to get back to you.
 
 If you define a `remote` to push to, then jingo will automatically issue a push to that remote every 
-`pushInterval` seconds. The branch (local and remote) will be always `master`.
+`pushInterval` seconds. You can also specify a branch using the syntax "remotename branchnama". If you 
+don't specify a branch, that will be `master`.
+Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try
+to resolve conflicts, though).
 
 The basic command to run the wiki will then be
 

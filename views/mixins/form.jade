@@ -14,6 +14,14 @@ mixin errors(err)
           li
             b= v.msg || v
 
+mixin wideareaStylesheets()
+  link(rel="stylesheet", type="text/css", href="/vendor/widearea/widearea.min.css")
+
+mixin wideareaJavaScripts()
+  script(src="/vendor/widearea/widearea.min.js")
+  script.
+    wideArea();
+
 mixin markitupStylesheets()
   link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")
   link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")

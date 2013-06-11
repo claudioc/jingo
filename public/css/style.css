@@ -31,6 +31,10 @@ p.user {
   padding: 20px
 }
 
+#message {
+  margin-top: 40px;
+}
+
 label {
   font-weight: bold;
 }
@@ -231,6 +235,12 @@ body #preview {
   width: 50%; /* desired relative width */
   left: 25%; /* (100%-width)/2 */
   margin: auto auto auto auto; /* place center */
+}
+
+/* Needed for wideArea */
+.markItUpHeader {
+  position: relative;
+  z-index: 2;
 }
 
 .markItUpEditor {
