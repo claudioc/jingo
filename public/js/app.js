@@ -45,7 +45,6 @@
         var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
-          $(".alert").hide();
           $par.animate({"margin-top": "-20px"})
           $pah.slideUp();
         });

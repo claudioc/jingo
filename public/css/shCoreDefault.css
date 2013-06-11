@@ -42,7 +42,7 @@
   overflow: auto !important;
   font-size: 1em !important;
   border: 1px solid #CCC;
-  background-color: #f8f8f8;
+  background-color: ivory;
   border-radius: 3px;
   font-size: 13px;
   line-height: 19px;
@@ -253,7 +253,7 @@
 
 .syntaxhighlighter .line.alt1,
 .syntaxhighlighter .line.alt2 {
-  background-color: #f8f8f8 !important;
+  background-color: ivory !important;
 }
 .syntaxhighlighter .line.highlighted.alt1, .syntaxhighlighter .line.highlighted.alt2 {
   background-color: #e0e0e0 !important;
