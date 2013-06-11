@@ -7,6 +7,13 @@
 a {
   color: #4183c4;
 }
+
+a[href^="https://"],
+a[href^="http://"] {
+  background: url(/img/ext.png) center right no-repeat;
+  padding-right: 13px;
+}
+
 p.user {
   float: right;
   color: white;
