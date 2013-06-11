@@ -55,7 +55,7 @@
           pahTo = setTimeout(function() {
             $par.animate({"margin-top": "-62"})
             $pah.slideDown();
-          }, 2000);
+          }, 500);
         });
         $(".page-actions:not(.pull-right)").append($pah);
       } else {
