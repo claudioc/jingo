@@ -132,6 +132,9 @@ app.configure(function() {
       isAnonymous: function () {
         return !req.user;
       },
+      canSearch: function () {
+        return !!req.user || app.locals.authorization.anonRead;
+      },
       _sidebar: null,
       _footer: null,
       _style: null,
