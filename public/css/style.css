@@ -139,10 +139,15 @@ hr {
 }
 
 /* Overrides Bootstrap */
+.navbar-inverse .navbar-inner {
+  background-image: none;
+}
+
 pre {
   background-color: transparent;
   border-width: 0;
   padding: 0;
+  margin-bottom: 20px;
 }
 
 .alert {
@@ -190,10 +195,10 @@ ul.doc-list > li {
 .page-actions-row {
   position: fixed;
   margin-top: -62px;
-  background-color: white;
-  border: 1px solid silver;
+  background-color: rgba(27,27,27,.3);
+  border: 1px solid gray;
   padding: 0 10px;
-  margin-left: 25%;
+  right: 280px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -204,7 +209,7 @@ ul.doc-list > li {
   margin: 0;
   padding: 0;
   line-height: 250%;
-  background-color: white;
+  background-color: rgba(27,27,27);
   border-bottom-left-radius: 5px;
 }
 
