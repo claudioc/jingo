@@ -296,7 +296,7 @@ app.get    ("/wiki/:page/history",    routes.pageHistory);
 app.get    ("/wiki/:page/:version",   routes.pageShow);
 app.get    ("/wiki/:page/compare/:revisions", routes.pageCompare);
 
-app.get    ("/search",                routes.pageSearch);
+app.get    ("/search",                routes.search);
 
 app.get    ("/pages/new",             routes.pageNew);
 app.get    ("/pages/new/:page",       routes.pageNew);

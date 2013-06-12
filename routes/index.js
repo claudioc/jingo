@@ -13,7 +13,7 @@ exports.index = function(req, res) {
   res.redirect('/wiki/home');
 };
 
-exports.pageSearch = function(req, res) {
+exports.search = function(req, res) {
 
   var items = []
     , record;
@@ -77,7 +77,7 @@ exports.pageList = function(req, res) {
                 return a.metadata.timestamp < b.metadata.timestamp;
               });
               res.render("list", {
-                title: "Document list",
+                title: "Document list – Sorted by update date",
                 items: items
               });
             }
@@ -209,34 +209,42 @@ exports.pageEdit = function(req, res) {
     }
   }
 
-  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+  Git.pull(app.locals.remote, app.locals.branch, function(err) {
 
     if (err) {
-      res.redirect('/pages/new/' + pageName);
-    } else {
-
-      pageRows = content.split("\n");
-
-      if (!req.session.formData) {
-        res.locals.formData = {
-          pageTitle: pageRows[0].substr(1),
-          content: pageRows.slice(1).join("")
-        };
-      } else {
-        res.locals.formData = req.session.formData;
-      }
-
-      res.locals.errors = req.session.errors;
-
-      Locker.lock(pageName, req.user);
-
-      delete req.session.errors;
-      delete req.session.formData;
-
-      res.render('edit', {
-        title: 'Edit page'
-      });
+      error500(req, res, err);
+      return;
     }
+
+    Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+
+      if (err) {
+        res.redirect('/pages/new/' + pageName);
+      } else {
+
+        pageRows = content.split("\n");
+
+        if (!req.session.formData) {
+          res.locals.formData = {
+            pageTitle: pageRows[0].substr(1),
+            content: pageRows.slice(1).join("")
+          };
+        } else {
+          res.locals.formData = req.session.formData;
+        }
+
+        res.locals.errors = req.session.errors;
+
+        Locker.lock(pageName, req.user);
+
+        delete req.session.errors;
+        delete req.session.formData;
+
+        res.render('edit', {
+          title: 'Edit page'
+        });
+      }
+    });
   });
 }
 
@@ -499,4 +507,12 @@ error404 = exports.error404 = function(req, res) {
   res.locals.title = "404 - Not found";
   res.statusCode = 404;
   res.render('404.jade');
+}
+
+error500 = exports.error500 = function(req, res, message) {
+  res.locals.title = "500 - Internal server error";
+  res.statusCode = 500;
+  res.render('500.jade', {
+    error: message
+  });
 }

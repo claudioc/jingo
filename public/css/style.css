@@ -173,7 +173,7 @@ ul.doc-list {
 
 ul.doc-list > li {
   list-style-type: none;
-  padding: 10px 10px 0 10px;
+  padding: 0px 10px;
   background-color: #f8f8f8;
   border: 1px solid #ccc;
   margin-bottom: 10px;
