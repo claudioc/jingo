@@ -53,9 +53,12 @@ exports.search = function(req, res) {
 exports.pageList = function(req, res) {
 
   var items = []
-    , title;
+    , title
+    , len;
 
   Git.ls(function(err, list) {
+
+    len = list.length;
 
     list.forEach(function(page) {
 
@@ -72,10 +75,11 @@ exports.pageList = function(req, res) {
               metadata: metadata
             });
 
-            if (items.length === list.length) {
+            if (items.length === len) {
               items.sort(function(a, b) {
-                return a.metadata.timestamp < b.metadata.timestamp;
+                return b.metadata.timestamp - a.metadata.timestamp;
               });
+
               res.render("list", {
                 title: "Document list – Sorted by update date",
                 items: items

@@ -1,3 +1,7 @@
+Version 0.4.1, June 25th, 2013
+------------------------------
+
+- Fixed a bug on the document list sort
 
 Version 0.4.0, June 11th, 2013
 ------------------------------
