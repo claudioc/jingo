@@ -81,6 +81,11 @@ root of the repository.
 
 If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
 
+Common problems
+---------------
+
+Sometimes upgrading your version of node.js could break the `iconv` module. Try updating it with `npm install iconv`.
+
 Authentication and Authorization
 --------------------------------
 
