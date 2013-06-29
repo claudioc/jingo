@@ -119,7 +119,7 @@ app.configure(function() {
   app.use(express.cookieParser(app.locals.secret));
   app.use(express.cookieSession({ secret: "jingo-" + app.locals.secret, cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }})); // a Month
   app.use(express.bodyParser());
-  app.use(expValidator);
+  app.use(expValidator());
   app.use(express.methodOverride());
   app.use(passport.initialize());
   app.use(passport.session());
