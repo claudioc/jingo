@@ -193,7 +193,7 @@ exports.pageCreate = function(req, res) {
     return;
   }
 
-  Fs.writeFile(pageFile, "#" + req.body.pageTitle + "\n" + req.body.content, function() {
+  Fs.writeFile(pageFile, "#" + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n"), function() {
     Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
       req.session.notice = "Page has been created successfully";
       res.redirect("/wiki/" + pageName);
@@ -231,7 +231,7 @@ exports.pageEdit = function(req, res) {
         if (!req.session.formData) {
           res.locals.formData = {
             pageTitle: pageRows[0].substr(1),
-            content: pageRows.slice(1).join("")
+            content: content.substr(pageRows[0].length)
           };
         } else {
           res.locals.formData = req.session.formData;
@@ -276,7 +276,7 @@ exports.pageUpdate = function(req, res) {
   req.sanitize('content').trim();
   req.sanitize('message').trim();
 
-  content = "#" + req.body.pageTitle + "\n" + req.body.content;
+  content = "#" + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n");
   pageFile = Git.absPath(pageName + ".md");
 
   message = (req.body.message == "") ? "Content updated (" + pageName + ")" : req.body.message;
