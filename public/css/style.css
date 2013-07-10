@@ -31,6 +31,10 @@ p.user {
   padding: 20px
 }
 
+#content li {
+  line-height: 1.92;
+}
+
 #message {
   margin-top: 40px;
 }

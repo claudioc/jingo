@@ -1,3 +1,10 @@
+Version 0.4.3, July 10th, 2013
+=============================
+
+- Closes #19
+- Better line height for LI
+- Refines PR #20 
+
 Version 0.4.2, June 29th, 2013
 =============================
 

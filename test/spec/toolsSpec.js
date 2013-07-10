@@ -5,6 +5,30 @@ var Tools = require("../../lib/tools");
 
 describe ("Tools", function() {
 
+  it ("should test for being a title", function() {
+    expect(Tools.isTitle()).to.equal(false);
+    expect(Tools.isTitle("test")).to.equal(false);
+    expect(Tools.isTitle("#test")).to.equal(true);
+  });
+
+  it ("should test for the presence of a title", function() {
+    expect(Tools.hasTitle()).to.equal(false);
+    expect(Tools.hasTitle("test")).to.equal(false);
+    expect(Tools.hasTitle("#test")).to.equal(true);
+    expect(Tools.hasTitle("#test\nhello")).to.equal(true);
+    expect(Tools.hasTitle("\n#test\nhello")).to.equal(false);
+  });
+
+  it ("should get the title of a page from content", function() {
+    expect(Tools.getPageTitle("bazinga", "somepage")).to.equal("somepage");
+    expect(Tools.getPageTitle("#test\nbazinga", "somepage")).to.equal("test");
+  });
+
+  it ("should get the content of a page", function() {
+    expect(Tools.getContent("bazinga")).to.equal("bazinga");
+    expect(Tools.getContent("#bazinga\nzot")).to.equal("\nzot");
+  });
+
   it ("should not authorize empty email", function() {
     expect(Tools.isAuthorized("       ")).to.equal(false);
     expect(Tools.isAuthorized("")).to.equal(false);
