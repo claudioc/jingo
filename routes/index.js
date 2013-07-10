@@ -86,7 +86,7 @@ exports.pageList = function(req, res) {
               });
             }
           });
-        })(content.split("\n")[0].substr(1));
+        })(Tools.getPageTitle(content, page));
       });
     });
   });
@@ -128,9 +128,9 @@ exports.pageShow = function(req, res) {
         delete req.session.notice;
 
         res.render('show', {
-          title:   app.locals.appTitle + " – " + content.split("\n")[0].substr(1),
-          content: Renderer.render(content),
-          pageName: pageName,
+          title:   app.locals.appTitle + " – " + Tools.getPageTitle(content, pageName),
+          content: Tools.hasTitle(content) ? Renderer.render(content) : Renderer.render("# " + pageName + "\n" + content),
+          pageName: pageName, 
           metadata: metadata
         });
 
@@ -193,7 +193,7 @@ exports.pageCreate = function(req, res) {
     return;
   }
 
-  Fs.writeFile(pageFile, "#" + req.body.pageTitle + "\n" + req.body.content, function() {
+  Fs.writeFile(pageFile, "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n"), function() {
     Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
       req.session.notice = "Page has been created successfully";
       res.redirect("/wiki/" + pageName);
@@ -204,7 +204,6 @@ exports.pageCreate = function(req, res) {
 exports.pageEdit = function(req, res) {
 
   var pageName = res.locals.pageName = req.params.page
-    , pageRows
     , lock;
 
   if (lock = Locker.getLock(pageName)) {
@@ -226,12 +225,10 @@ exports.pageEdit = function(req, res) {
         res.redirect('/pages/new/' + pageName);
       } else {
 
-        pageRows = content.split("\n");
-
         if (!req.session.formData) {
           res.locals.formData = {
-            pageTitle: pageRows[0].substr(1),
-            content: pageRows.slice(1).join("")
+            pageTitle: Tools.getPageTitle(content, pageName),
+            content: Tools.getContent(content)
           };
         } else {
           res.locals.formData = req.session.formData;
@@ -276,7 +273,7 @@ exports.pageUpdate = function(req, res) {
   req.sanitize('content').trim();
   req.sanitize('message').trim();
 
-  content = "#" + req.body.pageTitle + "\n" + req.body.content;
+  content = "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n");
   pageFile = Git.absPath(pageName + ".md");
 
   message = (req.body.message == "") ? "Content updated (" + pageName + ")" : req.body.message;
@@ -420,7 +417,7 @@ exports.pageHistory = function(req, res) {
     if (err) { res.redirect('/'); }
 
     Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
-      res.locals.pageTitle = content.split("\n")[0].substr(1);
+      res.locals.pageTitle = Tools.getPageTitle(content, pageName);
       res.locals.pageName = pageName;
       res.locals.items = metadata;
       res.render('history', {
