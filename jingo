@@ -256,7 +256,7 @@ passport.use(new LocalStrategy(
       email: auth.alone.email || ""
     };
 
-    if (username != auth.alone.username || Tools.hashify(password) != auth.alone.passwordHash) {
+    if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
       return done(null, false, { message: 'Incorrect username or password' });
     }
 
