@@ -13,12 +13,12 @@ var express        = require('express')
   , path           = require('path')
   , passport       = require('passport')
   , Git            = require('./lib/gitmech')
-  , Tools          = require("./lib/tools")
+  , Tools          = require('./lib/tools')
+  , Renderer       = require('./lib/renderer')
   , expValidator   = require('express-validator')
   , gravatar       = require('gravatar')
   , Fs             = require('fs')
   , Url            = require('url')
-  , Marked         = require('marked')
   , GoogleStrategy = require('passport-google').Strategy
   , LocalStrategy  = require('passport-local').Strategy
   , yaml           = require('yaml-js')
@@ -168,7 +168,7 @@ app.configure(function() {
       if (!app.locals._sidebar) {
         Git.readFile("_sidebar.md", "HEAD", function(err, content) {
           if (!err) {
-            res.locals._sidebar = app.locals._sidebar = Marked(content.split("\n").splice(1).join("\n"));
+            res.locals._sidebar = app.locals._sidebar = Renderer.render(content.split("\n").splice(1).join("\n"));
           }
         });
       } else {
@@ -182,7 +182,7 @@ app.configure(function() {
       if (!app.locals._footer) {
         Git.readFile("_footer.md", "HEAD", function(err, content) {
           if (!err) {
-            res.locals._footer = app.locals._footer = Marked(content.split("\n").splice(1).join("\n"));
+            res.locals._footer = app.locals._footer = Renderer.render(content.split("\n").splice(1).join("\n"));
           }
         });
       } else {
@@ -256,7 +256,7 @@ passport.use(new LocalStrategy(
       email: auth.alone.email || ""
     };
 
-    if (username != auth.alone.username || Tools.hashify(password) != auth.alone.passwordHash) {
+    if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
       return done(null, false, { message: 'Incorrect username or password' });
     }
 
