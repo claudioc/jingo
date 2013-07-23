@@ -28,15 +28,33 @@ p.user {
 }
 
 #content {
-  padding: 20px
+  padding: 40px;
 }
 
 #content li {
   line-height: 1.92;
 }
 
+ul >li:first-child {
+  margin-top: 4px;
+}
+
 #message {
   margin-top: 40px;
+}
+
+blockquote {
+  text-indent: -1ex;
+  padding-right: 15px;
+  color: #553;
+}
+
+blockquote p:before {
+ content: '“';
+}
+
+blockquote p:after {
+  content: '”';
 }
 
 label {
@@ -59,7 +77,8 @@ dl.search-results dd {
 h2,
 h1 {
   border-bottom: 1px solid #ddd;
-  font-family:"Ubuntu Condensed"
+  font-family:"Ubuntu Condensed";
+  margin: 0 0 20px 0;
 }
 
 h1 {
@@ -74,13 +93,15 @@ h3 {
   font-size: 18px;
 }
 
-h2,
-h1 {
-  margin: 0 0 20px 0;
-}
-
 h3 {
   margin: 0 0 10px 0;
+}
+
+h1 a, h1 a:hover,
+h2 a, h2 a:hover,
+h3 a, h3 a:hover,
+h4 a, h4 a:hover {
+  color: inherit;
 }
 
 #main > h2 {
@@ -92,7 +113,7 @@ h3 {
 }
 
 code {
-  color: #666;
+  color: #555;
 }
 
 hr {
@@ -166,8 +187,13 @@ code {
   white-space: auto;
 }
 
-ul > li {
-  margin-top: 8px;
+ol, ul {
+  margin-bottom: 20px;
+}
+
+p + ol,
+p + ul {
+  margin-top: -15px;
 }
 
 ul.doc-list {

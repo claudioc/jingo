@@ -1,4 +1,12 @@
+Version 0.4.4, July 23th, 2013
+
+- Better typography
+
 Version 0.4.3, July 10th, 2013
+=============================
+
+- Closes #19
+- Better line height for LI
 =============================
 
 - Closes #19
