@@ -14,6 +14,12 @@ a[href^="http://"] {
   padding-right: 13px;
 }
 
+.code a[href^="https://"],
+.code a[href^="http://"] {
+  background: none;
+  padding-right: 0;
+}
+
 p.user {
   float: right;
   color: white;
@@ -29,6 +35,7 @@ p.user {
 
 #content {
   padding: 40px;
+  overflow: hidden;
 }
 
 #content li {
