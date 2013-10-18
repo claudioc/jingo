@@ -26,7 +26,7 @@ html
                 input(type="text",name="term",placeholder="Search", value="#{term_ph}").search-query
             if isAnonymous()
               p.user You're not 
-                a(href='/login', title='Access login page') logged in
+                a(id='login',href='/login?destination', title='Access login page') logged in
             else
               p.user
                 if user.email

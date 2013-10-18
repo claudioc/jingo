@@ -39,6 +39,8 @@
         }
       }
 
+      $("#login").attr("href", function() { return $(this).attr("href").replace("destination", "destination=" + encodeURIComponent(location.pathname)); });
+
       $(".page-actions-row").height(navh);
 
       if ($(".page-actions:not(.pull-right)").length > 0 && $(".page-actions li").length > 0) {

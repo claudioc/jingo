@@ -467,6 +467,7 @@ exports.authDone = function(req, res) {
     return;
   }
 
+console.log(req.session.destination);
   if (!app.locals.authentication.alone.used && !Tools.isAuthorized(res.locals.user.email, app.locals.authorization.validMatches)) {
     req.logout();
     req.session = null;
@@ -484,7 +485,7 @@ exports.authDone = function(req, res) {
  */
 exports.login = function(req, res) {
 
-  req.session.destination = (req.headers.referer ? Url.parse(req.headers.referer).path : null);
+  req.session.destination = req.query.destination; // (req.headers.referer ? Url.parse(req.headers.referer).path : null);
 
   if (req.session.destination == '/login') {
     req.session.destination = '/';
