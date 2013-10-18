@@ -38,11 +38,11 @@ p.user {
   overflow: hidden;
 }
 
-#content li {
+#content.show li {
   line-height: 1.92;
 }
 
-ul >li:first-child {
+#content.show ul >li:first-child {
   margin-top: 4px;
 }
 
@@ -116,7 +116,7 @@ h4 a, h4 a:hover {
 }
 
 #content > h2 {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 code {
@@ -289,6 +289,39 @@ body #preview {
   height: 500px !important;
   font-family: Consolas, monospace !important;
 }
+
+.toolbar {
+  padding: 0;
+  margin: 0;
+}
+
+.toolbar li {
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.toolbar li span {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
+
+.toolbar li.info span {
+  background-image:url(../img/info_16.png); 
+}
+.toolbar li.preview span {
+  background-image:url(../img/preview_16.png); 
+}
+
+.CodeMirror {
+  border: 1px solid silver;
+}
+
 
 input#pageTitle {
   font-weight: bold;

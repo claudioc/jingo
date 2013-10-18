@@ -133,6 +133,22 @@
       });
     },
 
+    toolbar: function() {
+      $("<ul class='toolbar'>\
+        <li class=\"info\"><span href=\"#\" title=\"Syntax help\"></span></li>\
+        <li class=\"preview\"><span href=\"#\" title=\"Preview\"></span></li></ul>").insertBefore($('form.edit textarea:first').closest('div'));
+
+      $("ul.toolbar").on("click", "span", function() {
+        if (this.parentNode.className == "info") {
+          Jingo.markdownSyntax();
+        }
+        if (this.parentNode.className == "preview") {
+          Jingo.cmInstance.save();
+          Jingo.preview();
+        }
+      });
+    },
+
     markdownSyntax: function() {
       $('#syntax-reference').modal("show");
       if (!cheatsheetShown) {

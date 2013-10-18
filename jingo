@@ -72,6 +72,7 @@ app.locals._script;
 app.locals.appTitle = config.application.title || "Jingo";
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
+app.locals.features = config.features || {}
 // baseUrl is used as the public url
 app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
 app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
@@ -155,6 +156,9 @@ app.configure(function() {
       },
       hasCustomScript: function() {
         return Fs.existsSync(Git.absPath("_script.js"));
+      },
+      hasFeature: function(feature) {
+        return !!app.locals.features[feature]
       }
     });
 
@@ -360,6 +364,9 @@ function sampleConfig() {
     remote: \"\"\n\
     pushInterval: 30\n\
     secret: \"change me\"\n\
+  features:\n\
+    markitup: true\n\
+    codemirror: true\n\
   server:\n\
     hostname: \"localhost\"\n\
     port: 6067\n\

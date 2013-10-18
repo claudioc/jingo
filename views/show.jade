@@ -20,7 +20,7 @@ block content
   mixin notice()
   mixin warning()
 
-  #content!=content
+  #content.show!=content
 
   p.footer Updated by 
     img(src=gravatar().url("#{metadata.email}", {s:16}))

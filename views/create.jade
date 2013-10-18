@@ -3,22 +3,20 @@ extends layout
 include mixins/form
 
 block styles
-  mixin markitupStylesheets()
-  mixin wideareaStylesheets()
+  mixin featuresStylesheets()
 
 block content
-  h2 #{title}
-
   mixin errors()
   #content
+
+    h1 #{title}
 
     form(action='/pages', method='post', class='edit')
 
       input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
       div
-        label Page title
-        input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
+        input(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
       div
         textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
@@ -32,5 +30,4 @@ block content
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts
-  mixin wideareaJavaScripts()
-  mixin markitupJavaScripts()
+  mixin featuresJavaScripts()

@@ -3,8 +3,7 @@ extends layout
 include mixins/form
 
 block styles
-  mixin markitupStylesheets()
-  mixin wideareaStylesheets()
+  mixin featuresStylesheets()
 
 block page-actions
   ul.page-actions
@@ -16,17 +15,16 @@ block page-actions
 
 block content
 
-  h2 #{title}
-
   mixin errors()
   mixin warning()
 
   #content
+    h1 #{title}
+
     form(action='/pages/#{pageName}', method='post', class='edit')
 
       div
-        label Page title
-        input(type='text', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
+        input(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
         input(type="hidden", name="_method", value="put")
 
       div
@@ -44,5 +42,4 @@ block content
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts
-  mixin wideareaJavaScripts()
-  mixin markitupJavaScripts()
+  mixin featuresJavaScripts()
