@@ -98,7 +98,6 @@ if (!config.application || !config.server) {
   process.exit(-1);
 }
 
-app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
 var auth = app.locals.authentication = config.authentication || { google: { enabled: true }, alone: { enabled: false } };
 
 if ( (!auth.google || !auth.google.enabled) && 
