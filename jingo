@@ -21,6 +21,7 @@ var express        = require('express')
   , Url            = require('url')
   , GoogleStrategy = require('passport-google').Strategy
   , LocalStrategy  = require('passport-local').Strategy
+  , FacebookStrategy = require('passport-facebook').Strategy
   , yaml           = require('yaml-js')
   , Flash          = require('connect-flash')
   , program        = require('commander');
@@ -101,7 +102,8 @@ app.locals.authorization = config.authorization || { anonRead: false, validMatch
 var auth = app.locals.authentication = config.authentication || { google: { enabled: true }, alone: { enabled: false } };
 
 if ( (!auth.google || !auth.google.enabled) && 
-     (!auth.alone  || !auth.alone.enabled) ) {
+     (!auth.alone  || !auth.alone.enabled) &&
+     (!auth.facebook || !auth.facebook.appId || !auth.facebook.appSecret) ) {
   console.log("Error: no authentication method provided. Cannot continue.");
   process.exit(-1);
 }
@@ -247,6 +249,20 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+if (auth.facebook) {
+  passport.use(new FacebookStrategy({
+      clientID: auth.facebook.appId,
+      clientSecret: auth.facebook.appSecret,
+      callbackURL: app.locals.baseUrl + '/auth/facebook/return',
+      profileFields: ['displayName', 'emails', 'id']
+    },
+    function(accessToken, refreshToken, profile, done) {
+      usedAuthentication("facebook");
+      done(undefined, profile);
+    }
+  ));
+}
+
 passport.use(new LocalStrategy(
 
   function(username, password, done) {
@@ -319,6 +335,10 @@ app.get    ("/logout",                routes.logout);
 
 app.get    ("/auth/google",           passport.authenticate('google'));
 app.get    ("/auth/google/return",    passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+app.get    ("/auth/done",             routes.authDone);
+
+app.get    ("/auth/facebook",         passport.authenticate('facebook', { scope: ['email'] }));
+app.get    ("/auth/facebook/return",  passport.authenticate('facebook', { successRedirect: '/auth/done', failureRedirect: '/login' }));
 app.get    ("/auth/done",             routes.authDone);
 
 app.all('*', routes.error404);
