@@ -34,3 +34,9 @@ block content
         mixin saveAndCancel('Login')
 
       hr
+
+    if (auth.facebook)
+      p
+        b Login using
+        a.btn.btn-primary(href="/auth/facebook") Facebook login
+      hr

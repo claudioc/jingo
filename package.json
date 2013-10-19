@@ -17,6 +17,7 @@
     "jade": "*",
     "passport": "*",
     "passport-google": "*",
+    "passport-facebook": "*",
     "passport-local": "*",
     "iconv": "*",
     "marked": ">= 0.2.x",

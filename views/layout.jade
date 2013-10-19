@@ -29,7 +29,9 @@ html
                 a(id='login',href='/login?destination', title='Access login page') logged in
             else
               p.user
-                if user.email
+                if user.provider == 'facebook'
+                  img(src="//graph.facebook.com/#{user.id}/picture?type=square", width=32)
+                else if user.email
                   img(src=gravatar().url("#{user.email}", {s:24}))
                 b &nbsp;#{user.displayName}&nbsp;
                 a(href='/logout', title='Become anonymous') [Logout]
