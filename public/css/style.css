@@ -47,7 +47,7 @@ p.user {
 }
 
 #message {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 blockquote {
@@ -293,6 +293,7 @@ body #preview {
 .toolbar {
   padding: 0;
   margin: 0;
+  text-align: right
 }
 
 .toolbar li {
@@ -318,10 +319,19 @@ body #preview {
   background-image:url(../img/preview_16.png); 
 }
 
-.CodeMirror {
-  border: 1px solid silver;
+#content .CodeMirror {
+  border: 1px solid #ccc;
+  height: 600px;
+  border-radius: 4px;
+  line-height: 1.6;
 }
 
+#content .CodeMirror-focused {
+  border-color: rgba(82,168,236,0.8);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+}
 
 input#pageTitle {
   font-weight: bold;
@@ -360,7 +370,7 @@ a.absent {
 
 form.edit {
   border-radius: 4px;
-  width: 96%;
+  margin: 0;
 }
 
 form.edit input[type=text] {

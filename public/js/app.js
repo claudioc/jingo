@@ -68,7 +68,11 @@
 
       var $hCol1 = $('.history td:first-child');
 
-      $("#pageTitle").focus();
+      if ($("#content").hasClass("edit")) {
+        $("#editor").focus();
+      } else {
+        $("#pageTitle").focus();
+      }
 
       toggleCompareCheckboxes();
       $hCol1.find('input').on('click', function() {
@@ -135,8 +139,8 @@
 
     toolbar: function() {
       $("<ul class='toolbar'>\
-        <li class=\"info\"><span href=\"#\" title=\"Syntax help\"></span></li>\
-        <li class=\"preview\"><span href=\"#\" title=\"Preview\"></span></li></ul>").insertBefore($('form.edit textarea:first').closest('div'));
+        <li title=\"Syntax help\" class=\"info\"><span href=\"#\"></span></li>\
+        <li title=\"Preview\" class=\"preview\"><span href=\"#\"></span></li></ul>").insertBefore($('form.edit textarea:first').closest('div'));
 
       $("ul.toolbar").on("click", "span", function() {
         if (this.parentNode.className == "info") {
