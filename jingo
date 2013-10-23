@@ -12,20 +12,20 @@ var express        = require('express')
   , http           = require('http')
   , path           = require('path')
   , passport       = require('passport')
+  , Fs             = require('fs')
   , Git            = require('./lib/gitmech')
   , Tools          = require('./lib/tools')
   , Renderer       = require('./lib/renderer')
+  , Config         = require('./lib/config')
   , expValidator   = require('express-validator')
   , gravatar       = require('gravatar')
-  , Fs             = require('fs')
   , Url            = require('url')
   , GoogleStrategy = require('passport-google').Strategy
   , LocalStrategy  = require('passport-local').Strategy
-  , yaml           = require('yaml-js')
   , Flash          = require('connect-flash')
   , program        = require('commander');
 
-program.version('0.4.4')
+program.version('0.5.0')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')
@@ -33,7 +33,7 @@ program.version('0.4.4')
        .parse(process.argv);
 
 if (program.sampleConfig) {
-  console.log(sampleConfig());
+  console.log(Config.sample());
   process.exit(0);
 }
 
@@ -47,15 +47,10 @@ if (!program.config || !Fs.existsSync(program.config)) {
   process.exit(-1);
 }
 
-var config = yaml.load(Fs.readFileSync(program.config).toString());
-
-if (!config.application || !config.server) {
-  console.log("Error: a problem exists in the config file. Cannot continue.");
-  process.exit(-1);
-}
+Config.load(program.config);
 
 try {
-  Git.setup(config.application.repository, config.application.docSubdir || "");
+  Git.setup(Config.get("application.repository"), Config.get("application.docSubdir", ""));
 } catch(e) {
   console.log(e.message)
   program.help()
@@ -69,16 +64,16 @@ app.locals._sidebar;
 app.locals._footer;
 app.locals._style;
 app.locals._script;
-app.locals.appTitle = config.application.title || "Jingo";
-app.locals.port = config.server.port || process.env.PORT || 6067;
-app.locals.hostname = config.server.hostname || "localhost";
-app.locals.features = config.features || {}
+app.locals.appTitle = Config.get("application.title", "Jingo");
+app.locals.port = Config.get("server.port", process.env.PORT || 6067);
+app.locals.hostname = Config.get("server.hostname", "localhost");
+app.locals.features = Config.get("features", {})
 // baseUrl is used as the public url
-app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
-app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
-app.locals.secret = config.application.secret || "jingo-secret-67";
+app.locals.baseUrl = Config.get("server.baseUrl", ("http://" + app.locals.hostname + ":" + app.locals.port));
+app.locals.authorization = Config.get("authorization", { anonRead: false, validMatches: ".+" });
+app.locals.secret = Config.get("application.secret", "jingo-secret-67");
 
-var refspec = config.application.remote ? config.application.remote.split(/\s+/) : "";
+var refspec = Config.get("application.remote") ? Config.get("application.remote").split(/\s+/) : "";
 if (!refspec) {
   app.locals.remote = "";
   app.locals.branch = "";
@@ -87,19 +82,13 @@ if (!refspec) {
   app.locals.branch = refspec[1] ? refspec[1].trim() : "master";
 }
 
-app.locals.pushInterval = config.application.pushInterval ? parseInt(config.application.pushInterval, 10) * 1000 : 30000;
+app.locals.pushInterval = Config.get("application.pushInterval") ? parseInt(Config.get("application.pushInterval"), 10) * 1000 : 30000;
 app.locals.coalesce = function(value, def) {
   return typeof value === 'undefined' ? def : value;
 }
 app.locals.pretty = true; // Pretty HTML output from Jade
 
-if (!config.application || !config.server) {
-  console.log("Error: a problem exists in the config file. Cannot continue.");
-  process.exit(-1);
-}
-
-app.locals.authorization = config.authorization || { anonRead: false, validMatches: ".+" };
-var auth = app.locals.authentication = config.authentication || { google: { enabled: true }, alone: { enabled: false } };
+var auth = app.locals.authentication = Config.get("authentication", { google: { enabled: true }, alone: { enabled: false } });
 
 if ( (!auth.google || !auth.google.enabled) && 
      (!auth.alone  || !auth.alone.enabled) ) {
@@ -328,12 +317,12 @@ app.get    ("/auth/done",             routes.authDone);
 app.all('*', routes.error404);
 
 var listenAddr = process.env.NW_ADDR || "";
-if (config.server.localOnly) {
+if (Config.get("server.localOnly")) {
   listenAddr = "localhost";
 }
 
 http.createServer(app).listen(app.get('port'), listenAddr, function(){
-  console.log((new Date()) + " - Jingo%sserver listening on port %s", config.server.localOnly ? " (local) " : " ", app.get('port'));
+  console.log((new Date()) + " - Jingo%sserver listening on port %s", Config.get("server.localOnly") ? " (local) " : " ", app.get('port'));
 });
 
 if (app.locals.remote != "") {
@@ -350,38 +339,4 @@ if (app.locals.remote != "") {
       }
     });
   }, app.locals.pushInterval);
-}
-
-// Dumps a sample config file
-function sampleConfig() {
-  return "\
----\n\
-  # Configuration sample file for Jingo (YAML)\n\
-  application:\n\
-    title: \"Jingo\"\n\
-    repository: \"/absolute/path/to/your/repo\"\n\
-    docSubdir: \"\"\n\
-    remote: \"\"\n\
-    pushInterval: 30\n\
-    secret: \"change me\"\n\
-  features:\n\
-    markitup: true\n\
-    codemirror: true\n\
-  server:\n\
-    hostname: \"localhost\"\n\
-    port: 6067\n\
-    localOnly: false\n\
-    baseUrl: \"http://localhost:6067\"\n\
-  authorization:\n\
-    anonRead: true\n\
-    validMatches: \".+\"\n\
-  authentication:\n\
-    google:\n\
-      enabled: true\n\
-    alone:\n\
-      enabled: false\n\
-      username: \"\"\n\
-      passwordHash: \"\"\n\
-      email: \"\"\n\
-";
 }
