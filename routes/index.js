@@ -282,10 +282,10 @@ exports.pageUpdate = function(req, res) {
     Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {
       Locker.unlock(pageName);
       if (pageName == '_footer') {
-        app.locals._footer = null;
+        app.locals.Components.expire('footer');
       }
       if (pageName == '_sidebar') {
-        app.locals._sidebar = null;
+        app.locals.Components.expire('sidebar');
       }
       req.session.notice = "Page has been updated successfully";
       res.redirect("/wiki/" + pageName);

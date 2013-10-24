@@ -60,10 +60,19 @@ try {
 // Global variables to be accessed from the routes module
 global.app = express();
 app.locals.Git = Git;
+app.locals.Components = Components;
 app.locals.appTitle = Config.get("application.title", "Jingo");
 app.locals.port = Config.get("server.port", process.env.PORT || 6067);
 app.locals.hostname = Config.get("server.hostname", "localhost");
-app.locals.features = Config.get("features", {})
+app.locals.features = Config.get("features", {});
+
+// For backward compatibility with version < 0.5, we set markitup as the
+// default rich editor. For new installations, the default is codemirror
+if (typeof app.locals.features.codemirror == 'undefined' &&
+    typeof app.locals.features.markitup == 'undefined') {
+  app.locals.features.markitup = true;
+}
+
 // baseUrl is used as the public url
 app.locals.baseUrl = Config.get("server.baseUrl", ("http://" + app.locals.hostname + ":" + app.locals.port));
 app.locals.authorization = Config.get("authorization", { anonRead: false, validMatches: ".+" });
@@ -141,10 +150,12 @@ app.configure(function() {
   // Logic to include custom _footer, _sidebar, _script and _style.css
   app.use(function (req, res, next) {
 
-    Components.sidebar(function(content) { res.locals._sidebar = content; });
-    Components.footer(function(content) { res.locals._footer = content; });
-    res.locals._style   = Components.customStyle();
-    res.locals._script  = Components.customScript();
+    if (null === req.url.match(/^\/misc\//)) {
+      Components.sidebar(function(content) { res.locals._sidebar = content; });
+      Components.footer(function(content) { res.locals._footer = content; });
+      res.locals._style  = Components.customStyle();
+      res.locals._script = Components.customScript();
+    }
 
     next();
   });
