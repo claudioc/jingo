@@ -15,8 +15,8 @@ var express        = require('express')
   , Fs             = require('fs')
   , Git            = require('./lib/gitmech')
   , Tools          = require('./lib/tools')
-  , Renderer       = require('./lib/renderer')
   , Config         = require('./lib/config')
+  , Components     = require('./lib/components')
   , expValidator   = require('express-validator')
   , gravatar       = require('gravatar')
   , Url            = require('url')
@@ -57,13 +57,9 @@ try {
   process.exit(-1);
 }
 
-// Global to be accessed from the routes module
+// Global variables to be accessed from the routes module
 global.app = express();
 app.locals.Git = Git;
-app.locals._sidebar;
-app.locals._footer;
-app.locals._style;
-app.locals._script;
 app.locals.appTitle = Config.get("application.title", "Jingo");
 app.locals.port = Config.get("server.port", process.env.PORT || 6067);
 app.locals.hostname = Config.get("server.hostname", "localhost");
@@ -96,6 +92,8 @@ if ( (!auth.google || !auth.google.enabled) &&
   process.exit(-1);
 }
 
+Components.init(Git);
+
 var routes = require("./routes");
 
 app.configure(function() {
@@ -125,27 +123,13 @@ app.configure(function() {
       canSearch: function () {
         return !!req.user || app.locals.authorization.anonRead;
       },
-      _sidebar: null,
-      _footer: null,
-      _style: null,
-      _script: null,
       gravatar: function(email) {
         return gravatar;
       },
-      // FIXME: we need to handle these has* better, because we're hitting the
-      // fs for every single request even if we cache the sidebar/footer/etc
-      hasSidebar: function() {
-        return Fs.existsSync(Git.absPath("_sidebar.md"));
-      },
-      hasFooter: function() {
-        return Fs.existsSync(Git.absPath("_footer.md"));
-      },
-      hasCustomStyle: function() {
-        return Fs.existsSync(Git.absPath("_style.css"));
-      },
-      hasCustomScript: function() {
-        return Fs.existsSync(Git.absPath("_script.js"));
-      },
+      hasSidebar: Components.hasSidebar,
+      hasFooter: Components.hasFooter,
+      hasCustomStyle: Components.hasCustomStyle,
+      hasCustomScript: Components.hasCustomScript,
       hasFeature: function(feature) {
         return !!app.locals.features[feature]
       }
@@ -157,55 +141,10 @@ app.configure(function() {
   // Logic to include custom _footer, _sidebar, _script and _style.css
   app.use(function (req, res, next) {
 
-    if (res.locals.hasSidebar()) {
-      if (!app.locals._sidebar) {
-        Git.readFile("_sidebar.md", "HEAD", function(err, content) {
-          if (!err) {
-            res.locals._sidebar = app.locals._sidebar = Renderer.render(content.split("\n").splice(1).join("\n"));
-          }
-        });
-      } else {
-        res.locals._sidebar = app.locals._sidebar;
-      }
-    } else {
-      res.locals._sidebar = app.locals._sidebar = null;
-    }
-
-    if (res.locals.hasFooter()) {
-      if (!app.locals._footer) {
-        Git.readFile("_footer.md", "HEAD", function(err, content) {
-          if (!err) {
-            res.locals._footer = app.locals._footer = Renderer.render(content.split("\n").splice(1).join("\n"));
-          }
-        });
-      } else {
-        res.locals._footer = app.locals._footer;
-      }
-    } else {
-      res.locals._footer = app.locals._footer = null;
-    }
-
-    if (res.locals.hasCustomStyle()) {
-      if (!app.locals._style) {
-        // Read sync because this info is needed by the layout
-        res.locals._style = app.locals._style = Fs.readFileSync(Git.absPath("_style.css"));
-      } else {
-        res.locals._style = app.locals._style;
-      }
-    } else {
-      res.locals._style = app.locals._style = null;
-    }
-
-    if (res.locals.hasCustomScript()) {
-      if (!app.locals._script) {
-        // Read sync because this info is needed by the layout
-        res.locals._script = app.locals._script = Fs.readFileSync(Git.absPath("_script.js"));
-      } else {
-        res.locals._script = app.locals._script;
-      }
-    } else {
-      res.locals._script = app.locals._script = null;
-    }
+    Components.sidebar(function(content) { res.locals._sidebar = content; });
+    Components.footer(function(content) { res.locals._footer = content; });
+    res.locals._style   = Components.customStyle();
+    res.locals._script  = Components.customScript();
 
     next();
   });
@@ -216,10 +155,6 @@ app.configure(function() {
 function requireAuthentication(req, res, next) {
   if (!res.locals.user) {
     res.redirect("/login");
-    /*
-    res.statusCode = 403;
-    res.end('<h1>Forbidden</h1>');
-    */
   } else {
     next();
   }
