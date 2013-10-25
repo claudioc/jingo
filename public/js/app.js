@@ -139,6 +139,7 @@
 
     toolbar: function() {
       $("<ul class='toolbar'>\
+        <li title=\"Go fullscreen\" class=\"fullscreen\"><span href=\"#\"></span></li>\
         <li title=\"Syntax help\" class=\"info\"><span href=\"#\"></span></li>\
         <li title=\"Preview\" class=\"preview\"><span href=\"#\"></span></li></ul>").insertBefore($('form.edit textarea:first').closest('div'));
 
@@ -149,6 +150,9 @@
         if (this.parentNode.className == "preview") {
           Jingo.cmInstance.save();
           Jingo.preview();
+        }
+        if (this.parentNode.className == "fullscreen") {
+          Jingo.cmInstance.setOption("fullScreen", !Jingo.cmInstance.getOption("fullScreen"));
         }
       });
     },

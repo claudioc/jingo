@@ -312,6 +312,9 @@ body #preview {
   background-repeat: no-repeat;
 }
 
+.toolbar li.fullscreen span {
+  background-image:url(../img/fullscreen_16.png); 
+}
 .toolbar li.info span {
   background-image:url(../img/info_16.png); 
 }
@@ -376,14 +379,10 @@ form.edit {
 form.edit input[type=text] {
   width: 98%;
 }
-form.edit textarea {
-  width: 103%;
-}
 
 li {
   margin-bottom: 5px;
 }
-
 
 @media (min-width: 768px) and (max-width: 979px) {
   body {

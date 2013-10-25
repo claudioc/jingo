@@ -21,6 +21,7 @@ mixin featuresStylesheets()
     link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")
   if hasFeature('codemirror') 
     link(rel="stylesheet", type="text/css", href="/vendor/codemirror/lib/codemirror.css")
+    link(rel="stylesheet", type="text/css", href="/vendor/codemirror/addon/display/fullscreen.css")
 
 mixin featuresJavaScripts()
   if hasFeature('markitup') 
@@ -34,6 +35,7 @@ mixin featuresJavaScripts()
   if hasFeature('codemirror') 
     script(src="/vendor/codemirror/lib/codemirror.js")
     script(src="/vendor/codemirror/mode/markdown/markdown.js")
+    script(src="/vendor/codemirror/addon/display/fullscreen.js")
     script.
       Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
         lineNumbers: true,
