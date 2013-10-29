@@ -322,6 +322,13 @@ body #preview {
   background-image:url(../img/preview_16.png); 
 }
 
+.toolbar.fullscreen {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  z-index: 10;
+}
+
 #content .CodeMirror {
   border: 1px solid #ccc;
   height: 600px;
@@ -329,11 +336,19 @@ body #preview {
   line-height: 1.6;
 }
 
+#content .CodeMirror.CodeMirror-fullscreen {
+  height: auto;
+}
+
 #content .CodeMirror-focused {
   border-color: rgba(82,168,236,0.8);
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+}
+
+#content .CodeMirror-fullscreen {
+  margin-top: 40px;
 }
 
 input#pageTitle {

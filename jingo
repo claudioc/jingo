@@ -277,7 +277,7 @@ if (Config.get("server.localOnly")) {
 }
 
 http.createServer(app).listen(app.get('port'), listenAddr, function(){
-  console.log((new Date()) + " - Jingo%sserver listening on port %s", Config.get("server.localOnly") ? " (local) " : " ", app.get('port'));
+  console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", Config.get("server.localOnly") ? " (local) " : " ", program.version(), app.get('port'));
 });
 
 if (app.locals.remote != "") {

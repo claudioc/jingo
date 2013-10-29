@@ -41,7 +41,12 @@ mixin featuresJavaScripts()
         lineNumbers: true,
         mode: 'markdown',
         matchBrackets: true,
-        lineWrapping: true
+        lineWrapping: true,
+        extraKeys: {
+          "Ctrl-Enter": function(cm) {
+            Jingo.toggleFullscreen();
+          }
+        }
       });
       Jingo.toolbar();
 
