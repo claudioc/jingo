@@ -70,21 +70,25 @@ exports.pageList = function(req, res) {
 
           Git.log(page, "HEAD", function(err, metadata) {
 
-            items.push({
-              pageTitle: title,
-              metadata: metadata
+            Git.lastMessage(page, "HEAD", function(err, message) {
+
+              items.push({
+                pageTitle: title,
+                message: message,
+                metadata: metadata
+              });
+
+              if (items.length === len) {
+                items.sort(function(a, b) {
+                  return b.metadata.timestamp - a.metadata.timestamp;
+                });
+
+                res.render("list", {
+                  title: "Document list – Sorted by update date",
+                  items: items
+                });
+              }
             });
-
-            if (items.length === len) {
-              items.sort(function(a, b) {
-                return b.metadata.timestamp - a.metadata.timestamp;
-              });
-
-              res.render("list", {
-                title: "Document list – Sorted by update date",
-                items: items
-              });
-            }
           });
         })(Tools.getPageTitle(content, page));
       });

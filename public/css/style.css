@@ -225,6 +225,10 @@ ul.doc-list > li {
   font-size: 90%;
 }
 
+ul.doc-list > li .footer {
+  color: #919191;
+}
+
 .doc-list .footer {
   padding: 10px 0;
 }
