@@ -1,4 +1,11 @@
+Version 0.5.0, December 4th, 2013
+=============================
+
+- Use of Codemirror (select it from the new config key "Features")
+- Adds the last commit comment on the document list
+
 Version 0.4.4, July 23th, 2013
+=============================
 
 - Better typography
 

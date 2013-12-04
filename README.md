@@ -20,7 +20,7 @@ Features
 - No database: uses a git repository as the document archive
 - No user management: authentication provided via with Google logins or simple login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
-- Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
+- Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview (`features` key in the config file)
 - Provides a "distraction free", almost full screen mode
 - Inspired by the well known github [Gollum](https://github.com/github/gollum) wiki
 - Show differences between document revisions
