@@ -20,14 +20,14 @@ Features
 - No database: uses a git repository as the document archive
 - No user management: authentication provided via with Google logins or simple login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
-- Uses [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
-- Uses [WideArea](http://usablica.github.io/widearea/) for a "distraction free" mode
+- Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview
+- Provides a "distraction free", almost full screen mode
 - Inspired by the well known github [Gollum](https://github.com/github/gollum) wiki
 - Show differences between document revisions
 - Search through the content _and_ the page names
 - Layout accepts custom sidebar and footer
 - Gravatar support
-- Can include <iframe>s in the document (es: embed a Google Drive document)
+- Can include IFRAMEs in the document (es: embed a Google Drive document)
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (will appear in red)
