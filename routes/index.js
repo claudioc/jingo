@@ -64,33 +64,37 @@ exports.pageList = function(req, res) {
 
       page = Path.basename(page);
 
-      Git.readFile(page, "HEAD", function(err, content) {
+      Git.hashes(page,2, function(err, hashes) {
 
-        (function(title) {
+        Git.readFile(page, "HEAD", function(err, content) {
 
-          Git.log(page, "HEAD", function(err, metadata) {
+          (function(title) {
 
-            Git.lastMessage(page, "HEAD", function(err, message) {
+            Git.log(page, "HEAD", function(err, metadata) {
 
-              items.push({
-                pageTitle: title,
-                message: message,
-                metadata: metadata
+              Git.lastMessage(page, "HEAD", function(err, message) {
+
+                items.push({
+                  pageTitle: title,
+                  message: message,
+                  metadata: metadata,
+                  hashes: hashes.length == 2 ? hashes.join("..") : ""
+                });
+
+                if (items.length === len) {
+                  items.sort(function(a, b) {
+                    return b.metadata.timestamp - a.metadata.timestamp;
+                  });
+
+                  res.render("list", {
+                    title: "Document list – Sorted by update date",
+                    items: items
+                  });
+                }
               });
-
-              if (items.length === len) {
-                items.sort(function(a, b) {
-                  return b.metadata.timestamp - a.metadata.timestamp;
-                });
-
-                res.render("list", {
-                  title: "Document list – Sorted by update date",
-                  items: items
-                });
-              }
             });
-          });
-        })(Tools.getPageTitle(content, page));
+          })(Tools.getPageTitle(content, page));
+        });
       });
     });
   });

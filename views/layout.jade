@@ -9,6 +9,7 @@ html
     link(rel="stylesheet", href="/vendor/bootstrap/css/bootstrap-responsive.min.css")
     link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
     link(rel="stylesheet", href="/css/style.css")
+    link(rel="stylesheet", href="/css/ionicons.min.css")
     link(rel="stylesheet", href="/css/shCoreDefault.css")
     block styles
     if hasCustomStyle()
@@ -32,7 +33,9 @@ html
                 if user.email
                   img(src=gravatar().url("#{user.email}", {s:24}))
                 b &nbsp;#{user.displayName}&nbsp;
-                a(href='/logout', title='Become anonymous') [Logout]
+                a.logout(href='/logout', title='Become anonymous')
+                  i.icon.ion-power
+
 
     .container
       .row.page-actions-row

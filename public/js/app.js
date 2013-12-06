@@ -76,6 +76,8 @@
         $("#pageTitle").focus();
       }
 
+      $('#rev-compare').attr("disabled", true);
+
       toggleCompareCheckboxes();
       $hCol1.find('input').on('click', function() {
         toggleCompareCheckboxes();
@@ -109,12 +111,15 @@
       }
 
       function toggleCompareCheckboxes() {
+        
+        $('#rev-compare').attr("disabled", true);
+
         if ($hCol1.find(":checkbox").length == 1) {
           $hCol1.find(":checkbox").hide();
-          $('#rev-compare').hide();
           return;
         }
         if ($hCol1.find(":checked").length == 2) {
+          $('#rev-compare').attr("disabled", false);
           $hCol1.find(":not(:checked)")
                 .hide();
           $hCol1.parent("tr")

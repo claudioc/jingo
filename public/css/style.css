@@ -14,6 +14,11 @@ a[href^="http://"] {
   padding-right: 13px;
 }
 
+a.logout i {
+  color: orange;
+  margin-left: .5em;
+}
+
 .code a[href^="https://"],
 .code a[href^="http://"] {
   background: none;
@@ -252,6 +257,18 @@ ul.doc-list > li .footer {
   line-height: 250%;
   background-color: rgba(27,27,27);
   border-bottom-left-radius: 5px;
+}
+
+.page-actions a {
+  font-size: 22px
+}
+
+.page-actions a:hover {
+  color: #4183c4;
+}
+
+.doc-list .page-actions a {
+  font-size: 18px
 }
 
 .page-actions-handle {

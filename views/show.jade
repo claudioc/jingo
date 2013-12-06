@@ -6,14 +6,19 @@ block page-actions
   ul.page-actions
     if !isAnonymous()
       li 
-        a(href="/pages/new").btn.btn-small New page
+        a(href="/pages/new", title="Create new page").btn.btn-small
+          i.icon.ion-plus-round
     if !isAnonymous() && canEdit
       li 
-        a(href="/pages/#{pageName}/edit").btn.btn-small Edit page
+        a(href="/pages/#{pageName}/edit", title="Edit this page").btn.btn-small
+          i.icon.ion-compose
+
     li
-      a(href="/wiki/#{pageName}/history").btn.btn-small Page History
+      a(href="/wiki/#{pageName}/history", title="Page history").btn.btn-small
+        i.icon.ion-clock
     li 
-      a(href="/wiki").btn.btn-small All pages
+      a(href="/wiki", title="All pages").btn.btn-small
+        i.icon.ion-grid
 
 block content
 

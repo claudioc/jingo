@@ -1,3 +1,10 @@
+Version 0.5.1, December 6th, 2013
+=============================
+
+- Use of icons (ionicons) instead of the ugly texts for buttons
+- Add the quick diff option on the list of pages
+- Fixes a bug on the compare button
+
 Version 0.5.0, December 4th, 2013
 =============================
 
