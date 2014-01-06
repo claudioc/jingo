@@ -26,7 +26,7 @@ html
               form(action="/search").navbar-search.pull-left
                 input(type="text",name="term",placeholder="Search", value="#{term_ph}").search-query
             if isAnonymous()
-              p.user You're not
+              p.user You're not&nbsp;
                 a(id='login',href='/login?destination', title='Access login page') logged in
             else
               p.user
