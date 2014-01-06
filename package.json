@@ -25,7 +25,6 @@
     "express-validator": ">= 0.3.0",
     "commander": "*",
     "connect-flash": "*",
-    "yaml-js": "*"
   },
   "devDependencies": {
     "chai": "*",
