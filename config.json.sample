@@ -1,0 +1,14 @@
+{
+    "authentication": {
+        "google": {
+            "enabled": false
+        },
+        "alone": {
+            "enabled": true,
+            "username": "admin",
+            "passwordHash": "d033e22ae348aeb5660fc2140aec35850c4da997",
+            "email": "admin@jingosample.org"
+        }
+    },
+    "jingo_features": {"markitup": true, "codemirror": false}
+}
