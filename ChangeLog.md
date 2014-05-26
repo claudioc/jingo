@@ -1,3 +1,8 @@
+Version 0.5.2, May 26th, 20114
+=============================
+
+- Version bump for the npm package glitch
+
 Version 0.5.1, December 6th, 2013
 =============================
 
