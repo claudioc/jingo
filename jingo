@@ -20,12 +20,12 @@ var express        = require('express')
   , expValidator   = require('express-validator')
   , gravatar       = require('gravatar')
   , Url            = require('url')
-  , GoogleStrategy = require('passport-google').Strategy
+  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
   , LocalStrategy  = require('passport-local').Strategy
   , Flash          = require('connect-flash')
   , program        = require('commander');
 
-program.version('0.5.2')
+program.version('0.6.0')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')
@@ -74,7 +74,7 @@ if (typeof app.locals.features.codemirror == 'undefined' &&
 }
 
 // This should never happen, of course
-if (app.locals.features.markitup && 
+if (app.locals.features.markitup &&
     app.locals.features.codemirror) {
   app.locals.features.markitup = false;
 }
@@ -101,9 +101,16 @@ app.locals.pretty = true; // Pretty HTML output from Jade
 
 var auth = app.locals.authentication = Config.get("authentication", { google: { enabled: true }, alone: { enabled: false } });
 
-if ( (!auth.google || !auth.google.enabled) && 
-     (!auth.alone  || !auth.alone.enabled) ) {
+auth.google = auth.google || {enabled: false};
+auth.alone  = auth.alone  || {enabled: false};
+
+if ( !auth.google.enabled && !auth.alone.enabled ) {
   console.log("Error: no authentication method provided. Cannot continue.");
+  process.exit(-1);
+}
+
+if (auth.google.enabled && (!auth.google.clientId || !auth.google.clientSecret)) {
+  console.log("Error: invalid or missing authentication credentials for Google (clientId and/or clientSecret).");
   process.exit(-1);
 }
 
@@ -180,39 +187,48 @@ function requireAuthentication(req, res, next) {
   }
 }
 
-/* 
+/*
  * Passport configuration
  */
 
-passport.use(new GoogleStrategy({
-    returnURL: app.locals.baseUrl + '/auth/google/return',
-    realm: app.locals.baseUrl
-  },
+if (auth.google.enabled) {
 
-  function(identifier, profile, done) {
-    usedAuthentication("google");
-    done(undefined, profile);
-  }
-));
+  passport.use(new GoogleStrategy({
+      clientID: auth.google.clientId,
+      clientSecret: auth.google.clientSecret,
+      // I will leave the horrible name as the default to make the painful creation
+      // of the client id/secret simpler
+      callbackURL: app.locals.baseUrl + '/oauth2callback'
+    },
 
-passport.use(new LocalStrategy(
-
-  function(username, password, done) {
-
-    var user = {
-      displayName: auth.alone.username,
-      email: auth.alone.email || ""
-    };
-
-    if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
-      return done(null, false, { message: 'Incorrect username or password' });
+    function(accessToken, refreshToken, profile, done) {
+      usedAuthentication("google");
+      done(null, profile);
     }
+  ));
+}
 
-    usedAuthentication("alone");
+if (auth.alone.enabled) {
 
-    return done(null, user);
-  }
-));
+  passport.use(new LocalStrategy(
+
+    function(username, password, done) {
+
+      var user = {
+        displayName: auth.alone.username,
+        email: auth.alone.email || ""
+      };
+
+      if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
+        return done(null, false, { message: 'Incorrect username or password' });
+      }
+
+      usedAuthentication("alone");
+
+      return done(null, user);
+    }
+  ));
+}
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -223,7 +239,7 @@ passport.deserializeUser(function(user, done) {
     user.email = user.emails[0].value;
     delete user.emails;
   }
-  user.asGitAuthor = user.displayName + " <" + user.email + ">"; 
+  user.asGitAuthor = user.displayName + " <" + user.email + ">";
   done(undefined, user);
 });
 
@@ -265,8 +281,12 @@ app.post   ("/login",                 passport.authenticate('local', { successRe
 app.get    ("/login",                 routes.login);
 app.get    ("/logout",                routes.logout);
 
-app.get    ("/auth/google",           passport.authenticate('google'));
-app.get    ("/auth/google/return",    passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+app.get    ("/auth/google",    passport.authenticate('google', {
+  scope: ['https://www.googleapis.com/auth/userinfo.email'] }
+));
+
+app.get    ("/oauth2callback",    passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+
 app.get    ("/auth/done",             routes.authDone);
 
 app.all('*', routes.error404);

@@ -138,7 +138,7 @@ exports.pageShow = function(req, res) {
         res.render('show', {
           title:   app.locals.appTitle + " – " + Tools.getPageTitle(content, pageName),
           content: Tools.hasTitle(content) ? Renderer.render(content) : Renderer.render("# " + pageName + "\n" + content),
-          pageName: pageName, 
+          pageName: pageName,
           metadata: metadata
         });
 
@@ -327,7 +327,7 @@ exports.pageCompare = function(req, res) {
 
   var pageName = req.params.page
     , revisions = req.params.revisions;
-    
+
   res.locals.revisions = revisions.split("..");
   res.locals.lines = [];
 
@@ -357,7 +357,7 @@ exports.pageCompare = function(req, res) {
   function leftDiffLineNumber(id, line) {
 
     var li;
-    
+
     switch(true) {
 
       case line.slice(0,2) == '@@':
@@ -475,7 +475,6 @@ exports.authDone = function(req, res) {
     return;
   }
 
-console.log(req.session.destination);
   if (!app.locals.authentication.alone.used && !Tools.isAuthorized(res.locals.user.email, app.locals.authorization.validMatches)) {
     req.logout();
     req.session = null;

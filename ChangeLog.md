@@ -1,3 +1,13 @@
+Version 0.6.0, May 28th, 20114
+=============================
+
+- Uses the OAuth 2 authentication instead of the OpenID 2.0
+  (see also https://developers.google.com/accounts/docs/OpenID)
+  This will require to edit the config file and request Google for
+  a client id and client secret (see the README on how to do that)
+
+  The update requires to issue a `npm install`
+
 Version 0.5.2, May 26th, 20114
 =============================
 
@@ -30,7 +40,7 @@ Version 0.4.3, July 10th, 2013
 
 - Closes #19
 - Better line height for LI
-- Refines PR #20 
+- Refines PR #20
 
 Version 0.4.2, June 29th, 2013
 =============================

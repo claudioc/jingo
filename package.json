@@ -1,30 +1,33 @@
 {
-  "name":        "jingo",
-  "version":     "0.5.2",
+  "name": "jingo",
+  "version": "0.6.0",
   "description": "A nodejs based wiki engine (sort of Gollum port)",
-  "author":      "Claudio Cicali <claudio.cicali@gmail.com>",
-  "main":        "jingo",
+  "author": "Claudio Cicali <claudio.cicali@gmail.com>",
+  "main": "jingo",
   "bin": {
     "jingo": "./jingo"
   },
-  "repository" :
-    { "type" : "git",
-      "url" : "https://github.com/claudioc/jingo"
-    },
-  "directories" : { "lib" : "./lib/" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claudioc/jingo"
+  },
+  "directories": {
+    "lib": "./lib/"
+  },
   "dependencies": {
-    "express": "3.x",
-    "jade": "*",
-    "passport": "*",
-    "passport-google": "*",
-    "passport-local": "*",
-    "iconv": "*",
-    "marked": ">= 0.2.x",
-    "node-syntaxhighlighter": "*",
-    "gravatar": ">= 1.0.6",
-    "express-validator": ">= 0.3.0",
     "commander": "*",
     "connect-flash": "*",
+    "express": "3.x",
+    "express-validator": ">= 0.3.0",
+    "gravatar": ">= 1.0.6",
+    "iconv": "*",
+    "jade": "*",
+    "marked": ">= 0.2.x",
+    "node-syntaxhighlighter": "*",
+    "passport": "*",
+    "passport-google": "*",
+    "passport-google-oauth": "^0.1.5",
+    "passport-local": "*",
     "yaml-js": "*"
   },
   "devDependencies": {
@@ -38,9 +41,10 @@
     "node": "0.8.x",
     "npm": "1.1.x"
   },
-  "licenses":
-   [ { "type" : "MIT"
-     , "url" : "http://github.com/claudioc/jingo/raw/master/LICENSE"
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/claudioc/jingo/raw/master/LICENSE"
     }
-   ]
+  ]
 }
