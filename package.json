@@ -26,7 +26,7 @@
     "node-syntaxhighlighter": "*",
     "passport": "*",
     "passport-google": "*",
-    "passport-google-oauth": "^0.1.5",
+    "passport-google-oauth": ">= 0.1.5",
     "passport-local": "*",
     "yaml-js": "*"
   },
