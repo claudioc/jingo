@@ -1,3 +1,11 @@
+Version 0.6.1, June 24th, 20114
+=============================
+
+- Due to an incompatibility with latest versions of Express 3.x (and Connect),
+  the Express version in package.json has been frozen
+- Removed some deprecation warnings
+- Fixed some problems on the welcome page
+
 Version 0.6.0, May 28th, 20114
 =============================
 

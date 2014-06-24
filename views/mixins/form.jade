@@ -2,7 +2,7 @@
 mixin saveAndCancel(saveText)
   .form-actions
     input(type='submit',value=saveText || 'Save').btn.btn-primary
-    &nbsp;
+    |&nbsp;
     a(href="/").btn Cancel
 
 mixin errors(err)
@@ -15,16 +15,16 @@ mixin errors(err)
             b= v.msg || v
 
 mixin featuresStylesheets()
-  if hasFeature('markitup') 
+  if hasFeature('markitup')
     link(rel="stylesheet", type="text/css", href="/vendor/widearea/widearea.min.css")
     link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")
     link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")
-  if hasFeature('codemirror') 
+  if hasFeature('codemirror')
     link(rel="stylesheet", type="text/css", href="/vendor/codemirror/lib/codemirror.css")
     link(rel="stylesheet", type="text/css", href="/vendor/codemirror/addon/display/fullscreen.css")
 
 mixin featuresJavaScripts()
-  if hasFeature('markitup') 
+  if hasFeature('markitup')
     script(src="/vendor/jquery-migrate-1.1.0.min.js")
     script(src="/vendor/markitup/jquery.markitup.js")
     script(src="/vendor/markitup/sets/markdown/set.js")
@@ -32,7 +32,7 @@ mixin featuresJavaScripts()
     script.
      $('#editor').markItUp(markdownSettings);
      wideArea();
-  if hasFeature('codemirror') 
+  if hasFeature('codemirror')
     script(src="/vendor/codemirror/lib/codemirror.js")
     script(src="/vendor/codemirror/mode/markdown/markdown.js")
     script(src="/vendor/codemirror/addon/display/fullscreen.js")
