@@ -46,13 +46,13 @@
   border-radius: 3px;
   font-size: 13px;
   line-height: 19px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Override Bootstrap */
+
+.syntaxhighlighter .container {
+  padding: 0;
+}
 
 .syntaxhighlighter .container:after {
   clear: inherit;

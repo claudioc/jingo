@@ -15,18 +15,18 @@ block content
 
       input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
-      div
-        input(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
+      .form-group
+        input.form-control(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
-      div
-        textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
+      .form-group
+        textarea.form-control(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
 
       mixin saveAndCancel()
 
-  #preview.modal.hide
+  #preview.modal
     mixin dialogBox("Page preview")
 
-  #syntax-reference.modal.hide.fade
+  #syntax-reference.modal.fade
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts

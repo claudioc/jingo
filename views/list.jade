@@ -5,26 +5,26 @@ block content
     h1 #{title}
     ul.doc-list
       each item in items
-        li 
-          h4 
+        li
+          h4
             a(href="/wiki/#{item.metadata.name}") #{item.pageTitle}
-          div.footer.clearfix Updated by 
+          div.footer.clearfix Updated by
             ul.page-actions.pull-right
               if !isAnonymous()
-                li 
-                  a(href="/pages/#{item.metadata.name}/edit", title="Edit this page").btn.btn-small
+                li
+                  a(href="/pages/#{item.metadata.name}/edit", title="Edit this page").btn.btn-default
                     i.icon.ion-compose
               li
-                a(href="/wiki/#{item.metadata.name}/history", title="Page history").btn.btn-small
+                a(href="/wiki/#{item.metadata.name}/history", title="Page history").btn.btn-default
                   i.icon.ion-clock
               if item.hashes
                 li
-                  a(href="/wiki/#{item.metadata.name}/compare/" + item.hashes, title="Quick diff").btn.btn-small
+                  a(href="/wiki/#{item.metadata.name}/compare/" + item.hashes, title="Quick diff").btn.btn-default
                     i.icon.ion-shuffle
 
-            img(src=gravatar().url("#{item.metadata.email}", {s:16}))
-            b  #{item.metadata.author}, 
-            b(title="#{item.metadata.date}") #{item.metadata.relDate} 
+            if item.metadata.email
+              img(src=gravatar().url("#{item.metadata.email}", {s:16}))
+            b  #{item.metadata.author},
+            b(title="#{item.metadata.date}") #{item.metadata.relDate}
             | &ndash; #{item.metadata.hash}
             div &rarr; #{item.message}
-

@@ -111,7 +111,7 @@
       }
 
       function toggleCompareCheckboxes() {
-        
+
         $('#rev-compare').attr("disabled", true);
 
         if ($hCol1.find(":checkbox").length == 1) {
@@ -145,7 +145,7 @@
     },
 
     toggleFullscreen: function() {
-      
+
       var isFullscreen = Jingo.cmInstance.getOption("fullScreen");
 
       Jingo.cmInstance.setOption("fullScreen", !Jingo.cmInstance.getOption("fullScreen"));
@@ -176,7 +176,7 @@
     },
 
     markdownSyntax: function() {
-      $('#syntax-reference').modal("show");
+      $('#syntax-reference').modal({keyboard: true, show: true});
       if (!cheatsheetShown) {
         $('#syntax-reference .modal-body').load("/misc/syntax-reference");
         cheatsheetShown = true;

@@ -1,6 +1,32 @@
+mixin pageActions(action, pageHame)
+  if action == 'edit'
+    ul.page-actions
+      if pageName != 'home'
+        li
+          form(action="/pages/#{pageName}", method="post", style="display:inline")
+            input(type="hidden", name="_method", value="delete")
+            input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-default
+
+  if action == 'show'
+    ul.page-actions
+      if !isAnonymous()
+        li
+          a(href="/pages/new", title="Create new page").btn.btn-sm.btn-default
+            i.icon.ion-plus-round
+      if !isAnonymous() && canEdit
+        li
+          a(href="/pages/#{pageName}/edit", title="Edit this page").btn.btn-sm.btn-default
+            i.icon.ion-compose
+
+      li
+        a(href="/wiki/#{pageName}/history", title="Page history").btn.btn-sm.btn-default
+          i.icon.ion-clock
+      li
+        a(href="/wiki", title="All pages").btn.btn-sm.btn-default
+          i.icon.ion-grid
 
 mixin saveAndCancel(saveText)
-  .form-actions
+  .well
     input(type='submit',value=saveText || 'Save').btn.btn-primary
     |&nbsp;
     a(href="/").btn Cancel
@@ -8,7 +34,7 @@ mixin saveAndCancel(saveText)
 mixin errors(err)
   -var errors = locals.errors;
   - if (typeof(errors) != 'undefined' && Object.keys(errors).length > 0)
-    .alert.alert-block.alert-error
+    .alert.bg-danger
       ul
         each v in errors
           li
@@ -61,8 +87,10 @@ mixin notice()
     .alert.alert-block.alert-info !{notice}
 
 mixin dialogBox(h)
-  .modal-header
-    button(data-dismiss="modal",aria-hidden="true").close &times;
-    h3 #{h}
-  .modal-body
-  .modal-footer
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button(data-dismiss="modal",aria-hidden="true").close &times;
+        h3 #{h}
+      .modal-body
+      .modal-footer

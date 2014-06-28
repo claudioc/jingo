@@ -6,12 +6,7 @@ block styles
   mixin featuresStylesheets()
 
 block page-actions
-  ul.page-actions
-    if pageName != 'home'
-      li
-        form(action="/pages/#{pageName}", method="post", style="display:inline")
-          input(type="hidden", name="_method", value="delete")
-          input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-small
+  mixin pageActions('edit')
 
 block content
 
@@ -23,22 +18,22 @@ block content
 
     form(action='/pages/#{pageName}', method='post', class='edit')
 
-      div
-        input(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
+      .form-group
+        input.form-control(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
         input(type="hidden", name="_method", value="put")
 
-      div
-        textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
+      .form-group
+        textarea.form-control(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
 
-      div
-        input(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
+      .form-group
+        input.form-control(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
 
       mixin saveAndCancel()
 
-  #preview(tabindex="-1").modal.hide
+  #preview(tabindex="-1").modal
     mixin dialogBox("Page preview")
 
-  #syntax-reference(tabindex="-1").modal.hide
+  #syntax-reference(tabindex="-1").modal
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts

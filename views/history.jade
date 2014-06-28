@@ -2,7 +2,7 @@ extends layout
 
 block content
   #content.show
-    h3 #{title} 
+    h3 #{title}
       b.page-param «#{pageTitle}»
     p
       button(id="rev-compare", data-pageName="#{pageName}").btn Compare revisions
@@ -12,11 +12,11 @@ block content
         tr
           td
             input(type="checkbox", value="#{item.fullhash}")
-          td 
-            img(src=gravatar().url("#{item.email}", {s:16}))
+          td
+            if item.email
+              img(src=gravatar().url("#{item.email}", {s:16}))
             &nbsp; #{item.author}
           td #{item.relDate}
           td #{item.subject}
-          td 
+          td
             a(href="/wiki/#{item.name}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
-

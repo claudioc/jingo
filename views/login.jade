@@ -4,13 +4,13 @@ include mixins/form
 
 block content
 
-  h2 Choose your authentication method
-
   #content
+
+    h2 Choose your authentication method
 
     if (auth.google.enabled)
       p
-        b Authenticate via
+        b Authenticate via&nbsp;
         a.btn.btn-primary(href="/auth/google") Google login
       hr
 
@@ -21,16 +21,23 @@ block content
 
       mixin errors()
 
-      form(action='/login', method='post')
+      form.form-horizontal(action='/login', method='post')
 
-        div
-          label Username
-          input(type='text', name='username')
+        .form-group
+          label.col-sm-2.control-label Username
+          .col-sm-3
+            input.form-control(type='text', autofocus, name='username')
 
-        div
-          label Password
-          input(type='password', name='password')
+        .form-group
+          label.col-sm-2.control-label Password
+          .col-sm-3
+            input.form-control(type='password', name='password')
 
-        mixin saveAndCancel('Login')
+        .form-group
+          .col-sm-offset-2.col-sm-3
+            button.btn-primary.btn(type="submit") Login
+            |&nbsp;or&nbsp;
+            a(href="/") cancel
+
 
       hr

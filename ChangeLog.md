@@ -1,3 +1,10 @@
+
+- Bootstrap 3.2
+- Express 4
+- don't show the avatar if there is no email
+- added some shortcut on the session message (edit again?)
+- new code renderer
+
 Version 0.6.1, June 24th, 20114
 =============================
 
