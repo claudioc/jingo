@@ -92,7 +92,7 @@ function _getLogin(req, res) {
     title: res.locals.appTitle,
     auth: res.locals.authentication
   });
-};
+}
 
 
 /*

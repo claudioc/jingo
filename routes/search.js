@@ -20,7 +20,7 @@ function _getSearch(req, res) {
     Git.grep(res.locals.term, function(err, items) {
 
       items.forEach(function(item) {
-        if (item.trim() != "") {
+        if (item.trim() !== "") {
           record = item.split(":");
           res.locals.matches.push({
             pageName: path.basename(record[0].split(".")[0]),

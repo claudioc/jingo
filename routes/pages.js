@@ -75,7 +75,7 @@ function _postPages(req, res) {
 
   fs.writeFile(pageFile, "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n"), function() {
     Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
-      req.session.notice = "The page has been created. <a href=\"/pages/" + pageName + "/edit\">Edit it?</a>"
+      req.session.notice = "The page has been created. <a href=\"/pages/" + pageName + "/edit\">Edit it?</a>";
       res.redirect("/wiki/" + pageName);
     });
   });
@@ -108,7 +108,7 @@ function _putPages(req, res) {
   content = "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n");
   pageFile = Git.absPath(pageName + ".md");
 
-  message = (req.body.message == "") ? "Content updated (" + pageName + ")" : req.body.message;
+  message = (req.body.message === "") ? "Content updated (" + pageName + ")" : req.body.message;
 
   fs.writeFile(pageFile, content, function() {
     Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {

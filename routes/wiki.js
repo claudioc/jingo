@@ -103,10 +103,10 @@ function _getPage(req, res) {
       });
     }
   });
-};
+}
 
 function _getIndex(req, res) {
   res.redirect('/wiki/home');
-};
+}
 
 module.exports = router;

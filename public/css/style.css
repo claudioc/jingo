@@ -216,6 +216,12 @@ p + ul {
   margin-top: -15px;
 }
 
+.doc-list h4 {
+    margin: 0;
+    padding: 10px;
+    background-color: #e6f1f6;
+}
+
 ul.doc-list {
   margin: 0;
   padding: 0;
@@ -223,9 +229,8 @@ ul.doc-list {
 
 ul.doc-list > li {
   list-style-type: none;
-  padding: 10px;
   background-color: #f8f8f8;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
   /*border: 1px solid #ccc;*/
   margin-bottom: 20px;
   border-radius: 3px;
@@ -249,10 +254,9 @@ ul.doc-list > li .footer {
 }
 
 .doc-list .footer {
-  padding: 10px 0;
+  padding: 10px;
   background-color: transparent;
   box-shadow: none;
-  border-top: 1px dashed #d1d1d1;
 }
 
 .page-actions-row {
