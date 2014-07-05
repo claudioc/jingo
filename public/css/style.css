@@ -137,7 +137,7 @@ hr {
 }
 
 .page-param {
-  color: #145AB0;
+  color: gray;
 }
 
 .compare {
@@ -249,15 +249,31 @@ ul.doc-list > li:hover {
   font-size: 90%;
 }
 
-ul.doc-list > li .footer {
-  color: #919191;
+ul.doc-list > li .page-actions {
+  margin: 5px 10px 0 0;
 }
 
-.doc-list .footer {
-  padding: 10px;
+ul.doc-list > li .content {
+  font-size: 90%;
+  color: #808080;
   background-color: transparent;
   box-shadow: none;
 }
+
+ul.doc-list > li .meta {
+  background-color: white;
+  clear: both;
+  padding: 2px 10px;
+}
+
+ul.doc-list > li .date {
+  border-bottom: 1px dotted gray;
+}
+
+ul.doc-list > li .message {
+  padding: 10px;
+}
+
 
 .page-actions-row {
   position: fixed;

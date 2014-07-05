@@ -301,140 +301,140 @@ var Git = app.locals.Git;
 //   });
 // }
 //
-exports.pageDestroy = function(req, res) {
+// exports.pageDestroy = function(req, res) {
+//
+//   var pageName = Namer.normalize(req.params.page);
+//
+//   if (pageName == 'home') {
+//     res.redirect("/");
+//     return;
+//   }
+//
+//   Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
+//     Locker.unlock(pageName);
+//     if (pageName == '_footer') {
+//       app.locals._footer = null;
+//     }
+//     if (pageName == '_sidebar') {
+//       app.locals._sidebar = null;
+//     }
+//     req.session.notice = "Page has been deleted successfully";
+//     res.redirect("/");
+//   });
+// }
 
-  var pageName = Namer.normalize(req.params.page);
-
-  if (pageName == 'home') {
-    res.redirect("/");
-    return;
-  }
-
-  Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
-    Locker.unlock(pageName);
-    if (pageName == '_footer') {
-      app.locals._footer = null;
-    }
-    if (pageName == '_sidebar') {
-      app.locals._sidebar = null;
-    }
-    req.session.notice = "Page has been deleted successfully";
-    res.redirect("/");
-  });
-}
-
-exports.pageCompare = function(req, res) {
-
-  var pageName = req.params.page
-    , revisions = req.params.revisions;
-
-  res.locals.revisions = revisions.split("..");
-  res.locals.lines = [];
-
-  Git.diff(pageName + ".md", revisions, function(err, diff) {
-
-    diff.split("\n").slice(4).forEach(function(line) {
-
-      if (line.slice(0,1) != '\\') {
-        res.locals.lines.push({
-          text: line,
-          ldln: leftDiffLineNumber(0, line),
-          rdln: rightDiffLineNumber(0, line),
-          class: lineClass(line)
-        });
-      }
-
-    });
-
-    res.render('compare', {
-      title: "Compare Revisions"
-    });
-
-  });
-
-  var ldln = 0
-    , cdln;
-  function leftDiffLineNumber(id, line) {
-
-    var li;
-
-    switch(true) {
-
-      case line.slice(0,2) == '@@':
-        li = line.match(/\-(\d+)/)[1];
-        ldln = parseInt(li, 10);
-        cdln = ldln;
-        return '...';
-
-      case line.slice(0,1) == '+':
-        return "";
-
-      case line.slice(0,1) == '-':
-      default:
-        ldln++
-        cdln = ldln - 1;
-        return cdln;
-    }
-  }
-
-   var rdln = 0;
-   function rightDiffLineNumber(id, line) {
-
-    var ri;
-
-    switch(true) {
-
-      case line.slice(0,2) == '@@':
-        ri = line.match(/\+(\d+)/)[1];
-        rdln = parseInt(ri, 10)
-        cdln = rdln;
-        return '...';
-
-      case line.slice(0,1) == '-':
-        return ' ';
-
-      case line.slice(0,1) == '+':
-      default:
-        rdln += 1
-        cdln = rdln - 1;
-        return cdln;
-    }
-  }
-
-  function lineClass(line) {
-    if (line.slice(0,2) === '@@') {
-      return "gc";
-    }
-    if (line.slice(0,1) === '-') {
-      return "gd";
-    }
-    if (line.slice(0,1) === '+') {
-      return "gi";
-    }
-  }
-}
-
-exports.pageHistory = function(req, res) {
-
-  var pageName = req.params.page
-    , pageTitle;
-
-  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
-
-    // FIXME This is a 404
-    if (err) { res.redirect('/'); }
-
-    Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
-      res.locals.pageTitle = Tools.getPageTitle(content, pageName);
-      res.locals.pageName = pageName;
-      res.locals.items = metadata;
-      res.render('history', {
-        title: "Revisions of"
-      });
-    });
-  });
-}
-
+// exports.pageCompare = function(req, res) {
+//
+//   var pageName = req.params.page
+//     , revisions = req.params.revisions;
+//
+//   res.locals.revisions = revisions.split("..");
+//   res.locals.lines = [];
+//
+//   Git.diff(pageName + ".md", revisions, function(err, diff) {
+//
+//     diff.split("\n").slice(4).forEach(function(line) {
+//
+//       if (line.slice(0,1) != '\\') {
+//         res.locals.lines.push({
+//           text: line,
+//           ldln: leftDiffLineNumber(0, line),
+//           rdln: rightDiffLineNumber(0, line),
+//           class: lineClass(line)
+//         });
+//       }
+//
+//     });
+//
+//     res.render('compare', {
+//       title: "Compare Revisions"
+//     });
+//
+//   });
+//
+//   var ldln = 0
+//     , cdln;
+//   function leftDiffLineNumber(id, line) {
+//
+//     var li;
+//
+//     switch(true) {
+//
+//       case line.slice(0,2) == '@@':
+//         li = line.match(/\-(\d+)/)[1];
+//         ldln = parseInt(li, 10);
+//         cdln = ldln;
+//         return '...';
+//
+//       case line.slice(0,1) == '+':
+//         return "";
+//
+//       case line.slice(0,1) == '-':
+//       default:
+//         ldln++
+//         cdln = ldln - 1;
+//         return cdln;
+//     }
+//   }
+//
+//    var rdln = 0;
+//    function rightDiffLineNumber(id, line) {
+//
+//     var ri;
+//
+//     switch(true) {
+//
+//       case line.slice(0,2) == '@@':
+//         ri = line.match(/\+(\d+)/)[1];
+//         rdln = parseInt(ri, 10)
+//         cdln = rdln;
+//         return '...';
+//
+//       case line.slice(0,1) == '-':
+//         return ' ';
+//
+//       case line.slice(0,1) == '+':
+//       default:
+//         rdln += 1
+//         cdln = rdln - 1;
+//         return cdln;
+//     }
+//   }
+//
+//   function lineClass(line) {
+//     if (line.slice(0,2) === '@@') {
+//       return "gc";
+//     }
+//     if (line.slice(0,1) === '-') {
+//       return "gd";
+//     }
+//     if (line.slice(0,1) === '+') {
+//       return "gi";
+//     }
+//   }
+// }
+//
+// exports.pageHistory = function(req, res) {
+//
+//   var pageName = req.params.page
+//     , pageTitle;
+//
+//   Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+//
+//     // FIXME This is a 404
+//     if (err) { res.redirect('/'); }
+//
+//     Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
+//       res.locals.pageTitle = Tools.getPageTitle(content, pageName);
+//       res.locals.pageName = pageName;
+//       res.locals.items = metadata;
+//       res.render('history', {
+//         title: "Revisions of"
+//       });
+//     });
+//   });
+// }
+//
 // exports.miscPreview = function(req, res) {
 //   res.render('preview', {
 //     content: Renderer.render(req.body.data)

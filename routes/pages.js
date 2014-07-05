@@ -12,12 +12,29 @@ router.get("/pages/new/:page", _getPagesNew);
 router.get("/pages/:page/edit", _getPagesEdit);
 router.post("/pages", _postPages);
 router.put("/pages/:page", _putPages);
+router.delete ("/pages/:page", _deletePages);
 
+function _deletePages(req, res) {
 
-/*
-app.delete ("/pages/:page",           routes.pageDestroy);
-*/
+  var pageName = namer.normalize(req.params.page);
 
+  if (pageName == 'home') {
+    res.redirect("/");
+    return;
+  }
+
+  Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
+    locker.unlock(pageName);
+    if (pageName == '_footer') {
+      app.locals._footer = null;
+    }
+    if (pageName == '_sidebar') {
+      app.locals._sidebar = null;
+    }
+    req.session.notice = "The page `" + pageName + "` has been deleted.";
+    res.redirect("/");
+  });
+}
 
 function _getPagesNew(req, res) {
 

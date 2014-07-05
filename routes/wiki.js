@@ -7,6 +7,123 @@ var router = require("express").Router()
 router.get("/", _getIndex);
 router.get("/wiki", _getWiki);
 router.get("/wiki/:page", _getPage);
+router.get("/wiki/:page/history", _getHistory);
+router.get("/wiki/:page/:version", _getPage);
+router.get("/wiki/:page/compare/:revisions", _getCompare);
+
+function _getCompare(req, res) {
+
+  var pageName = req.params.page
+    , revisions = req.params.revisions;
+
+  res.locals.revisions = revisions.split("..");
+  res.locals.lines = [];
+
+  Git.diff(pageName + ".md", revisions, function(err, diff) {
+
+    diff.split("\n").slice(4).forEach(function(line) {
+
+      if (line.slice(0,1) != '\\') {
+        res.locals.lines.push({
+          text: line,
+          ldln: leftDiffLineNumber(0, line),
+          rdln: rightDiffLineNumber(0, line),
+          class: lineClass(line)
+        });
+      }
+
+    });
+
+    res.render('compare', {
+      title: "Compare Revisions"
+    });
+
+  });
+
+  var ldln = 0
+    , cdln;
+
+  function leftDiffLineNumber(id, line) {
+
+    var li;
+
+    switch(true) {
+
+      case line.slice(0,2) == '@@':
+        li = line.match(/\-(\d+)/)[1];
+        ldln = parseInt(li, 10);
+        cdln = ldln;
+        return '...';
+
+      case line.slice(0,1) == '+':
+        return "";
+
+      case line.slice(0,1) == '-':
+      default:
+        ldln++
+        cdln = ldln - 1;
+        return cdln;
+    }
+  }
+
+   var rdln = 0;
+   function rightDiffLineNumber(id, line) {
+
+    var ri;
+
+    switch(true) {
+
+      case line.slice(0,2) == '@@':
+        ri = line.match(/\+(\d+)/)[1];
+        rdln = parseInt(ri, 10)
+        cdln = rdln;
+        return '...';
+
+      case line.slice(0,1) == '-':
+        return ' ';
+
+      case line.slice(0,1) == '+':
+      default:
+        rdln += 1
+        cdln = rdln - 1;
+        return cdln;
+    }
+  }
+
+  function lineClass(line) {
+    if (line.slice(0,2) === '@@') {
+      return "gc";
+    }
+    if (line.slice(0,1) === '-') {
+      return "gd";
+    }
+    if (line.slice(0,1) === '+') {
+      return "gi";
+    }
+  }
+}
+
+
+function _getHistory(req, res) {
+
+  var pageName = req.params.page
+    , pageTitle;
+
+  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+
+    // FIXME This is a 404
+    if (err) { res.redirect('/'); }
+
+    Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
+      res.locals.pageTitle = tools.getPageTitle(content, pageName);
+      res.locals.pageName = pageName;
+      res.locals.items = metadata;
+      res.render('history', {
+        title: "Revisions of"
+      });
+    });
+  });
+}
 
 function _getWiki(req, res) {
 

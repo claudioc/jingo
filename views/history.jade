@@ -2,10 +2,10 @@ extends layout
 
 block content
   #content.show
-    h3 #{title}
-      b.page-param «#{pageTitle}»
+    h2 #{title}:&nbsp;
+      b.page-param #{pageTitle}
     p
-      button(id="rev-compare", data-pageName="#{pageName}").btn Compare revisions
+      button(id="rev-compare", data-pageName="#{pageName}").btn.btn-primary Compare revisions
 
     table.history.table.table-striped.table-bordered.table-hover.table-condensed
       each item in items

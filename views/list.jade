@@ -8,7 +8,14 @@ block content
         li
           h4
             a(href="/wiki/#{item.metadata.name}") #{item.pageTitle}
-          div.footer.clearfix Updated by
+          div.content.clearfix
+            .meta
+              |Last update by&nbsp;
+              if item.metadata.email
+                img(src=gravatar().url("#{item.metadata.email}", {s:16}))
+              b &nbsp;#{item.metadata.author},&nbsp;
+              b.date(title="#{item.metadata.date}") #{item.metadata.relDate}
+              |&nbsp;&ndash;&nbsp;#{item.metadata.hash}
             ul.page-actions.pull-right
               if !isAnonymous()
                 li
@@ -21,10 +28,5 @@ block content
                 li
                   a(href="/wiki/#{item.metadata.name}/compare/" + item.hashes, title="Quick diff").btn.btn-default
                     i.icon.ion-shuffle
-
-            if item.metadata.email
-              img(src=gravatar().url("#{item.metadata.email}", {s:16}))
-            b  #{item.metadata.author},
-            b(title="#{item.metadata.date}") #{item.metadata.relDate}
-            | &ndash; #{item.metadata.hash}
-            div &rarr; #{item.message}
+            .message
+              &rarr; #{item.message}
