@@ -119,10 +119,6 @@ h4 a, h4 a:hover {
   color: inherit;
 }
 
-code {
-  color: #555;
-}
-
 hr {
   background: transparent url(/img/hr-bg.png) repeat-x 0 0;
   border: 0 none;
@@ -181,6 +177,12 @@ hr {
 }
 
 /* Overrides Bootstrap */
+
+.alert {
+  box-shadow: 0 0 5px silver;
+  border-radius: 0;
+}
+
 .navbar-inverse .navbar-inner {
   background-image: none;
 }
@@ -190,8 +192,12 @@ hr {
 }
 
 code {
-  padding: 0; /* WTF, Bootstrap? */
   white-space: auto;
+  color: #555;
+  border-radius: 0;
+  white-space: nowrap;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
 }
 
 code.md-code {
@@ -201,6 +207,12 @@ code.md-code {
   display: block;
   margin-bottom: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-width: 0;
+}
+
+code.md-code code {
+  padding: 0; /* WTF, Bootstrap? */
+  border-width: 0;
 }
 
 code.plain {

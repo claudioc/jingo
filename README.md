@@ -47,7 +47,7 @@ Be sure to provide a valid server hostname (like wiki.mycompany.com) for Google 
 to get back to you.
 
 If you define a `remote` to push to, then jingo will automatically issue a push to that remote every
-`pushInterval` seconds. You can also specify a branch using the syntax "remotename branchnama". If you
+`pushInterval` seconds. You can also specify a branch using the syntax "remotename branchname". If you
 don't specify a branch, that will be `master`.
 Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try
 to resolve conflicts, though).

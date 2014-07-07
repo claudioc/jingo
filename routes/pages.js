@@ -153,7 +153,7 @@ function _getPagesEdit(req, res) {
     }
   }
 
-  Git.pull(app.locals.remote, app.locals.branch, function(err) {
+  Git.pull(function(err) {
 
     if (err) {
       error500(req, res, err);

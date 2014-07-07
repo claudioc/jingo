@@ -58,8 +58,12 @@ if (auth.google.enabled && (!auth.google.clientId || !auth.google.clientSecret))
   process.exit(-1);
 }
 
+var refspec = config.get("application.remote") ? config.get("application.remote").split(/\s+/) : "";
+
 try {
-  Git.setup(config.get("application.repository"), config.get("application.docSubdir", ""));
+  Git.setup(config.get("application.repository"),
+            config.get("application.docSubdir", ""),
+            refspec);
 } catch(e) {
   console.log(e.message)
   program.help()
@@ -76,3 +80,21 @@ if (config.get("server.localOnly")) {
 http.createServer(app).listen(app.locals.port, listenAddr, function() {
   console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", config.get("server.localOnly") ? " (local) " : " ", program.version(), app.locals.port);
 });
+
+var pushInterval = config.get("application.pushInterval") ? parseInt(config.get("application.pushInterval"), 10) * 1000 : 30000;
+
+if (refspec.trim() !== "") {
+  setInterval(function() {
+    Git.pull(function(err) {
+      if (err) {
+        console.log("Error: " + err);
+      } else {
+        Git.push(function(err) {
+          if (err) {
+            console.log("Error: " + err);
+          }
+        });
+      }
+    });
+  }, pushInterval);
+}
