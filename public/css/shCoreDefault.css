@@ -42,7 +42,6 @@
   overflow: auto !important;
   font-size: 1em !important;
   border: 1px solid #DDD;
-  background-color: #FFFFFA;
   border-radius: 3px;
   font-size: 13px;
   line-height: 19px;
@@ -112,8 +111,8 @@
   padding: 0 0.5em 0 1em !important;
 }
 .syntaxhighlighter table td.gutter {
-  border-right: 1px solid #CCCCCC !important;
   padding-right: 4px;
+  padding-left: 4px;
 }
 
 .syntaxhighlighter table td.gutter .line,
@@ -253,7 +252,6 @@
 
 .syntaxhighlighter .line.alt1,
 .syntaxhighlighter .line.alt2 {
-  background-color: #FFFFFA !important;
 }
 .syntaxhighlighter .line.highlighted.alt1, .syntaxhighlighter .line.highlighted.alt2 {
   background-color: #e0e0e0 !important;
@@ -265,7 +263,8 @@
   color: black !important;
 }
 .syntaxhighlighter .gutter {
-  color: #bfbfbf !important;
+  color: #b6c1c6 !important;
+  background-color: #e6f1f6 !important;
 }
 .syntaxhighlighter .gutter .line.highlighted {
   background-color: #6ce26c !important;
@@ -300,7 +299,6 @@
   color: black !important;
 }
 .syntaxhighlighter .plain, .syntaxhighlighter .plain a {
-  color: black !important;
 }
 .syntaxhighlighter .comments, .syntaxhighlighter .comments a {
   color: #008200 !important;

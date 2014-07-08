@@ -103,7 +103,6 @@ function _getCompare(req, res) {
   }
 }
 
-
 function _getHistory(req, res) {
 
   var pageName = req.params.page

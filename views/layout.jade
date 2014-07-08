@@ -44,7 +44,8 @@ html
 
       .row
         if hasSidebar()
-          .col-md-2 !{_sidebar}
+          .col-md-2.with-sidebar
+            .content !{_sidebar}
         else
           .col-md-2
 
@@ -52,7 +53,10 @@ html
           block content
 
       if hasFooter()
-        .row.col-md-10 !{_footer}
+        .row
+          .col-md-2
+          .col-md-8.with-footer
+            .content !{_footer}
 
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
     script.

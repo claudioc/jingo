@@ -1,6 +1,7 @@
 var router = require("express").Router()
   , app = require("../lib/app").getInstance()
   , passportLocal  = require('passport-local')
+  , passportGoogle  = require('passport-google-oauth')
   , tools = require("../lib/tools")
   ;
 
@@ -11,6 +12,27 @@ router.get("/login", _getLogin);
 router.get("/logout", _getLogout);
 router.post("/login", passport.authenticate('local', { successRedirect: '/auth/done', failureRedirect: '/login', failureFlash: true }));
 router.get("/auth/done", _getAuthDone);
+
+router.get("/auth/google", passport.authenticate('google', {
+  scope: ['https://www.googleapis.com/auth/userinfo.email'] }
+));
+router.get("/oauth2callback", passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+
+if (auth.google.enabled) {
+  passport.use(new passportGoogle.OAuth2Strategy({
+      clientID: auth.google.clientId,
+      clientSecret: auth.google.clientSecret,
+      // I will leave the horrible name as the default to make the painful creation
+      // of the client id/secret simpler
+      callbackURL: app.locals.baseUrl + '/oauth2callback'
+    },
+
+    function(accessToken, refreshToken, profile, done) {
+      usedAuthentication("google");
+      done(null, profile);
+    }
+  ));
+}
 
 if (auth.alone.enabled) {
 
@@ -93,13 +115,5 @@ function _getLogin(req, res) {
     auth: res.locals.authentication
   });
 }
-
-
-/*
-app.get    ("/auth/google",    passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.email'] }
-));
-app.get    ("/oauth2callback",    passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
-*/
 
 module.exports = router;
