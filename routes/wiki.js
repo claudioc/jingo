@@ -3,6 +3,7 @@ var router = require("express").Router()
   , path = require("path")
   , renderer = require('../lib/renderer')
   , models = require("../lib/models")
+  , Promise = require("bluebird")
   ;
 
 models.use(Git);
@@ -112,7 +113,7 @@ function _getHistory(req, res) {
     , pageTitle;
 
   models.pages
-  
+
     .getHistoryAsync(pageName)
 
       .then(function(result) {
@@ -133,53 +134,72 @@ function _getHistory(req, res) {
 
 function _getWiki(req, res) {
 
-    var items = []
-      , title
-      , len;
+  var items = []
+    , len
+    , getPageInfoAsync;
 
-    Git.ls(function(err, list) {
+  var pages = models.pages;
 
-      len = list.length;
+  pages.getAllAsync().then(function(list) {
 
-      list.forEach(function(page) {
+    len = list.length;
 
-        page = path.basename(page);
+    list.forEach(function(page) {
 
-        Git.hashes(page, 2, function(err, hashes) {
+      getPageInfoAsync(page).then(function(info) {
 
-          Git.show(page, "HEAD", function(err, content) {
-
-            (function(title) {
-
-              Git.log(page, "HEAD", function(err, metadata) {
-
-                Git.lastMessage(page, "HEAD", function(err, message) {
-
-                  items.push({
-                    pageTitle: title,
-                    message: message,
-                    metadata: metadata,
-                    hashes: hashes.length == 2 ? hashes.join("..") : ""
-                  });
-
-                  if (items.length === len) {
-                    items.sort(function(a, b) {
-                      return b.metadata.timestamp - a.metadata.timestamp;
-                    });
-
-                    res.render("list", {
-                      title: "Document list – Sorted by update date",
-                      items: items
-                    });
-                  }
-                });
-              });
-            })(tools.getPageTitle(content, page));
-          });
+        items.push({
+          pageTitle: info.title,
+          message: info.message,
+          metadata: info.metadata,
+          hashes: info.hashes.length == 2 ? info.hashes.join("..") : ""
         });
+
+        if (items.length === len) {
+          items.sort(function(a, b) {
+            return b.metadata.timestamp - a.metadata.timestamp;
+          });
+
+          res.render("list", {
+           title: "Document list – Sorted by update date",
+           items: items
+          });
+        }
       });
     });
-  }
+  });
+
+  function getPageInfo(page, callback) {
+
+    var info = {};
+
+    page = path.basename(page);
+
+    pages.getContentAsync(page)
+
+         .then(function(content) {
+           info.title = tools.getPageTitle(content, page);
+           return pages.getLastLogAsync(page);
+         })
+
+         .then(function(metadata) {
+           info.metadata = metadata;
+           return pages.getHashesAsync(page);
+         })
+
+         .then(function(hashes) {
+           info.hashes = hashes;
+           return pages.getLastMessageAsync(page);
+         })
+
+         .then(function(message) {
+           info.message = message;
+           callback(null, info);
+         });
+   }
+
+   var getPageInfoAsync = Promise.promisify(getPageInfo);
+}
 
 function _getPage(req, res) {
 
