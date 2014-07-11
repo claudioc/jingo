@@ -45,13 +45,4 @@ router.all('*', function(req, res) {
   res.render('404.jade');
 });
 
-/*
-error500 = exports.error500 = function(req, res, message) {
-  res.locals.title = "500 - Internal server error";
-  res.statusCode = 500;
-  res.render('500.jade', {
-    error: message
-  });
-}
-*/
 module.exports = router;

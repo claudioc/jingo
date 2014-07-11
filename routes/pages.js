@@ -160,7 +160,7 @@ function _getPagesEdit(req, res) {
       return;
     }
 
-    Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+    Git.show(pageName + ".md", "HEAD", function(err, content) {
 
       if (err) {
         res.redirect('/pages/new/' + pageName);

@@ -20,6 +20,7 @@
     "lib": "./lib/"
   },
   "dependencies": {
+    "bluebird": "^2.2.1",
     "body-parser": "^1.4.3",
     "commander": "*",
     "compression": "^1.0.8",

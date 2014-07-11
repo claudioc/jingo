@@ -2,7 +2,10 @@ var router = require("express").Router()
   , tools  = require("../lib/tools")
   , path = require("path")
   , renderer = require('../lib/renderer')
+  , models = require("../lib/models")
   ;
+
+models.use(Git);
 
 router.get("/", _getIndex);
 router.get("/wiki", _getWiki);
@@ -108,20 +111,24 @@ function _getHistory(req, res) {
   var pageName = req.params.page
     , pageTitle;
 
-  Git.readFile(pageName + ".md", "HEAD", function(err, content) {
+  models.pages
+  
+    .getHistoryAsync(pageName)
 
-    // FIXME This is a 404
-    if (err) { res.redirect('/'); }
+      .then(function(result) {
 
-    Git.log(pageName + ".md", "HEAD", 30, function(err, metadata) {
-      res.locals.pageTitle = tools.getPageTitle(content, pageName);
-      res.locals.pageName = pageName;
-      res.locals.items = metadata;
-      res.render('history', {
-        title: "Revisions of"
+        res.locals.pageTitle = tools.getPageTitle(result[0], pageName);
+        res.locals.pageName = pageName;
+        res.locals.items = result[1];
+        res.render('history', {
+          title: "Revisions of"
+        });
+      })
+
+      .catch(function(ex) {
+        console.log(ex)
+        res.redirect('/');
       });
-    });
-  });
 }
 
 function _getWiki(req, res) {
@@ -140,7 +147,7 @@ function _getWiki(req, res) {
 
         Git.hashes(page, 2, function(err, hashes) {
 
-          Git.readFile(page, "HEAD", function(err, content) {
+          Git.show(page, "HEAD", function(err, content) {
 
             (function(title) {
 
@@ -179,7 +186,7 @@ function _getPage(req, res) {
   var pageName = req.params.page
     , pageVersion = req.params.version || "HEAD";
 
-  Git.readFile(pageName + ".md", pageVersion, function(err, content) {
+  Git.show(pageName + ".md", pageVersion, function(err, content) {
 
     if (err) {
       if (req.user) {
