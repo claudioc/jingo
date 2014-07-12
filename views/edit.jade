@@ -10,10 +10,9 @@ block page-actions
 
 block content
 
-  mixin errors()
-  mixin warning()
-
   #content.edit
+    mixin errors()
+    mixin warning()
     h1 #{title}
 
     form(action='/pages/#{pageName}', method='post', class='edit')

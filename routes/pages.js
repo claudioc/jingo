@@ -3,9 +3,12 @@ var router = require("express").Router()
   , locker = require("../lib/locker")
   , tools  = require("../lib/tools")
   , fs     = require("fs")
-  , app = require("../lib/app").getInstance()
-  , components     = require('../lib/components')
+  , app    = require("../lib/app").getInstance()
+  , models = require("../lib/models")
+  , components = require('../lib/components')
   ;
+
+models.use(Git);
 
 router.get("/pages/new", _getPagesNew);
 router.get("/pages/new/:page", _getPagesNew);
@@ -23,14 +26,17 @@ function _deletePages(req, res) {
     return;
   }
 
-  Git.rm(pageName + ".md", "Page removed (" + pageName + ")", req.user.asGitAuthor, function(err) {
+  models.pages.removeAsync(pageName, req.user.asGitAuthor).then(function() {
+
     locker.unlock(pageName);
     if (pageName == '_footer') {
       app.locals._footer = null;
     }
+
     if (pageName == '_sidebar') {
       app.locals._sidebar = null;
     }
+
     req.session.notice = "The page `" + pageName + "` has been deleted.";
     res.redirect("/");
   });
@@ -41,7 +47,7 @@ function _getPagesNew(req, res) {
   res.locals.pageName = namer.normalize(req.params.page);
 
   if (res.locals.pageName) {
-    if (fs.existsSync(Git.absPath(res.locals.pageName + ".md"))) {
+    if (fs.existsSync(models.pages.getAbsolutePath(res.locals.pageName))) {
       res.redirect("/wiki/" + res.locals.pageName);
       return;
     }
@@ -82,7 +88,7 @@ function _postPages(req, res) {
   req.sanitize('pageTitle').trim();
   req.sanitize('content').trim();
 
-  pageFile = Git.absPath(pageName + ".md");
+  pageFile = models.pages.getAbsolutePath(pageName);
 
   if (fs.existsSync(pageFile)) {
     req.session.errors = [{msg: "A document with this title already exists"}];
@@ -91,7 +97,7 @@ function _postPages(req, res) {
   }
 
   fs.writeFile(pageFile, "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n"), function() {
-    Git.add(pageName + ".md", "Page created (" + pageName + ")", req.user.asGitAuthor, function(err) {
+    models.pages.addAsync(pageName, req.user.asGitAuthor).then(function() {
       req.session.notice = "The page has been created. <a href=\"/pages/" + pageName + "/edit\">Edit it?</a>";
       res.redirect("/wiki/" + pageName);
     });
@@ -123,27 +129,32 @@ function _putPages(req, res) {
   req.sanitize('message').trim();
 
   content = "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n");
-  pageFile = Git.absPath(pageName + ".md");
+  pageFile = models.pages.getAbsolutePath(pageName);
 
-  message = (req.body.message === "") ? "Content updated (" + pageName + ")" : req.body.message;
+  message = (req.body.message.trim() === "") ? "Content updated (" + pageName + ")" : req.body.message.trim();
 
   fs.writeFile(pageFile, content, function() {
-    Git.add(pageName + ".md", message, req.user.asGitAuthor, function(err) {
+
+    models.pages.updateAsync(pageName, message, req.user.asGitAuthor).then(function() {
+
       locker.unlock(pageName);
+
       if (pageName == '_footer') {
         components.expire('footer');
       }
+
       if (pageName == '_sidebar') {
         components.expire('sidebar');
       }
+
       req.session.notice = "The page has been updated. <a href=\"/pages/" + pageName + "/edit\">Edit it again?</a>";
       res.redirect("/wiki/" + pageName);
     });
   });
-
 }
 
 function _getPagesEdit(req, res) {
+
   var pageName = res.locals.pageName = req.params.page
     , lock;
 
@@ -153,40 +164,35 @@ function _getPagesEdit(req, res) {
     }
   }
 
-  Git.pull(function(err) {
+  models.repositories.refreshAsync().then(function() {
 
-    if (err) {
-      error500(req, res, err);
-      return;
+    return models.pages.getContentAsync(pageName, "HEAD");
+  }).then(function(content) {
+
+    if (!req.session.formData) {
+
+      res.locals.formData = {
+        pageTitle: tools.getPageTitle(content, pageName),
+        content: tools.getContent(content)
+      };
+    } else {
+
+      res.locals.formData = req.session.formData;
     }
 
-    Git.show(pageName + ".md", "HEAD", function(err, content) {
+    res.locals.errors = req.session.errors;
 
-      if (err) {
-        res.redirect('/pages/new/' + pageName);
-      } else {
+    locker.lock(pageName, req.user);
 
-        if (!req.session.formData) {
-          res.locals.formData = {
-            pageTitle: tools.getPageTitle(content, pageName),
-            content: tools.getContent(content)
-          };
-        } else {
-          res.locals.formData = req.session.formData;
-        }
+    delete req.session.errors;
+    delete req.session.formData;
 
-        res.locals.errors = req.session.errors;
-
-        locker.lock(pageName, req.user);
-
-        delete req.session.errors;
-        delete req.session.formData;
-
-        res.render('edit', {
-          title: 'Edit page'
-        });
-      }
+    res.render('edit', {
+      title: 'Edit page'
     });
+
+  }).catch(function() {
+    error500(req, res, err);
   });
 }
 

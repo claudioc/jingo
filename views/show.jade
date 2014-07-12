@@ -7,10 +7,10 @@ block page-actions
 
 block content
 
-  mixin notice()
-  mixin warning()
-
-  #content.show!=content
+  #content.show
+    mixin notice()
+    mixin warning()
+    !=content
 
   p.footer Updated by&nbsp;
     if metadata.email

@@ -1,6 +1,9 @@
 var router = require("express").Router()
   , path = require("path")
+  , models = require("../lib/models")
   ;
+
+models.use(Git);
 
 router.get("/search", _getSearch);
 
@@ -13,11 +16,12 @@ function _getSearch(req, res) {
   res.locals.term = req.query.term.trim();
 
   if (res.locals.term.length < 2) {
+
     res.locals.warning = "Search string is too short.";
     renderResults();
   } else {
 
-    Git.grep(res.locals.term, function(err, items) {
+    models.pages.findStringAsync(res.locals.term).then(function(items) {
 
       items.forEach(function(item) {
         if (item.trim() !== "") {
@@ -40,6 +44,5 @@ function _getSearch(req, res) {
     });
   }
 }
-
 
 module.exports = router;

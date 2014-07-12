@@ -6,9 +6,8 @@ block styles
   mixin featuresStylesheets()
 
 block content
-  mixin errors()
   #content
-
+    mixin errors()
     h1 #{title}
 
     form(action='/pages', method='post', class='edit')

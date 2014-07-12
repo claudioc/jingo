@@ -23,7 +23,7 @@ function _getCompare(req, res) {
   res.locals.revisions = revisions.split("..");
   res.locals.lines = [];
 
-  Git.diff(pageName + ".md", revisions, function(err, diff) {
+  models.pages.getRevisionsDiffAsync(pageName, revisions).then(function(diff) {
 
     diff.split("\n").slice(4).forEach(function(line) {
 
@@ -35,13 +35,11 @@ function _getCompare(req, res) {
           class: lineClass(line)
         });
       }
-
     });
 
     res.render('compare', {
       title: "Compare Revisions"
     });
-
   });
 
   var ldln = 0
@@ -175,11 +173,11 @@ function _getWiki(req, res) {
 
     page = path.basename(page);
 
-    pages.getContentAsync(page)
+    pages.getContentAsync(page, "HEAD")
 
          .then(function(content) {
            info.title = tools.getPageTitle(content, page);
-           return pages.getLastLogAsync(page);
+           return pages.getMetadataAsync(page, "HEAD");
          })
 
          .then(function(metadata) {
@@ -204,46 +202,43 @@ function _getWiki(req, res) {
 function _getPage(req, res) {
 
   var pageName = req.params.page
-    , pageVersion = req.params.version || "HEAD";
+    , pageVersion = req.params.version || "HEAD"
+    , pageContent;
 
-  Git.show(pageName + ".md", pageVersion, function(err, content) {
+  models.pages.getContentAsync(pageName, pageVersion).then(function(content) {
+    pageContent = content;
+    return models.pages.getMetadataAsync(pageName, pageVersion);
+  }).then(function(metadata) {
 
-    if (err) {
-      if (req.user) {
-        res.redirect('/pages/new/' + pageName);
-      } else {
-        // Special case for "home", anonymous user and an empty docbase
-        if (pageName == 'home') {
-          res.render('welcome', {
-            title: 'Welcome to ' + res.locals.appTitle
-          });
-        } else {
-          error404(req, res);
-          return;
-        }
-      }
+    res.locals.canEdit = true;
+    if (pageVersion != 'HEAD') {
+      res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='/wiki/" + pageName + "'>here</a>.";
+      res.locals.canEdit = false;
+    }
 
+    res.locals.notice = req.session.notice;
+    delete req.session.notice;
+
+    res.render('show', {
+      title:   res.locals.appTitle + " – " + tools.getPageTitle(pageContent, pageName),
+      content: renderer.render(tools.hasTitle(pageContent) ? pageContent : "# " + pageName + "\n" + pageContent),
+      pageName: pageName,
+      metadata: metadata
+    });
+  }).catch(function(ex) {
+
+    if (req.user) {
+      res.redirect('/pages/new/' + pageName);
     } else {
-
-      Git.log(pageName + ".md", pageVersion, function(err, metadata) {
-
-        res.locals.canEdit = true;
-        if (pageVersion != 'HEAD') {
-          res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='/wiki/" + pageName + "'>here</a>.";
-          res.locals.canEdit = false;
-        }
-
-        res.locals.notice = req.session.notice;
-        delete req.session.notice;
-
-        res.render('show', {
-          title:   res.locals.appTitle + " – " + tools.getPageTitle(content, pageName),
-          content: renderer.render(tools.hasTitle(content) ? content : "# " + pageName + "\n" + content),
-          pageName: pageName,
-          metadata: metadata
+      // Special case for "home", anonymous user and an empty docbase
+      if (pageName == 'home') {
+        res.render('welcome', {
+          title: 'Welcome to ' + res.locals.appTitle
         });
-
-      });
+      } else {
+        error404(req, res);
+        return;
+      }
     }
   });
 }

@@ -3,15 +3,17 @@ extends layout
 include mixins/form
 
 block content
-  h2 #{title} for 
-    b.page-param #{term}
-
-  mixin warning()
 
   #content
+
+    mixin warning()
+
+    h2 #{title} for&nbsp;
+      b.page-param #{term}
+
     dl.search-results
       each match in matches
-        dt 
+        dt
           a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
           span.nl #{match.line}
         dd #{match.text}

@@ -1,7 +1,10 @@
 var router = require("express").Router()
   , renderer = require('../lib/renderer')
   , fs = require("fs")
+  , models = require("../lib/models")
   ;
+
+models.use(Git);
 
 router.get("/misc/syntax-reference", _getSyntaxReference);
 router.post("/misc/preview",         _postPreview);
@@ -29,7 +32,7 @@ function _getExistence(req, res) {
 
   req.query.data.forEach(function(pageName, idx) {
     (function(page, index) {
-      if (!fs.existsSync(Git.absPath(page + ".md"))) {
+      if (!fs.existsSync(models.pages.getAbsolutePath(page))) {
         result.push(page);
       }
       if (index == (n - 1)) {
