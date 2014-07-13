@@ -1,9 +1,14 @@
 
 - Bootstrap 3.2
 - Express 4
+- Promises (Bluebird)
 - don't show the avatar if there is no email
-- added some shortcut on the session message (edit again?)
+- added some shortcut on the session message ("edit again?")
 - new code renderer
+- fixed an issue where the sidebar and footer were not rendered
+- code refactoring using another level of abstraction (aka models)
+- more mobile friendly
+- new look for custom sidebar and footer
 
 Version 0.6.1, June 24th, 20114
 =============================
