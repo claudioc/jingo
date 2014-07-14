@@ -9,6 +9,9 @@
 - code refactoring using another level of abstraction (aka models)
 - more mobile friendly
 - new look for custom sidebar and footer
+- provides a new `pages` configuration options. You may specify how the naming
+  of the files will be managed (default to 'lowercase,dash', accepts also 'underscore')
+  and the name of the index page (defaults to 'home')
 
 Version 0.6.1, June 24th, 20114
 =============================

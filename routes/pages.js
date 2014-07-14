@@ -21,7 +21,7 @@ function _deletePages(req, res) {
 
   var pageName = namer.normalize(req.params.page);
 
-  if (pageName == 'home') {
+  if (pageName == app.locals.pagesConfig.index) {
     res.redirect("/");
     return;
   }

@@ -3,6 +3,7 @@ var router = require("express").Router()
   , path = require("path")
   , renderer = require('../lib/renderer')
   , models = require("../lib/models")
+  , app    = require("../lib/app").getInstance()
   , Promise = require("bluebird")
   ;
 
@@ -244,7 +245,8 @@ function _getPage(req, res) {
 }
 
 function _getIndex(req, res) {
-  res.redirect('/wiki/home');
+  console.log(app.locals.pagesConfig);
+  res.redirect('/wiki/' + app.locals.pagesConfig.index);
 }
 
 module.exports = router;

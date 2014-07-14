@@ -475,3 +475,8 @@ form.edit {
 li {
   margin-bottom: 5px;
 }
+
+.jumbotron p.discrete {
+  color: gray;
+  font-size: 90%
+}
