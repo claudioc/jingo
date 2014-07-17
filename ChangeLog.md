@@ -1,3 +1,5 @@
+Version 1.0.0, July 31, 2014
+=============================
 
 - Bootstrap 3.2
 - Express 4
@@ -9,11 +11,23 @@
 - code refactoring using another level of abstraction (aka models)
 - more mobile friendly
 - new look for custom sidebar and footer
-- provides a new `pages` configuration options. You may specify how the naming
-  of the files will be managed (default to 'lowercase,dash', accepts also 'underscore')
-  and the name of the index page (defaults to 'home')
+- provides a new `pages` configuration options. You may specify:
+  - nameSeparator: uses `dash` (default), `underscore` or `space` as the word
+    separator in the filename (My-document.md, My_document.md, My document.md)
+  - index: the name of the index page (defaults to 'Home')
+  - titleFrom: dictates where to "store" the index of the page; `filename` (new
+    default) will use the filename as the title, and `content` (default for older
+    Jingos) will use the first line of the file. When the title is from the
+    content, Jingo will continue to use the old method of handling titles: the
+    filenames of the newly created files will be lowercased and it won't be
+    possible to change the filename, even if the title has changed. However, if
+    the title is read from the filename, the case of the filename itself will be
+    left untouched and changing the name of the document will also change the
+    name of the file
 
-Version 0.6.1, June 24th, 20114
+  This update requires to issue a `npm install`
+
+Version 0.6.1, June 24th, 2014
 =============================
 
 - Due to an incompatibility with latest versions of Express 3.x (and Connect),
@@ -21,7 +35,7 @@ Version 0.6.1, June 24th, 20114
 - Removed some deprecation warnings
 - Fixed some problems on the welcome page
 
-Version 0.6.0, May 28th, 20114
+Version 0.6.0, May 28th, 2014
 =============================
 
 - Uses the OAuth 2 authentication instead of the OpenID 2.0
@@ -31,7 +45,7 @@ Version 0.6.0, May 28th, 20114
 
   The update requires to issue a `npm install`
 
-Version 0.5.2, May 26th, 20114
+Version 0.5.2, May 26th, 2014
 =============================
 
 - Version bump for the npm package glitch
@@ -46,7 +60,7 @@ Version 0.5.1, December 6th, 2013
 Version 0.5.0, December 4th, 2013
 =============================
 
-- Use of Codemirror (select it from the new config key "Features")
+- Use of Codemirror (select it from the new config key `features`)
 - Adds the last commit comment on the document list
 
 Version 0.4.4, July 23th, 2013
@@ -55,10 +69,6 @@ Version 0.4.4, July 23th, 2013
 - Better typography
 
 Version 0.4.3, July 10th, 2013
-=============================
-
-- Closes #19
-- Better line height for LI
 =============================
 
 - Closes #19

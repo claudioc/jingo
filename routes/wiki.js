@@ -237,7 +237,9 @@ function _getPage(req, res) {
           title: 'Welcome to ' + res.locals.appTitle
         });
       } else {
-        error404(req, res);
+        res.locals.title = "404 - Not found";
+        res.statusCode = 404;
+        res.render('404.jade');
         return;
       }
     }

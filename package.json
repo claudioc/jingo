@@ -33,6 +33,7 @@
     "gravatar": ">= 1.0.6",
     "iconv": "*",
     "jade": "*",
+    "lodash": "^2.4.1",
     "marked": ">= 0.2.x",
     "method-override": "^2.0.2",
     "morgan": "^1.1.1",

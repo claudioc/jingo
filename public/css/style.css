@@ -286,7 +286,7 @@ ul.doc-list > li .message {
   padding: 10px;
 }
 
-.page-actions-row {
+.page-actions {
   position: fixed;
   z-index: 2;
   margin-top: -62px;
@@ -298,7 +298,7 @@ ul.doc-list > li .message {
   border-bottom-right-radius: 5px;
 }
 
-.page-actions {
+.page-actions > ul {
   position: relative;
   text-align: center;
   margin: 0;
@@ -306,6 +306,11 @@ ul.doc-list > li .message {
   line-height: 250%;
   background-color: rgba(27,27,27,0);
   border-bottom-left-radius: 5px;
+}
+
+.page-actions > ul > li {
+  display: inline;
+  list-style-type: none;
 }
 
 .page-actions a.btn {
@@ -338,11 +343,6 @@ ul.doc-list > li .message {
   font-size: 9px;
   line-height: 12px;
   margin: 0;
-}
-
-.page-actions > li {
-  display: inline;
-  list-style-type: none;
 }
 
 /* Needed for wideArea */

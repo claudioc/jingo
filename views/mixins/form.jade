@@ -1,6 +1,6 @@
 mixin pageActions(action, pageHame)
   if action == 'edit'
-    ul.page-actions
+    ul
       if pageName != 'home'
         li
           form(action="/pages/#{pageName}", method="post", style="display:inline")
@@ -8,7 +8,7 @@ mixin pageActions(action, pageHame)
             input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-default
 
   if action == 'show'
-    ul.page-actions
+    ul
       if !isAnonymous()
         li
           a(href="/pages/new", title="Create new page").btn.btn-sm.btn-default

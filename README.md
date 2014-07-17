@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/<package>.png)](https://npmjs.org/package/<package>)
+
 JINGO
 =====
 

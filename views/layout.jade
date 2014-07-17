@@ -38,9 +38,10 @@ html
               a.logout(href='/logout', title='Become anonymous')
                 i.icon.ion-power
 
+    .page-actions
+      block page-actions
+
     .container
-      .row.page-actions-row
-        block page-actions
 
       .row
         if hasSidebar()

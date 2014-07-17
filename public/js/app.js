@@ -9,7 +9,7 @@
 
     init: function() {
       var navh = $(".navbar").height(),
-          $par = $(".page-actions-row"),
+          $par = $(".page-actions"),
           qs, hl = null;
 
       if (location.search != "") {
@@ -43,9 +43,9 @@
 
       $("#login").attr("href", function() { return $(this).attr("href").replace("destination", "destination=" + encodeURIComponent(location.pathname)); });
 
-      $(".page-actions-row").height(navh);
+      $(".page-actions").height(navh);
 
-      if ($(".page-actions:not(.pull-right)").length > 0 && $(".page-actions li").length > 0) {
+      if ($(".page-actions:not(.pull-right)").length > 0 && $(".page-actions > ul > li").length > 0) {
         var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
@@ -60,7 +60,7 @@
             $pah.slideDown();
           }, 500);
         });
-        $(".page-actions:not(.pull-right)").append($pah);
+        $(".page-actions > ul:not(.pull-right)").append($pah);
       } else {
       }
 
