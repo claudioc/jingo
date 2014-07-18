@@ -25,6 +25,7 @@ Version 1.0.0, July 31, 2014
     left untouched and changing the name of the document will also change the
     name of the file
 - new YAML parser (js-yaml)
+- if you touch the pages config, you need to set all the keys!
 
   This update requires to issue a `npm install`
 

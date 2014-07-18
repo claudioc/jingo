@@ -247,8 +247,7 @@ function _getPage(req, res) {
 }
 
 function _getIndex(req, res) {
-  console.log(app.locals.pagesConfig);
-  res.redirect('/wiki/' + app.locals.pagesConfig.index);
+  res.redirect('/wiki/' + app.locals.config.get("pages").index);
 }
 
 module.exports = router;

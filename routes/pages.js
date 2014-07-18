@@ -17,11 +17,13 @@ router.post("/pages", _postPages);
 router.put("/pages/:page", _putPages);
 router.delete ("/pages/:page", _deletePages);
 
+var pagesConfig = app.locals.config.get("pages");
+
 function _deletePages(req, res) {
 
   var pageName = namer.normalize(req.params.page);
 
-  if (pageName == app.locals.pagesConfig.index) {
+  if (pageName == app.locals.config.get("pages").index) {
     res.redirect("/");
     return;
   }
@@ -29,6 +31,7 @@ function _deletePages(req, res) {
   models.pages.removeAsync(pageName, req.user.asGitAuthor).then(function() {
 
     locker.unlock(pageName);
+
     if (pageName == '_footer') {
       app.locals._footer = null;
     }
@@ -71,7 +74,13 @@ function _postPages(req, res) {
     , pageFile
     , hasPageName = !!req.body.pageName;
 
-  pageName = namer.normalize(req.body.pageName || req.body.pageTitle);
+  if (pagesConfig.title.fromFilename) {
+    // pageName (from url) is not considered
+    pageName = namer.normalize(req.body.pageTitle);
+  } else {
+    // pageName (from url) is more important
+    pageName = namer.normalize(req.body.pageName || req.body.pageTitle);
+  }
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -92,14 +101,19 @@ function _postPages(req, res) {
 
   if (fs.existsSync(pageFile)) {
     req.session.errors = [{msg: "A document with this title already exists"}];
-    res.redirect("/pages/new");
+    res.redirect("/pages/new" + (hasPageName ? '/' + pageName : ''));
     return;
   }
 
-  fs.writeFile(pageFile, "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n"), function() {
+  var title = "";
+  if (pagesConfig.title.fromContent) {
+    title = "# " + req.body.pageTitle + "\n";
+  }
+
+  fs.writeFile(pageFile, title + req.body.content.replace(/\r\n/gm, "\n"), function() {
     models.pages.addAsync(pageName, req.user.asGitAuthor).then(function() {
       req.session.notice = "The page has been created. <a href=\"/pages/" + pageName + "/edit\">Edit it?</a>";
-      res.redirect("/wiki/" + pageName);
+      res.redirect("/wiki/" + encodeURIComponent(pageName));
     });
   });
 }

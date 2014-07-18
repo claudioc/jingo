@@ -57,7 +57,7 @@ if (auth.alone.enabled) {
 }
 
 function usedAuthentication(name) {
-  for (var a in app.locals.authentication) {
+  for (var a in auth) {
     auth[a].used = (a == name);
   }
 }
@@ -112,7 +112,7 @@ function _getLogin(req, res) {
 
   res.render('login', {
     title: app.locals.config.get("application").title,
-    auth: res.locals.authentication
+    auth: auth
   });
 }
 
