@@ -24,6 +24,7 @@ Version 1.0.0, July 31, 2014
     the title is read from the filename, the case of the filename itself will be
     left untouched and changing the name of the document will also change the
     name of the file
+- new YAML parser (js-yaml)
 
   This update requires to issue a `npm install`
 

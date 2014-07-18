@@ -5,7 +5,7 @@ var router = require("express").Router()
   , tools = require("../lib/tools")
   ;
 
-var auth = app.locals.authentication;
+var auth = app.locals.config.get("authentication");
 var passport = app.locals.passport;
 
 router.get("/login", _getLogin);
@@ -58,7 +58,7 @@ if (auth.alone.enabled) {
 
 function usedAuthentication(name) {
   for (var a in app.locals.authentication) {
-    app.locals.authentication[a].used = (a == name);
+    auth[a].used = (a == name);
   }
 }
 
@@ -111,7 +111,7 @@ function _getLogin(req, res) {
   res.locals.errors = req.flash();
 
   res.render('login', {
-    title: res.locals.appTitle,
+    title: app.locals.config.get("application").title,
     auth: res.locals.authentication
   });
 }

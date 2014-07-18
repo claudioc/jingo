@@ -33,6 +33,7 @@
     "gravatar": ">= 1.0.6",
     "iconv": "*",
     "jade": "*",
+    "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
     "marked": ">= 0.2.x",
     "method-override": "^2.0.2",
@@ -41,8 +42,7 @@
     "passport": "^0.2.0",
     "passport-google-oauth": "^0.1.5",
     "passport-local": "^1.0.0",
-    "serve-favicon": "^2.0.1",
-    "yaml-js": "*"
+    "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
     "chai": "*",

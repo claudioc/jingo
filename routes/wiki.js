@@ -221,7 +221,7 @@ function _getPage(req, res) {
     delete req.session.notice;
 
     res.render('show', {
-      title:   res.locals.appTitle + " – " + tools.getPageTitle(pageContent, pageName),
+      title:   app.locals.config.get("application").title + " – " + tools.getPageTitle(pageContent, pageName),
       content: renderer.render(tools.hasTitle(pageContent) ? pageContent : "# " + pageName + "\n" + pageContent),
       pageName: pageName,
       metadata: metadata
@@ -234,7 +234,7 @@ function _getPage(req, res) {
       // Special case for "home", anonymous user and an empty docbase
       if (pageName == 'home') {
         res.render('welcome', {
-          title: 'Welcome to ' + res.locals.appTitle
+          title: 'Welcome to ' + app.locals.config.get("application").title
         });
       } else {
         res.locals.title = "404 - Not found";

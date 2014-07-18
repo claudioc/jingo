@@ -39,30 +39,20 @@ if (!program.config || !Fs.existsSync(program.config)) {
 }
 
 if (!config.load(program.config)) {
-  console.log("Error: a problem exists in the config file. Cannot continue.");
+  console.log("Error: " + config.getError());
   process.exit(-1);
 }
 
-var auth = config.get("authentication", { google: { enabled: true }, alone: { enabled: false } });
-
-auth.google = auth.google || {enabled: false};
-auth.alone  = auth.alone  || {enabled: false};
-
-if ( !auth.google.enabled && !auth.alone.enabled ) {
-  console.log("Error: no authentication method provided. Cannot continue.");
+if (!config.validate()) {
+  console.log("Error: " + config.getError());
   process.exit(-1);
 }
 
-if (auth.google.enabled && (!auth.google.clientId || !auth.google.clientSecret)) {
-  console.log("Error: invalid or missing authentication credentials for Google (clientId and/or clientSecret).");
-  process.exit(-1);
-}
-
-var refspec = config.get("application.remote") ? config.get("application.remote").split(/\s+/) : "";
+var refspec = config.get("application").remote.split(/\s+/);
 
 try {
-  Git.setup(config.get("application.repository"),
-            config.get("application.docSubdir", ""),
+  Git.setup(config.get("application").repository,
+            config.get("application").docSubdir,
             refspec);
 } catch(e) {
   console.log(e.message)
@@ -70,20 +60,18 @@ try {
   process.exit(-1);
 }
 
-var app = require("./lib/app").initialize(config, auth);
+var app = require("./lib/app").initialize(config);
 
 var listenAddr = process.env.NW_ADDR || "";
-if (config.get("server.localOnly")) {
+if (config.get("server").localOnly) {
   listenAddr = "localhost";
 }
 
-http.createServer(app).listen(app.locals.port, listenAddr, function() {
-  console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", config.get("server.localOnly") ? " (local) " : " ", program.version(), app.locals.port);
+http.createServer(app).listen(config.get("server").port, listenAddr, function() {
+  console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", config.get("server").localOnly ? " (local) " : " ", program.version(), config.get("server").port);
 });
 
-var pushInterval = config.get("application.pushInterval") ? parseInt(config.get("application.pushInterval"), 10) * 1000 : 30000;
-
-if (refspec.trim() !== "") {
+if (config.get("application").pushInterval && refspec.length > 0) {
   setInterval(function() {
     Git.pull(function(err) {
       if (err) {
@@ -96,5 +84,5 @@ if (refspec.trim() !== "") {
         });
       }
     });
-  }, pushInterval);
+  }, config.get("application").pushInterval * 1000);
 }
