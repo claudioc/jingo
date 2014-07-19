@@ -9,7 +9,7 @@
 
     init: function() {
       var navh = $(".navbar").height(),
-          $par = $(".page-actions"),
+          $tools = $(".tools"),
           qs, hl = null;
 
       if (location.search != "") {
@@ -43,24 +43,24 @@
 
       $("#login").attr("href", function() { return $(this).attr("href").replace("destination", "destination=" + encodeURIComponent(location.pathname)); });
 
-      $(".page-actions").height(navh);
+      $(".tools").height(navh);
 
-      if ($(".page-actions:not(.pull-right)").length > 0 && $(".page-actions > ul > li").length > 0) {
-        var $pah = $("<li class=\"page-actions-handle\">Tools</li>");
+      if ($(".tools > ul > li").length > 0) {
+        var $pah = $("<li class=\"tools-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
-          $par.animate({"margin-top": "-20px"})
+          $tools.animate({"margin-top": "-20px"})
           $pah.slideUp();
         });
-        $par.on("mouseenter", function() {
+        $tools.on("mouseenter", function() {
           clearTimeout(pahTo);
         }).on("mouseleave", function() {
           pahTo = setTimeout(function() {
-            $par.animate({"margin-top": "-62"})
+            $tools.animate({"margin-top": "-62"})
             $pah.slideDown();
           }, 500);
         });
-        $(".page-actions > ul:not(.pull-right)").append($pah);
+        $(".tools > ul").append($pah);
       } else {
       }
 
@@ -105,7 +105,7 @@
 
         $.getJSON("/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href=\\/wiki\\/" + a + "]").addClass("absent");
+            $("#content a[href=\\/wiki\\/" + a.replace(/ /g, '\\') + "]").addClass("absent");
           });
         });
       }

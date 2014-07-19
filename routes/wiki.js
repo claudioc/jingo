@@ -16,32 +16,144 @@ router.get("/wiki/:page/history", _getHistory);
 router.get("/wiki/:page/:version", _getPage);
 router.get("/wiki/:page/compare/:revisions", _getCompare);
 
-function _getCompare(req, res) {
+function _getHistory(req, res) {
 
-  var pageName = req.params.page
-    , revisions = req.params.revisions;
+  var page = new models.Page(req.params.page);
 
-  res.locals.revisions = revisions.split("..");
-  res.locals.lines = [];
+  page.fetch().then(function() {
 
-  models.pages.getRevisionsDiffAsync(pageName, revisions).then(function(diff) {
+    return page.fetchHistory();
+  }).then(function(history) {
 
-    diff.split("\n").slice(4).forEach(function(line) {
+    // FIXME better manage an error here
+    if (!page.error) {
+      res.render('history', {
+        items: history,
+        page: page
+      });
+    } else {
+      res.locals.title = "404 - Not found";
+      res.statusCode = 404;
+      res.render('404.jade');
+    }
+  });
+}
 
-      if (line.slice(0,1) != '\\') {
-        res.locals.lines.push({
-          text: line,
-          ldln: leftDiffLineNumber(0, line),
-          rdln: rightDiffLineNumber(0, line),
-          class: lineClass(line)
+function _getWiki(req, res) {
+
+  var items = [];
+
+  var pages = new models.Pages();
+
+  pages.fetch().then(function() {
+
+    pages.models.forEach(function(page) {
+
+      if (!page.error) {
+        items.push({
+          page: page,
+          hashes: page.hashes.length == 2 ? page.hashes.join("..") : ""
         });
       }
     });
 
-    res.render('compare', {
-      title: "Compare Revisions"
+    items.sort(function(a, b) {
+      return b.page.metadata.timestamp - a.page.metadata.timestamp;
     });
+
+    res.render("list", {
+     title: "Document list – Sorted by update date",
+     items: items
+    });
+  }).catch(function(ex) {
+    console.log(ex);
   });
+}
+
+function _getPage(req, res) {
+
+  var page = new models.Page(req.params.page, req.params.version);
+
+  page.fetch().then(function() {
+
+    if (!page.error) {
+
+      res.locals.canEdit = true;
+      if (page.revision != 'HEAD') {
+        res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='/wiki/" + page.name + "'>here</a>.";
+        res.locals.canEdit = false;
+      }
+
+      res.locals.notice = req.session.notice;
+      delete req.session.notice;
+
+      res.render('show', {
+        page: page,
+        title: app.locals.config.get("application").title + " – " + page.title,
+        content: renderer.render(page.content)
+      });
+    }
+    else {
+
+      if (req.user) {
+        res.redirect(page.urlFor("new"));
+      } else {
+
+        // Special case for "home", anonymous user and an empty docbase
+        if (page.isIndex()) {
+          res.render('welcome', {
+            title: 'Welcome to ' + app.locals.config.get("application").title
+          });
+        }
+        else {
+          res.locals.title = "404 - Not found";
+          res.statusCode = 404;
+          res.render('404.jade');
+          return;
+        }
+      }
+    }
+  });
+}
+
+function _getCompare(req, res) {
+
+  var revisions = req.params.revisions;
+
+  var page = new models.Page(req.params.page);
+
+  page.fetch().then(function() {
+
+    return page.fetchRevisionsDiff(req.params.revisions);
+  }).then(function(diff) {
+    if (!page.error) {
+
+      var lines = [];
+      diff.split("\n").slice(4).forEach(function(line) {
+
+        if (line.slice(0,1) != '\\') {
+          lines.push({
+            text: line,
+            ldln: leftDiffLineNumber(0, line),
+            rdln: rightDiffLineNumber(0, line),
+            className: lineClass(line)
+          });
+        }
+      });
+
+      res.render('compare', {
+        page: page,
+        lines: lines
+      });
+
+    }
+    else {
+      res.locals.title = "404 - Not found";
+      res.statusCode = 404;
+      res.render('404.jade');
+      return;
+    }
+  })
 
   var ldln = 0
     , cdln;
@@ -104,146 +216,6 @@ function _getCompare(req, res) {
       return "gi";
     }
   }
-}
-
-function _getHistory(req, res) {
-
-  var pageName = req.params.page
-    , pageTitle;
-
-  models.pages
-
-    .getHistoryAsync(pageName)
-
-      .then(function(result) {
-
-        res.locals.pageTitle = tools.getPageTitle(result[0], pageName);
-        res.locals.pageName = pageName;
-        res.locals.items = result[1];
-        res.render('history', {
-          title: "Revisions of"
-        });
-      })
-
-      .catch(function(ex) {
-        console.log(ex)
-        res.redirect('/');
-      });
-}
-
-function _getWiki(req, res) {
-
-  var items = []
-    , len
-    , getPageInfoAsync;
-
-  var pages = models.pages;
-
-  pages.getAllAsync().then(function(list) {
-
-    len = list.length;
-
-    list.forEach(function(page) {
-
-      getPageInfoAsync(page).then(function(info) {
-
-        items.push({
-          pageTitle: info.title,
-          message: info.message,
-          metadata: info.metadata,
-          hashes: info.hashes.length == 2 ? info.hashes.join("..") : ""
-        });
-
-        if (items.length === len) {
-          items.sort(function(a, b) {
-            return b.metadata.timestamp - a.metadata.timestamp;
-          });
-
-          res.render("list", {
-           title: "Document list – Sorted by update date",
-           items: items
-          });
-        }
-      });
-    });
-  });
-
-  function getPageInfo(page, callback) {
-
-    var info = {};
-
-    page = path.basename(page);
-
-    pages.getContentAsync(page, "HEAD")
-
-         .then(function(content) {
-           info.title = tools.getPageTitle(content, page);
-           return pages.getMetadataAsync(page, "HEAD");
-         })
-
-         .then(function(metadata) {
-           info.metadata = metadata;
-           return pages.getHashesAsync(page);
-         })
-
-         .then(function(hashes) {
-           info.hashes = hashes;
-           return pages.getLastMessageAsync(page);
-         })
-
-         .then(function(message) {
-           info.message = message;
-           callback(null, info);
-         });
-   }
-
-   var getPageInfoAsync = Promise.promisify(getPageInfo);
-}
-
-function _getPage(req, res) {
-
-  var pageName = req.params.page
-    , pageVersion = req.params.version || "HEAD"
-    , pageContent;
-
-  models.pages.getContentAsync(pageName, pageVersion).then(function(content) {
-    pageContent = content;
-    return models.pages.getMetadataAsync(pageName, pageVersion);
-  }).then(function(metadata) {
-
-    res.locals.canEdit = true;
-    if (pageVersion != 'HEAD') {
-      res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='/wiki/" + pageName + "'>here</a>.";
-      res.locals.canEdit = false;
-    }
-
-    res.locals.notice = req.session.notice;
-    delete req.session.notice;
-
-    res.render('show', {
-      title:   app.locals.config.get("application").title + " – " + tools.getPageTitle(pageContent, pageName),
-      content: renderer.render(tools.hasTitle(pageContent) ? pageContent : "# " + pageName + "\n" + pageContent),
-      pageName: pageName,
-      metadata: metadata
-    });
-  }).catch(function(ex) {
-
-    if (req.user) {
-      res.redirect('/pages/new/' + pageName);
-    } else {
-      // Special case for "home", anonymous user and an empty docbase
-      if (pageName == 'home') {
-        res.render('welcome', {
-          title: 'Welcome to ' + app.locals.config.get("application").title
-        });
-      } else {
-        res.locals.title = "404 - Not found";
-        res.statusCode = 404;
-        res.render('404.jade');
-        return;
-      }
-    }
-  });
 }
 
 function _getIndex(req, res) {

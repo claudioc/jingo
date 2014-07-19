@@ -161,6 +161,7 @@ hr {
 }
 
 .compare .ln {
+  width: 1%;
   color: #999999;
   background-color: #EAF2F5;
   text-align: right;
@@ -259,10 +260,6 @@ ul.doc-list > li:hover {
   font-size: 90%;
 }
 
-ul.doc-list > li .page-actions {
-  margin: 5px 10px 0 0;
-}
-
 ul.doc-list > li .content {
   font-size: 90%;
   color: #808080;
@@ -287,6 +284,22 @@ ul.doc-list > li .message {
 }
 
 .page-actions {
+  float: right;
+  margin: 0;
+  padding: 0;
+  margin-right: 5px;
+}
+
+.page-actions li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.doc-list .page-actions a {
+  font-size: 18px
+}
+
+.tools {
   position: fixed;
   z-index: 2;
   margin-top: -62px;
@@ -298,7 +311,7 @@ ul.doc-list > li .message {
   border-bottom-right-radius: 5px;
 }
 
-.page-actions > ul {
+.tools > ul {
   position: relative;
   text-align: center;
   margin: 0;
@@ -308,27 +321,25 @@ ul.doc-list > li .message {
   border-bottom-left-radius: 5px;
 }
 
-.page-actions > ul > li {
+.tools > ul > li {
   display: inline;
   list-style-type: none;
 }
 
-.page-actions a.btn {
+.page-actions a.btn,
+.tools a.btn {
   font-size: 18px;
   padding: 0 10px;
   margin-bottom: -3px;
   background-color: #f5f5f5;
 }
 
-.page-actions a:hover {
+.page-actions a.hover,
+.tools a:hover {
   color: #4183c4;
 }
 
-.doc-list .page-actions a {
-  font-size: 18px
-}
-
-.page-actions-handle {
+.tools-handle {
   background-color: #4183c4;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;

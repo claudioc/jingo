@@ -3,11 +3,12 @@ extends layout
 block content
 
   #content.show
-    h2 #{title}
+    h2 Compare two revisions of:&nbsp;
+      b.page-param #{page.title}
 
     table.compare.table.table-bordered.table-hover.table-condensed
       each line in lines
         tr
           td.ln #{line.ldln}
           td.ln #{line.rdln}
-          td(class="#{line.class}") #{line.text}
+          td(class="#{line.className}") #{line.text}

@@ -21,7 +21,7 @@ var pagesConfig = app.locals.config.get("pages");
 
 function _deletePages(req, res) {
 
-  var pageName = namer.normalize(req.params.page);
+  var pageName = namer.wikify(req.params.page);
 
   if (pageName == app.locals.config.get("pages").index) {
     res.redirect("/");
@@ -47,7 +47,7 @@ function _deletePages(req, res) {
 
 function _getPagesNew(req, res) {
 
-  res.locals.pageName = namer.normalize(req.params.page);
+  res.locals.pageName = namer.wikify(req.params.page);
 
   if (res.locals.pageName) {
     if (fs.existsSync(models.pages.getAbsolutePath(res.locals.pageName))) {
@@ -63,7 +63,7 @@ function _getPagesNew(req, res) {
 
   res.render('create', {
     "title": "Create a new page",
-    "pageTitle": namer.denormalize(res.locals.pageName)
+    "pageTitle": namer.unwikify(res.locals.pageName)
   });
 }
 
@@ -76,10 +76,10 @@ function _postPages(req, res) {
 
   if (pagesConfig.title.fromFilename) {
     // pageName (from url) is not considered
-    pageName = namer.normalize(req.body.pageTitle);
+    pageName = namer.wikify(req.body.pageTitle);
   } else {
     // pageName (from url) is more important
-    pageName = namer.normalize(req.body.pageName || req.body.pageTitle);
+    pageName = namer.wikify(req.body.pageName || req.body.pageTitle);
   }
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
@@ -120,7 +120,7 @@ function _postPages(req, res) {
 
 function _putPages(req, res) {
 
-  var pageName = res.locals.pageName = namer.normalize(req.params.page)
+  var pageName = res.locals.pageName = namer.wikify(req.params.page)
     , errors
     , pageFile
     , message
@@ -205,8 +205,8 @@ function _getPagesEdit(req, res) {
       title: 'Edit page'
     });
 
-  }).catch(function() {
-    error500(req, res, err);
+  }).catch(function(ex) {
+    console.log(ex);
   });
 }
 

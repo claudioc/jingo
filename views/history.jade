@@ -2,10 +2,10 @@ extends layout
 
 block content
   #content.show
-    h2 #{title}:&nbsp;
-      b.page-param #{pageTitle}
+    h2 Revisions of:&nbsp;
+      b.page-param #{page.title}
     p
-      button(id="rev-compare", data-pageName="#{pageName}").btn.btn-primary Compare revisions
+      button(id="rev-compare", data-pageName="#{page.name}").btn.btn-primary Compare revisions
 
     table.history.table.table-striped.table-bordered.table-hover.table-condensed
       each item in items
@@ -19,4 +19,4 @@ block content
           td #{item.relDate}
           td #{item.subject}
           td
-            a(href="/wiki/#{item.name}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
+            a(href="#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
