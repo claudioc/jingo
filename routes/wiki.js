@@ -11,9 +11,9 @@ models.use(Git);
 
 router.get("/", _getIndex);
 router.get("/wiki", _getWiki);
-router.get("/wiki/:page", _getPage);
+router.get("/wiki/:page", _getWikiPage);
 router.get("/wiki/:page/history", _getHistory);
-router.get("/wiki/:page/:version", _getPage);
+router.get("/wiki/:page/:version", _getWikiPage);
 router.get("/wiki/:page/compare/:revisions", _getCompare);
 
 function _getHistory(req, res) {
@@ -70,7 +70,7 @@ function _getWiki(req, res) {
   });
 }
 
-function _getPage(req, res) {
+function _getWikiPage(req, res) {
 
   var page = new models.Page(req.params.page, req.params.version);
 
@@ -80,7 +80,7 @@ function _getPage(req, res) {
 
       res.locals.canEdit = true;
       if (page.revision != 'HEAD') {
-        res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='/wiki/" + page.name + "'>here</a>.";
+        res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='" + page.urlForShow() + "'>here</a>.";
         res.locals.canEdit = false;
       }
 
@@ -90,7 +90,7 @@ function _getPage(req, res) {
       res.render('show', {
         page: page,
         title: app.locals.config.get("application").title + " – " + page.title,
-        content: renderer.render(page.content)
+        content: renderer.render(page.rawContent)
       });
     }
     else {

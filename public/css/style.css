@@ -185,6 +185,14 @@ hr {
   border-radius: 0;
 }
 
+.alert ul {
+  padding-left: 1em;
+}
+
+.alert li:last-child {
+  margin-bottom: 0
+}
+
 .navbar-inverse .navbar-inner {
   background-image: none;
 }

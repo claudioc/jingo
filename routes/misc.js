@@ -27,13 +27,15 @@ function _getExistence(req, res) {
     return;
   }
 
-  var result = []
-    , n = req.query.data.length;
+  var result = [],
+      page,
+      n = req.query.data.length;
 
   req.query.data.forEach(function(pageName, idx) {
-    (function(page, index) {
-      if (!fs.existsSync(models.pages.getAbsolutePath(page))) {
-        result.push(page);
+    (function(name, index) {
+      page = new models.Page(name);
+      if (!fs.existsSync(page.pathname)) {
+        result.push(name);
       }
       if (index == (n - 1)) {
         res.send(JSON.stringify({data: result}));

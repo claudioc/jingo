@@ -6,16 +6,16 @@ block styles
   mixin featuresStylesheets()
 
 block tools
-  mixin tools('edit')
+  mixin tools('edit', page.wikiname)
 
 block content
 
   #content.edit
     mixin errors()
     mixin warning()
-    h1 #{title}
+    h1 Edit page
 
-    form(action='/pages/#{pageName}', method='post', class='edit')
+    form(action='#{page.urlForEditPut()}', method='post', class='edit')
 
       .form-group
         input.form-control(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle

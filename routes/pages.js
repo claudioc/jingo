@@ -1,6 +1,5 @@
 var router = require("express").Router()
   , namer  = require("../lib/namer")
-  , locker = require("../lib/locker")
   , tools  = require("../lib/tools")
   , fs     = require("fs")
   , app    = require("../lib/app").getInstance()
@@ -15,43 +14,49 @@ router.get("/pages/new/:page", _getPagesNew);
 router.get("/pages/:page/edit", _getPagesEdit);
 router.post("/pages", _postPages);
 router.put("/pages/:page", _putPages);
-router.delete ("/pages/:page", _deletePages);
+router.delete("/pages/:page", _deletePages);
 
 var pagesConfig = app.locals.config.get("pages");
 
 function _deletePages(req, res) {
 
-  var pageName = namer.wikify(req.params.page);
+  var page = new models.Page(req.params.page);
 
-  if (pageName == app.locals.config.get("pages").index) {
+  if (page.isIndex() || !page.exists()) {
+    req.session.notice = "The page cannot be deleted.";
     res.redirect("/");
     return;
   }
 
-  models.pages.removeAsync(pageName, req.user.asGitAuthor).then(function() {
+  page.author = req.user.asGitAuthor;
 
-    locker.unlock(pageName);
+  page.remove().then(function() {
 
-    if (pageName == '_footer') {
+    page.unlock();
+
+    if (page.isFooter()) {
       app.locals._footer = null;
     }
 
-    if (pageName == '_sidebar') {
+    if (page.isSidebar()) {
       app.locals._sidebar = null;
     }
 
-    req.session.notice = "The page `" + pageName + "` has been deleted.";
+    req.session.notice = "The page `" + page.wikiname + "` has been deleted.";
     res.redirect("/");
   });
 }
 
 function _getPagesNew(req, res) {
 
-  res.locals.pageName = namer.wikify(req.params.page);
+  var page, title = "";
 
-  if (res.locals.pageName) {
-    if (fs.existsSync(models.pages.getAbsolutePath(res.locals.pageName))) {
-      res.redirect("/wiki/" + res.locals.pageName);
+  if (req.params.page) {
+    // This is not perfect, unfortunately
+    title = namer.unwikify(req.params.page);
+    page = new models.Page(title);
+    if (page.exists()) {
+      res.redirect(page.urlForShow());
       return;
     }
   }
@@ -62,25 +67,25 @@ function _getPagesNew(req, res) {
   delete req.session.formData;
 
   res.render('create', {
-    "title": "Create a new page",
-    "pageTitle": namer.unwikify(res.locals.pageName)
+    pageTitle: title,
+    pageName: page ? page.wikiname : ""
   });
 }
 
 function _postPages(req, res) {
 
   var errors
-    , pageName
-    , pageFile
-    , hasPageName = !!req.body.pageName;
+    , pageName;
 
   if (pagesConfig.title.fromFilename) {
     // pageName (from url) is not considered
-    pageName = namer.wikify(req.body.pageTitle);
+    pageName = req.body.pageTitle;
   } else {
     // pageName (from url) is more important
-    pageName = namer.wikify(req.body.pageName || req.body.pageTitle);
+    pageName = (namer.unwikify(req.body.pageName) || req.body.pageTitle);
   }
+
+  var page = new models.Page(pageName);
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -89,42 +94,49 @@ function _postPages(req, res) {
 
   if (errors) {
     req.session.errors = errors;
-    req.session.formData = req.body;
-    res.redirect("/pages/new" + (hasPageName ? '/' + pageName : ''));
+    // If the req.body is too big, the cookie session-store will crash,
+    // logging out the user. For this reason we use the sessionStorage
+    // on the client to save the body when submitting
+    //    req.session.formData = req.body;
+    req.session.formData = {
+      pageTitle: req.body.pageTitle
+    };
+    res.redirect(page.urlFor("new"));
     return;
   }
 
   req.sanitize('pageTitle').trim();
   req.sanitize('content').trim();
 
-  pageFile = models.pages.getAbsolutePath(pageName);
-
-  if (fs.existsSync(pageFile)) {
+  if (page.exists()) {
     req.session.errors = [{msg: "A document with this title already exists"}];
-    res.redirect("/pages/new" + (hasPageName ? '/' + pageName : ''));
+    res.redirect(page.urlFor("new"));
     return;
   }
 
-  var title = "";
-  if (pagesConfig.title.fromContent) {
-    title = "# " + req.body.pageTitle + "\n";
-  }
+  page.author = req.user.asGitAuthor;
+  page.title = req.body.pageTitle;
 
-  fs.writeFile(pageFile, title + req.body.content.replace(/\r\n/gm, "\n"), function() {
-    models.pages.addAsync(pageName, req.user.asGitAuthor).then(function() {
-      req.session.notice = "The page has been created. <a href=\"/pages/" + pageName + "/edit\">Edit it?</a>";
-      res.redirect("/wiki/" + encodeURIComponent(pageName));
+  page.save(req.body.content).then(function() {
+    req.session.notice = "The page has been created. <a href=\"" + page.urlForEdit() + "\">Edit it again?</a>";
+    res.redirect(page.urlForShow());
+  }).catch(function (err) {
+    res.locals.title = "500 - Internal server error";
+    res.statusCode = 500;
+    console.log(err);
+    res.render('500.jade', {
+      message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
+      error: err
     });
   });
 }
 
 function _putPages(req, res) {
 
-  var pageName = res.locals.pageName = namer.wikify(req.params.page)
-    , errors
-    , pageFile
-    , message
-    , content;
+  var errors,
+      page;
+
+  var page = new models.Page(req.params.page);
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -132,9 +144,14 @@ function _putPages(req, res) {
   errors = req.validationErrors();
 
   if (errors) {
-    req.session.errors = errors;
-    req.session.formData = req.body;
-    res.redirect("/pages/" + pageName + "/edit");
+    fixErrors();
+    return;
+  }
+
+  // Highly unlickly (someone deleted the page we were editing)
+  if (!page.exists()) {
+    req.session.notice = "The page does not exist anymore.";
+    res.redirect("/");
     return;
   }
 
@@ -142,72 +159,103 @@ function _putPages(req, res) {
   req.sanitize('content').trim();
   req.sanitize('message').trim();
 
-  content = "# " + req.body.pageTitle + "\n" + req.body.content.replace(/\r\n/gm, "\n");
-  pageFile = models.pages.getAbsolutePath(pageName);
-
-  message = (req.body.message.trim() === "") ? "Content updated (" + pageName + ")" : req.body.message.trim();
-
-  fs.writeFile(pageFile, content, function() {
-
-    models.pages.updateAsync(pageName, message, req.user.asGitAuthor).then(function() {
-
-      locker.unlock(pageName);
-
-      if (pageName == '_footer') {
-        components.expire('footer');
+  // If the title is from content, we cannot overwrite an existing filename
+  // If the title is from content, we never rename a file and the problem does not exist
+  if (app.locals.config.get("pages").title.fromFilename) {
+    if (page.name != page.pageTitle) {
+      if (!page.renameTo(page.pageTitle)) {
+        errors = [{
+          param: 'pageTitle',
+          msg: 'A page with this name already exists.',
+          value: '' 
+        }];
+        fixErrors();
+        return;
       }
+    }
+  }
 
-      if (pageName == '_sidebar') {
-        components.expire('sidebar');
-      }
+  page.author = req.user.asGitAuthor;
+  page.title = req.body.pageTitle;
 
-      req.session.notice = "The page has been updated. <a href=\"/pages/" + pageName + "/edit\">Edit it again?</a>";
-      res.redirect("/wiki/" + pageName);
+  page.save(req.body.content, req.body.message).then(function() {
+
+    page.unlock();
+
+    if (page.name == '_footer') {
+      components.expire('footer');
+    }
+
+    if (page.name == '_sidebar') {
+      components.expire('sidebar');
+    }
+
+    req.session.notice = "The page has been updated. <a href=\"" + page.urlForEdit() + "\">Edit it again?</a>";
+    res.redirect(page.urlForShow());
+
+  }).catch(function (err) {
+    res.locals.title = "500 - Internal server error";
+    res.statusCode = 500;
+    console.log(err);
+    res.render('500.jade', {
+      message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
+      error: err
     });
   });
+
+  function fixErrors() {
+    req.session.errors = errors;
+    // If the req.body is too big, the cookie session-store will crash,
+    // logging out the user. For this reason we use the sessionStorage
+    // on the client to save the body when submitting
+    //    req.session.formData = req.body;
+    req.session.formData = {
+      pageTitle: req.body.pageTitle,
+      message: req.body.message
+    };
+    res.redirect(page.urlForEdit());
+  }
 }
 
 function _getPagesEdit(req, res) {
 
-  var pageName = res.locals.pageName = req.params.page
-    , lock;
+  var page = new models.Page(req.params.page),
+      warning;
 
-  if (lock = locker.getLock(pageName)) {
-    if (lock.user.asGitAuthor != req.user.asGitAuthor) {
-      res.locals.warning = "Warning: this page is probably being edited by " + lock.user.displayName;
-    }
+  if (!page.lock(req.user)) {
+    warning = "Warning: this page is probably being edited by " + page.lockedBy.displayName;
   }
 
   models.repositories.refreshAsync().then(function() {
 
-    return models.pages.getContentAsync(pageName, "HEAD");
-  }).then(function(content) {
+    return page.fetch();
+  }).then(function() {
 
     if (!req.session.formData) {
 
       res.locals.formData = {
-        pageTitle: tools.getPageTitle(content, pageName),
-        content: tools.getContent(content)
+        pageTitle: page.title,
+        content: page.content
       };
     } else {
 
       res.locals.formData = req.session.formData;
+      // FIXME remove this when the sessionStorage fallback will be implemented
+      if (!res.locals.formData.content) {
+        res.locals.formData.content = page.content;
+      }
     }
 
     res.locals.errors = req.session.errors;
-
-    locker.lock(pageName, req.user);
 
     delete req.session.errors;
     delete req.session.formData;
 
     res.render('edit', {
-      title: 'Edit page'
+      page: page,
+      warning: warning
     });
-
-  }).catch(function(ex) {
-    console.log(ex);
-  });
+  })
 }
 
 module.exports = router;
