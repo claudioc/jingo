@@ -34,7 +34,7 @@ p.user {
 }
 
 #content {
-  padding: 40px 25px;
+  padding: 20px 15px;
   overflow: hidden;
 }
 
@@ -308,6 +308,7 @@ ul.doc-list > li .message {
 }
 
 .tools {
+  display: none;
   position: fixed;
   z-index: 2;
   margin-top: -62px;
@@ -498,4 +499,15 @@ li {
 .jumbotron p.discrete {
   color: gray;
   font-size: 90%
+}
+
+@media (min-width: 768px) {
+  #content {
+    padding: 40px 25px;
+  }
+
+  .tools {
+    display: block;
+  }
+
 }

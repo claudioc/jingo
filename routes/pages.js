@@ -159,11 +159,12 @@ function _putPages(req, res) {
   req.sanitize('content').trim();
   req.sanitize('message').trim();
 
-  // If the title is from content, we cannot overwrite an existing filename
+  // Test if the user changed the name of the page and try to rename the file
+  // If the title is from filename, we cannot overwrite an existing filename
   // If the title is from content, we never rename a file and the problem does not exist
   if (app.locals.config.get("pages").title.fromFilename) {
-    if (page.name != page.pageTitle) {
-      if (!page.renameTo(page.pageTitle)) {
+    if (page.name.toLowerCase() != req.body.pageTitle.toLowerCase()) {
+      if (!page.renameTo(req.params.pageTitle)) {
         errors = [{
           param: 'pageTitle',
           msg: 'A page with this name already exists.',

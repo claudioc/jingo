@@ -90,7 +90,7 @@ function _getWikiPage(req, res) {
       res.render('show', {
         page: page,
         title: app.locals.config.get("application").title + " – " + page.title,
-        content: renderer.render(page.rawContent)
+        content: renderer.render("#" + page.title + "\n" + page.content)
       });
     }
     else {
