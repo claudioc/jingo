@@ -26,6 +26,7 @@ Version 1.0.0, July 31, 2014
     name of the file
 - new YAML parser (js-yaml)
 - if you touch the pages config, you need to set all the keys!
+- it is possible to specify a custom binary for git
 
   This update requires to issue a `npm install`
 

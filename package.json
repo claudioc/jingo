@@ -42,6 +42,7 @@
     "passport": "^0.2.0",
     "passport-google-oauth": "^0.1.5",
     "passport-local": "^1.0.0",
+    "semver": "^2.3.2",
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
