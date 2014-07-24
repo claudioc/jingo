@@ -25,6 +25,12 @@ mixin tools(action, pageName)
         a(href="/wiki", title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
+  if action == 'history'
+    ul
+      li
+        a(href="/wiki", title="All pages").btn.btn-sm.btn-default
+          i.icon.ion-grid
+
 mixin saveAndCancel(saveText)
   .well
     input(type='submit',value=saveText || 'Save').btn.btn-primary

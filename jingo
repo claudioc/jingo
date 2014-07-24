@@ -66,7 +66,7 @@ Git.setup(config.get("application").git,
       !config.get("application").skipGitCheck &&
       config.get("pages").title.fromFilename && 
       !semver.satisfies(version, ">=1.8.5")) {
-    console.log("The current setup uses the filename of the wiki page as the page title.");
+    console.log("Your current setup uses the filename of the wiki page as the page title.");
     console.log("Unfortunately this version of git (" + version + ".x) on OSX doesn't handle")
     console.log("very well non ASCII characters used in filenames, therefore I rather not start.");
     console.log("You can continue anyway, setting `application.skipGitCheck` to true in the");

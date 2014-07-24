@@ -1,9 +1,9 @@
-[![NPM](https://nodei.co/npm/<package>.png)](https://npmjs.org/package/<package>)
+[![NPM](https://nodei.co/npm/jingo.png?compact=true)](https://npmjs.org/package/jingo)
 
 JINGO
 =====
 
-A simple git based _wiki engine_ written for Node.js.
+A git based _wiki engine_ written for Node.js.
 
 The aim of this wiki engine is to provide a very easy way to create a centralized
 documentation area for people used to working with git and markdown. It should fit well

@@ -1,5 +1,10 @@
 extends layout
 
+include mixins/form
+
+block tools
+  mixin tools('history')
+
 block content
   #content.show
     h2 Revisions of:&nbsp;

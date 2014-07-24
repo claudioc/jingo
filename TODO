@@ -1,4 +1,7 @@
 TODO
 
+BLOCKERS
+
 - add a simple js check on the create page to not submit empty values
 - save post data in sessionStorage before submitting
+- screenshots nel readme
