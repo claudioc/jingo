@@ -91,6 +91,26 @@
         return false;
       });
 
+      if (/^\/pages\/.*\/edit/.test(window.location.pathname) || 
+          /^\/pages\/new/.test(window.location.pathname)) {
+        $("#editor").closest("form").on("submit", function () {
+          if (Jingo.cmInstance) {
+            Jingo.cmInstance.save();
+          }
+          window.sessionStorage.setItem("jingo-page", $("#editor").val());
+        });
+        if (window.location.search == '?e=1') {
+          // Edit page in error: restore the body
+          var content;
+          if (content = window.sessionStorage.getItem("jingo-page")) {
+            $("#editor").val(content);
+          }
+        } 
+        else {
+          window.sessionStorage.removeItem("jingo-page");
+        }
+      }
+
       if (/^\/wiki\//.test(window.location.pathname)) {
         var pages = []
           , match

@@ -183,6 +183,16 @@ hr {
   padding: 0;
   margin-top: 5px;
 }
+
+.navbar-header {
+  min-width: 50%;
+}
+
+.navbar-brand {
+  overflow: hidden;
+  max-width: 60%;
+}
+
 .navbar-inverse {
   background-color: rgba(0,0,0,.8);
 }

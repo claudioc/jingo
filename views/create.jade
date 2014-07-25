@@ -15,7 +15,7 @@ block content
       input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
       .form-group
-        input.form-control(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
+        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
       .form-group
         textarea.form-control(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}

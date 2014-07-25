@@ -101,7 +101,7 @@ function _postPages(req, res) {
     req.session.formData = {
       pageTitle: req.body.pageTitle
     };
-    res.redirect(page.urlFor("new"));
+    res.redirect(page.urlForNewWithError());
     return;
   }
 
@@ -214,7 +214,7 @@ function _putPages(req, res) {
       pageTitle: req.body.pageTitle,
       message: req.body.message
     };
-    res.redirect(page.urlForEdit());
+    res.redirect(page.urlForEditWithError());
   }
 }
 
