@@ -2,5 +2,6 @@ TODO
 
 BLOCKERS
 
+- rename of the file on update
+- tests need to run again
 - screenshots nel readme
-- aggiorna codeMirror
