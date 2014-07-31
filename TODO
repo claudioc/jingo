@@ -2,6 +2,7 @@ TODO
 
 BLOCKERS
 
+- autolink to pages with a .md in the name
 - rename of the file on update
 - tests need to run again
 - screenshots nel readme

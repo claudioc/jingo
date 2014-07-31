@@ -1,10 +1,8 @@
 var router = require("express").Router()
   , namer  = require("../lib/namer")
-  , tools  = require("../lib/tools")
-  , fs     = require("fs")
   , app    = require("../lib/app").getInstance()
   , models = require("../lib/models")
-  , components = require('../lib/components')
+  , components = require("../lib/components")
   ;
 
 models.use(Git);
@@ -66,7 +64,7 @@ function _getPagesNew(req, res) {
   delete req.session.errors;
   delete req.session.formData;
 
-  res.render('create', {
+  res.render("create", {
     pageTitle: title,
     pageName: page ? page.wikiname : ""
   });
@@ -148,61 +146,67 @@ function _putPages(req, res) {
     return;
   }
 
-  // Highly unlickly (someone deleted the page we were editing)
+  // Highly unluckly (someone deleted the page we were editing)
   if (!page.exists()) {
     req.session.notice = "The page does not exist anymore.";
     res.redirect("/");
     return;
   }
 
-  req.sanitize('pageTitle').trim();
-  req.sanitize('content').trim();
-  req.sanitize('message').trim();
+  req.sanitize("pageTitle").trim();
+  req.sanitize("content").trim();
+  req.sanitize("message").trim();
+
+  page.author = req.user.asGitAuthor;
 
   // Test if the user changed the name of the page and try to rename the file
   // If the title is from filename, we cannot overwrite an existing filename
   // If the title is from content, we never rename a file and the problem does not exist
-  if (app.locals.config.get("pages").title.fromFilename) {
-    if (page.name.toLowerCase() != req.body.pageTitle.toLowerCase()) {
-      if (!page.renameTo(req.params.pageTitle)) {
-        errors = [{
-          param: 'pageTitle',
-          msg: 'A page with this name already exists.',
-          value: '' 
-        }];
-        fixErrors();
-        return;
-      }
-    }
+  if (app.locals.config.get("pages").title.fromFilename &&
+      page.name.toLowerCase() != req.body.pageTitle.toLowerCase()) {
+      page.renameTo(req.body.pageTitle)
+          .then(savePage)
+          .catch(function (ex) {
+            errors = [{
+              param: "pageTitle",
+              msg: "A page with this name already exists.",
+              value: ""
+            }];
+            fixErrors();
+          });
+  }
+  else {
+    savePage();
   }
 
-  page.author = req.user.asGitAuthor;
-  page.title = req.body.pageTitle;
+  function savePage()  {
+    page.title = req.body.pageTitle;
 
-  page.save(req.body.content, req.body.message).then(function() {
+    page.save(req.body.content, req.body.message).then(function() {
 
-    page.unlock();
+      page.unlock();
 
-    if (page.name == '_footer') {
-      components.expire('footer');
-    }
+      if (page.name == "_footer") {
+        components.expire("footer");
+      }
 
-    if (page.name == '_sidebar') {
-      components.expire('sidebar');
-    }
+      if (page.name == '_sidebar') {
+        components.expire('sidebar');
+      }
 
-    req.session.notice = "The page has been updated. <a href=\"" + page.urlForEdit() + "\">Edit it again?</a>";
-    res.redirect(page.urlForShow());
+      req.session.notice = "The page has been updated. <a href=\"" + page.urlForEdit() + "\">Edit it again?</a>";
+      res.redirect(page.urlForShow());
 
-  }).catch(function (err) {
-    res.locals.title = "500 - Internal server error";
-    res.statusCode = 500;
-    console.log(err);
-    res.render('500.jade', {
-      message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
-      error: err
+    }).catch(function (err) {
+      res.locals.title = "500 - Internal server error";
+      res.statusCode = 500;
+      console.log(err);
+      res.render('500.jade', {
+        message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
+        error: err
+      });
     });
-  });
+  }
 
   function fixErrors() {
     req.session.errors = errors;

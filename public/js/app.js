@@ -12,7 +12,7 @@
           $tools = $(".tools"),
           qs, hl = null;
 
-      if (location.search != "") {
+      if (location.search !== "") {
         qs = $.map(location.search.substr(1).split("&"), function(kv) {
           kv = kv.split("=");
           return { k: kv[0], v: decodeURIComponent(kv[1]) };
@@ -49,14 +49,14 @@
         var $pah = $("<li class=\"tools-handle\">Tools</li>");
         var pahTo;
         $pah.on("mouseover", function() {
-          $tools.animate({"margin-top": "-20px"})
+          $tools.animate({"margin-top": "-20px"});
           $pah.slideUp();
         });
         $tools.on("mouseenter", function() {
           clearTimeout(pahTo);
         }).on("mouseleave", function() {
           pahTo = setTimeout(function() {
-            $tools.animate({"margin-top": "-62"})
+            $tools.animate({"margin-top": "-62"});
             $pah.slideDown();
           }, 500);
         });
@@ -64,11 +64,11 @@
       } else {
       }
 
-      $('.confirm-delete-page').on("click", function(evt) {
-        return confirm("Do you really want to delete this page?");
+      $(".confirm-delete-page").on("click", function(evt) {
+        return window.confirm("Do you really want to delete this page?");
       });
 
-      var $hCol1 = $('.history td:first-child');
+      var $hCol1 = $(".history td:first-child");
 
       if ($("#content").hasClass("edit")) {
         $("#editor").focus();
@@ -76,10 +76,10 @@
         $("#pageTitle").focus();
       }
 
-      $('#rev-compare').attr("disabled", true);
+      $("#rev-compare").attr("disabled", true);
 
       toggleCompareCheckboxes();
-      $hCol1.find('input').on('click', function() {
+      $hCol1.find("input").on("click", function() {
         toggleCompareCheckboxes();
       });
 
@@ -87,7 +87,7 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = "/wiki/" + $(this).data('pagename') + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().join("..");
+        window.location.href = "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().join("..");
         return false;
       });
 
@@ -99,7 +99,7 @@
           }
           window.sessionStorage.setItem("jingo-page", $("#editor").val());
         });
-        if (window.location.search == '?e=1') {
+        if (window.location.search == "?e=1") {
           // Edit page in error: restore the body
           var content;
           if (content = window.sessionStorage.getItem("jingo-page")) {
@@ -119,27 +119,27 @@
         $("#content a.internal").each(function(i, a) {
           href = $(a).attr("href");
           if (match = /\/wiki\/(.+)/.exec(href)) {
-            pages.push(match[1]);
+            pages.push(decodeURIComponent(match[1]));
           }
         });
 
         $.getJSON("/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href=\\/wiki\\/" + a.replace(/ /g, '\\') + "]").addClass("absent");
+            $("#content a[href='\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
         });
       }
 
       function toggleCompareCheckboxes() {
 
-        $('#rev-compare').attr("disabled", true);
+        $("#rev-compare").attr("disabled", true);
 
         if ($hCol1.find(":checkbox").length == 1) {
           $hCol1.find(":checkbox").hide();
           return;
         }
         if ($hCol1.find(":checked").length == 2) {
-          $('#rev-compare').attr("disabled", false);
+          $("#rev-compare").attr("disabled", false);
           $hCol1.find(":not(:checked)")
                 .hide();
           $hCol1.parent("tr")
@@ -148,7 +148,7 @@
                 .parents("tr")
                 .css({"color": "black"});
         } else {
-          $hCol1.find('input')
+          $hCol1.find("input")
                 .show()
                 .parents("tr")
                 .css({"color": "black"});
@@ -158,9 +158,9 @@
     },
 
     preview: function() {
-      $('#preview').modal("show");
-      $.post("/misc/preview", {data: $('#editor').val()}, function(data) {
-        $('#preview .modal-body').html(data).get(0).scrollTop = 0;
+      $("#preview").modal("show");
+      $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
+        $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
 
@@ -179,7 +179,7 @@
       $toolbar = $("<ul class='toolbar'>");
       $toolbar.append("<li title=\"Toggle fullscreen (Ctrl/Cmd+Enter)\" class=\"fullscreen\"><span></span></li>\
         <li title=\"Syntax help\" class=\"info\"><span></span></li>\
-        <li title=\"Preview\" class=\"preview\"><span></span></li></ul>").insertBefore($('form.edit textarea:first').closest('div'));
+        <li title=\"Preview\" class=\"preview\"><span></span></li></ul>").insertBefore($("form.edit textarea:first").closest("div"));
 
       $("ul.toolbar").on("click", "span", function() {
         if (this.parentNode.className == "info") {
@@ -196,13 +196,13 @@
     },
 
     markdownSyntax: function() {
-      $('#syntax-reference').modal({keyboard: true, show: true});
+      $("#syntax-reference").modal({keyboard: true, show: true});
       if (!cheatsheetShown) {
-        $('#syntax-reference .modal-body').load("/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load("/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }
-  }
+  };
 
   window.Jingo = Jingo;
 
