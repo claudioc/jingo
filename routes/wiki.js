@@ -27,14 +27,14 @@ function _getHistory(req, res) {
 
     // FIXME better manage an error here
     if (!page.error) {
-      res.render('history', {
+      res.render("history", {
         items: history,
         page: page
       });
     } else {
       res.locals.title = "404 - Not found";
       res.statusCode = 404;
-      res.render('404.jade');
+      res.render("404.jade");
     }
   });
 }
@@ -79,7 +79,7 @@ function _getWikiPage(req, res) {
     if (!page.error) {
 
       res.locals.canEdit = true;
-      if (page.revision != 'HEAD') {
+      if (page.revision != "HEAD") {
         res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='" + page.urlForShow() + "'>here</a>.";
         res.locals.canEdit = false;
       }
@@ -87,7 +87,7 @@ function _getWikiPage(req, res) {
       res.locals.notice = req.session.notice;
       delete req.session.notice;
 
-      res.render('show', {
+      res.render("show", {
         page: page,
         title: app.locals.config.get("application").title + " – " + page.title,
         content: renderer.render("#" + page.title + "\n" + page.content)
@@ -101,8 +101,8 @@ function _getWikiPage(req, res) {
 
         // Special case for "home", anonymous user and an empty docbase
         if (page.isIndex()) {
-          res.render('welcome', {
-            title: 'Welcome to ' + app.locals.config.get("application").title
+          res.render("welcome", {
+            title: "Welcome to " + app.locals.config.get("application").title
           });
         }
         else {

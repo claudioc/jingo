@@ -1,13 +1,16 @@
 var chai   = require("chai");
 var expect = chai.expect;
 
-var Components = require("../../lib/components");
+global.Git = {
 
-Components.init({
-  absPath: function(name) {
-    return name;
+  absPath: function (file) {
+    return file;
+
   }
-});
+
+}
+
+var Components = require("../../lib/components");
 
 describe ("Components", function() {
 

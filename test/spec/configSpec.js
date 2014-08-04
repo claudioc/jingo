@@ -1,9 +1,8 @@
 var chai   = require("chai");
 var expect = chai.expect;
-var yaml   = require('yaml-js');
+var yaml   = require('js-yaml');
 
-var configKeys = ['application', 'features', 'server', 'authorization', 'authentication'];
-
+var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages'];
 var Config = require("../../lib/config");
 
 describe ("Config", function() {
@@ -19,7 +18,7 @@ describe ("Config", function() {
     expect(Object.keys(def).join('')).to.equal(configKeys.join(''));
 
     expect(def.application.title).to.equal('Jingo');
-    expect(def.application.repository).to.equal('/absolute/path/to/your/repo');
+    expect(def.application.repository).to.equal('');
     expect(def.application.docSubdir).to.equal('');
     expect(def.application.remote).to.equal('');
     expect(def.application.pushInterval).to.equal(30);
@@ -66,9 +65,7 @@ describe ("Config", function() {
     });
 
     expect(Config.get("test")).to.equal(23);
-    expect(Config.get("test1.test2")).to.equal(44);
-    expect(Config.get("test1.test3")).to.be.an("undefined");
-    expect(Config.get("test1.test3", "pop-art")).to.equal("pop-art");
+    expect(Config.get("test1").test2).to.equal(44);
   });
 
 });
