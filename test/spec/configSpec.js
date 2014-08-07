@@ -1,5 +1,3 @@
-var chai   = require("chai");
-var expect = chai.expect;
 var yaml   = require('js-yaml');
 
 var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages'];

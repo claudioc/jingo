@@ -1,5 +1,3 @@
-var chai = require("chai");
-var expect = chai.expect;
 
 var Renderer = require("../../lib/renderer");
 

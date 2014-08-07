@@ -1,14 +1,3 @@
-var chai   = require("chai");
-var expect = chai.expect;
-
-global.Git = {
-
-  absPath: function (file) {
-    return file;
-
-  }
-
-}
 
 var Components = require("../../lib/components");
 

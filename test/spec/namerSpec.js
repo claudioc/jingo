@@ -1,9 +1,6 @@
-var chai = require("chai");
-var expect = chai.expect;
-
 var Namer = require("../../lib/namer");
 
-describe.only ("Namer", function() {
+describe ("Namer", function() {
 
   beforeEach(function () {
     Namer.configOverride();
