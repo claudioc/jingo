@@ -8,9 +8,11 @@ global.Git = {
     return file;
   },
 
-  rm: function (a,b,c,cb) {
-    cb.call();
-  }
+  rm: sinon.stub().callsArgOn(3, this),
+
+  mv: sinon.stub().callsArgOn(4, this),
+
+  add: sinon.stub().callsArgOn(3, this)
 
 };
 

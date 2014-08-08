@@ -114,8 +114,9 @@ function _postPages(req, res) {
 
   page.author = req.user.asGitAuthor;
   page.title = req.body.pageTitle;
+  page.content = req.body.content;
 
-  page.save(req.body.content).then(function() {
+  page.save().then(function() {
     req.session.notice = "The page has been created. <a href=\"" + page.urlForEdit() + "\">Edit it again?</a>";
     res.redirect(page.urlForShow());
   }).catch(function (err) {
@@ -181,8 +182,8 @@ function _putPages(req, res) {
 
   function savePage()  {
     page.title = req.body.pageTitle;
-
-    page.save(req.body.content, req.body.message).then(function() {
+    page.content = req.body.content;
+    page.save(req.body.message).then(function() {
 
       page.unlock();
 
