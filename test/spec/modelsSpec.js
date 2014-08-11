@@ -3,7 +3,7 @@ var models = require("../../lib/models");
 
 var m;
 
-describe.only ("Models", function () {
+describe ("Models", function () {
 
   afterEach(function () {
     m.configOverride();
@@ -101,5 +101,99 @@ describe.only ("Models", function () {
         });
       });
     });
+
+    describe("UrlFor method", function () {
+
+      it ("should generate the correct url for page actions", function () {
+
+        m = getModel("verguenza");
+
+        expect(m.urlFor('show')).to.equal('/wiki/verguenza');
+        expect(m.urlFor('edit')).to.equal('/pages/verguenza/edit');
+        expect(m.urlFor('edit error')).to.equal('/pages/verguenza/edit?e=1');
+        expect(m.urlFor('edit put')).to.equal('/pages/verguenza');
+        expect(m.urlFor('history')).to.equal('/wiki/verguenza/history');
+        expect(m.urlFor('compare')).to.equal('/wiki/verguenza/compare');
+        expect(m.urlFor('new')).to.equal('/pages/new/verguenza');
+        expect(m.urlFor('new error')).to.equal('/pages/new/verguenza?e=1');
+      });
+
+    });
+
+    describe("isIndex method", function () {
+
+      it ("should test the correct value for the index", function () {
+
+        m = getModel("pisquanio");
+
+        m.configOverride({
+          pages: {
+            index: "pisquanio"
+          }
+        });
+
+        expect(m.isIndex()).to.be.true;
+      });
+    });
+
+    describe("isFooter method", function () {
+
+      it ("should test the correct value for the footer", function () {
+
+        m = getModel("_footer");
+
+        expect(m.isFooter()).to.be.true;
+      });
+    });
+
+    describe("isSidebar method", function () {
+
+      it ("should test the correct value for the sidebar", function () {
+
+        m = getModel("_sidebar");
+
+        expect(m.isSidebar()).to.be.true;
+      });
+    });
+
+    describe("lock method", function () {
+
+      it ("should lock a page", function () {
+
+        m = getModel("panchovilla");
+
+        var l = m.lock({
+          asGitAuthor: "geronimo@somewhere.com"
+        });
+
+        expect(l).to.be.true;
+        expect(m.lockedBy.asGitAuthor).to.equal("geronimo@somewhere.com");
+
+        l = m.lock({
+          asGitAuthor: "someoneelse@somewhere.com"
+        });
+
+        expect(l).to.be.false;
+        expect(m.lockedBy.asGitAuthor).to.equal("geronimo@somewhere.com");
+      });
+    });
+
+    describe("unlock method", function () {
+
+      it ("should unlock a page", function () {
+
+        m = getModel("panchovilla");
+
+        m.lock({
+          asGitAuthor: "geronimo@somewhere.com"
+        });
+
+        m.unlock();
+
+        expect(m.lockedBy).to.equal(null);
+      });
+    });
+
+
   });
 });
