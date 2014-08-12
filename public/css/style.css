@@ -132,6 +132,10 @@ hr {
   width: 10px;
 }
 
+.history td:nth-child(3) {
+  white-space: nowrap;
+}
+
 .page-param {
   color: gray;
 }
@@ -310,9 +314,8 @@ ul.doc-list > li .message {
 
 .page-actions {
   float: right;
-  margin: 0;
+  margin: 8px 10px 10px 0;
   padding: 0;
-  margin-right: 5px;
 }
 
 .page-actions li {

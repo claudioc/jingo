@@ -141,9 +141,11 @@ function _getCompare(req, res) {
         }
       });
 
+      var revs = req.params.revisions.split("..");
       res.render('compare', {
         page: page,
-        lines: lines
+        lines: lines,
+        revs: revs
       });
 
     }
