@@ -7,6 +7,7 @@ describe ("Models", function () {
 
   afterEach(function () {
     m.configOverride();
+    Git._content = "";
   });
 
   function getModel(name, revision) {
@@ -194,6 +195,81 @@ describe ("Models", function () {
       });
     });
 
+    describe("fetchContent method", function () {
 
+      it ("should fetch the content for a page with no content retrieved", function (done) {
+
+        m = getModel("panchovilla");
+
+        m.fetchContent().then(function () {
+          expect(m.content).to.equal("");
+          expect(m.rawContent).to.equal("");
+          expect(m.title).to.equal(m.name);
+          done();
+        })
+      });
+
+      it ("should fetch the content for a page with content retrieved 1", function (done) {
+
+        Git._content = "Bella giornata!";
+
+        m = getModel("panchovilla");
+
+        m.fetchContent().then(function () {
+          expect(m.content).to.equal("Bella giornata!");
+          expect(m.rawContent).to.equal("Bella giornata!");
+          expect(m.title).to.equal(m.name);
+          done();
+        });
+      });
+
+      it ("should fetch the content for a page with content retrieved 2", function (done) {
+
+        // Not the Jingo convention for title in the content
+        Git._content = "Bella serata!";
+
+        m = getModel("panchovilla");
+
+        m.configOverride({
+          pages: {
+            title: {
+              fromFilename: false,
+              fromContent: true
+            }
+          }
+        });
+
+        m.fetchContent().then(function () {
+          expect(m.content).to.equal("Bella serata!");
+          expect(m.rawContent).to.equal("Bella serata!");
+          expect(m.title).to.equal(m.name);
+          done();
+        });
+      });
+      
+      it ("should fetch the content for a page with content retrieved 3", function (done) {
+
+        // Jingo convention for title in the content
+        Git._content = "# A nice title\nand some content!";
+
+        m = getModel("panchovilla");
+
+        m.configOverride({
+          pages: {
+            title: {
+              fromFilename: false,
+              fromContent: true
+            }
+          }
+        });
+
+        m.fetchContent().then(function () {
+          expect(m.content).to.equal("and some content!");
+          expect(m.rawContent).to.equal("# A nice title\nand some content!");
+          expect(m.title).to.equal("A nice title");
+          done();
+        });
+      });
+    });
   });
 });
