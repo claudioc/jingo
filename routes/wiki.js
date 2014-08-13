@@ -1,11 +1,10 @@
-var router = require("express").Router()
-  , tools  = require("../lib/tools")
-  , path = require("path")
-  , renderer = require('../lib/renderer')
-  , models = require("../lib/models")
-  , app    = require("../lib/app").getInstance()
-  , Promise = require("bluebird")
-  ;
+var router = require("express").Router(),
+    tools  = require("../lib/tools"),
+    path = require("path"),
+    renderer = require('../lib/renderer'),
+    models = require("../lib/models"),
+    app    = require("../lib/app").getInstance(),
+    Promise = require("bluebird");
 
 models.use(Git);
 
@@ -155,10 +154,10 @@ function _getCompare(req, res) {
       res.render('404.jade');
       return;
     }
-  })
+  });
 
-  var ldln = 0
-    , cdln;
+  var ldln = 0,
+      cdln;
 
   function leftDiffLineNumber(id, line) {
 
@@ -177,7 +176,7 @@ function _getCompare(req, res) {
 
       case line.slice(0,1) == '-':
       default:
-        ldln++
+        ldln++;
         cdln = ldln - 1;
         return cdln;
     }
@@ -192,7 +191,7 @@ function _getCompare(req, res) {
 
       case line.slice(0,2) == '@@':
         ri = line.match(/\+(\d+)/)[1];
-        rdln = parseInt(ri, 10)
+        rdln = parseInt(ri, 10);
         cdln = rdln;
         return '...';
 
@@ -201,7 +200,7 @@ function _getCompare(req, res) {
 
       case line.slice(0,1) == '+':
       default:
-        rdln += 1
+        rdln += 1;
         cdln = rdln - 1;
         return cdln;
     }

@@ -21,9 +21,9 @@ describe ("Models", function () {
       m = getModel("grazie cara");
 
       expect(m.name).to.equal("grazie cara");
-      expect(m.wikiname).to.equal("grazie cara");
-      expect(m.filename).to.equal("grazie cara.md");
-      expect(m.pathname).to.equal("grazie cara.md");
+      expect(m.wikiname).to.equal("grazie-cara");
+      expect(m.filename).to.equal("grazie-cara.md");
+      expect(m.pathname).to.equal("grazie-cara.md");
       expect(m.revision).to.equal("HEAD");
 
     });

@@ -1,6 +1,6 @@
 var yaml   = require('js-yaml');
 
-var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages'];
+var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations'];
 var Config = require("../../lib/config");
 
 describe ("Config", function() {

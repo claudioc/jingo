@@ -1,8 +1,7 @@
-var router = require("express").Router()
-  , renderer = require('../lib/renderer')
-  , fs = require("fs")
-  , models = require("../lib/models")
-  ;
+var router = require("express").Router(),
+    renderer = require('../lib/renderer'),
+    fs = require("fs"),
+    models = require("../lib/models");
 
 models.use(Git);
 

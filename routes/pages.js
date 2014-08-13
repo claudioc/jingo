@@ -1,9 +1,8 @@
-var router = require("express").Router()
-  , namer  = require("../lib/namer")
-  , app    = require("../lib/app").getInstance()
-  , models = require("../lib/models")
-  , components = require("../lib/components")
-  ;
+var router = require("express").Router(),
+    namer  = require("../lib/namer"),
+    app    = require("../lib/app").getInstance(),
+    models = require("../lib/models"),
+    components = require("../lib/components");
 
 models.use(Git);
 
@@ -72,8 +71,8 @@ function _getPagesNew(req, res) {
 
 function _postPages(req, res) {
 
-  var errors
-    , pageName;
+  var errors,
+      pageName;
 
   if (pagesConfig.title.fromFilename) {
     // pageName (from url) is not considered
@@ -135,7 +134,7 @@ function _putPages(req, res) {
   var errors,
       page;
 
-  var page = new models.Page(req.params.page);
+  page = new models.Page(req.params.page);
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -261,7 +260,7 @@ function _getPagesEdit(req, res) {
       page: page,
       warning: warning
     });
-  })
+  });
 }
 
 module.exports = router;

@@ -32,13 +32,13 @@ describe("namer", function() {
       expect(namer.wikify("hello_Sidebar")).to.equal("hello_Sidebar");
       expect(namer.wikify("_Sidebar")).to.equal("_Sidebar");
       expect(namer.wikify("nell'aria")).to.equal("nell'aria");
-      expect(namer.wikify("lento  lento   lentissimo")).to.equal("lento  lento   lentissimo");
-      expect(namer.wikify("nell - aria")).to.equal("nell - aria");
-      expect(namer.wikify(" nell - aria ")).to.equal("nell - aria");
+      expect(namer.wikify("lento  lento   lentissimo")).to.equal("lento--lento---lentissimo");
+      expect(namer.wikify("nell - aria")).to.equal("nell---aria");
+      expect(namer.wikify(" nell - aria ")).to.equal("nell---aria");
       expect(namer.wikify("Caffé")).to.equal("Caffé");
-      expect(namer.wikify("Caffé corretto!")).to.equal("Caffé corretto!");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caff<p>e</p> senza schiuma");
-      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per favore: nessun, dico; E un punto...");
+      expect(namer.wikify("Caffé corretto!")).to.equal("Caffé-corretto!");
+      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caffpe-p-senza-schiuma");
+      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per-favore:-nessun,-dico;-E-un-punto...");
       expect(namer.wikify("prova.md")).to.equal("prova.md");
     });
       
@@ -50,19 +50,13 @@ describe("namer", function() {
           }
         }
       });
-      expect(namer.wikify("34")).to.equal("34");
-      expect(namer.wikify("")).to.equal("");
-      expect(namer.wikify("    ")).to.equal("");
+
       expect(namer.wikify("hello_Sidebar")).to.equal("hello_Sidebar");
       expect(namer.wikify("_Sidebar")).to.equal("_Sidebar");
       expect(namer.wikify("nell'aria")).to.equal("nellaria");
-      expect(namer.wikify("lento  lento   lentissimo")).to.equal("lento  lento   lentissimo");
-      expect(namer.wikify("nell - aria")).to.equal("nell - aria");
-      expect(namer.wikify(" nell - aria ")).to.equal("nell - aria");
       expect(namer.wikify("Caffé")).to.equal("Caffe");
-      expect(namer.wikify("Caffé corretto!")).to.equal("Caffe corretto");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caffpep senza schiuma");
-      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per favore nessun dico E un punto");
+      expect(namer.wikify("Caffé corretto!")).to.equal("Caffe-corretto");
+      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per-favore-nessun-dico-E-un-punto");
       expect(namer.wikify("prova.md")).to.equal("provamd");
 
     });
@@ -75,46 +69,12 @@ describe("namer", function() {
           }
         }
       });
-      expect(namer.wikify("34")).to.equal("34");
-      expect(namer.wikify("")).to.equal("");
-      expect(namer.wikify("    ")).to.equal("");
       expect(namer.wikify("hello_sidebar")).to.equal("hello_sidebar");
       expect(namer.wikify("_sidebar")).to.equal("_sidebar");
       expect(namer.wikify("nell'aria")).to.equal("nell'aria");
-      expect(namer.wikify("lento  lento   lentissimo")).to.equal("lento  lento   lentissimo");
-      expect(namer.wikify("nell - aria")).to.equal("nell - aria");
-      expect(namer.wikify(" nell - aria ")).to.equal("nell - aria");
       expect(namer.wikify("Caffé")).to.equal("caffé");
-      expect(namer.wikify("Caffé corretto!")).to.equal("caffé corretto!");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("caff<p>e</p> senza schiuma");
-      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("per favore: nessun, dico; e un punto...");
-      expect(namer.wikify("prova.md")).to.equal("prova.md");
+      expect(namer.wikify("Caffé corretto!")).to.equal("caffé-corretto!");
       expect(namer.wikify("È@@@É")).to.equal("è@@@é");
-    });
-
-    it ("should wikify a string with replaceWs true", function() {
-      namer.configOverride({
-        pages: {
-          title: {
-            replaceWs: true
-          }
-        }
-      });
-      expect(namer.wikify("34")).to.equal("34");
-      expect(namer.wikify("")).to.equal("");
-      expect(namer.wikify("    ")).to.equal("");
-      expect(namer.wikify("hello_sidebar")).to.equal("hello_sidebar");
-      expect(namer.wikify("_sidebar")).to.equal("_sidebar");
-      expect(namer.wikify("nell'aria")).to.equal("nell'aria");
-      expect(namer.wikify("lento  lento   lentissimo")).to.equal("lento--lento---lentissimo");
-      expect(namer.wikify("nell - aria")).to.equal("nell---aria");
-      expect(namer.wikify(" nell - aria ")).to.equal("nell---aria");
-      expect(namer.wikify("Caffé")).to.equal("Caffé");
-      expect(namer.wikify("Caffé corretto!")).to.equal("Caffé-corretto!");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caff<p>e<-p>-senza-schiuma");
-      expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per-favore:-nessun,-dico;-E-un-punto...");
-      expect(namer.wikify("prova.md")).to.equal("prova.md");
-      expect(namer.wikify("È@@@É")).to.equal("È@@@É");
     });
 
     it ("should wikify a string with the defaults of Jingo < 1.0", function() {
@@ -136,7 +96,7 @@ describe("namer", function() {
       expect(namer.wikify(" nell - aria ")).to.equal("nell---aria");
       expect(namer.wikify("Caffé")).to.equal("caffe");
       expect(namer.wikify("Caffé corretto!")).to.equal("caffe-corretto");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("caffpep-senza-schiuma");
+      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("caffpe-p-senza-schiuma");
       expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("per-favore-nessun-dico-e-un-punto");
     });
   });
@@ -146,7 +106,7 @@ describe("namer", function() {
     it ("should unwikify a string with the default settings", function() {
 
       expect(namer.unwikify("34")).to.equal("34");
-      expect(namer.unwikify("carne-fresca")).to.equal("carne-fresca");
+      expect(namer.unwikify("carne-fresca")).to.equal("carne fresca");
       expect(namer.unwikify("carne fresca")).to.equal("carne fresca");
       expect(namer.unwikify("Carne Fresca")).to.equal("Carne Fresca");
     });
@@ -163,7 +123,7 @@ describe("namer", function() {
 
       expect(namer.unwikify("34")).to.equal("34");
       expect(namer.unwikify("disastro")).to.equal("Disastro");
-      expect(namer.unwikify("carne-fresca")).to.equal("Carne-Fresca");
+      expect(namer.unwikify("carne-fresca")).to.equal("Carne Fresca");
       expect(namer.unwikify("carne fresca")).to.equal("Carne Fresca");
       expect(namer.unwikify("Carne Fresca")).to.equal("Carne Fresca");
     });
@@ -185,22 +145,5 @@ describe("namer", function() {
       expect(namer.unwikify("Carne Fresca")).to.equal("Carne Fresca");
     });
 
-    it ("should unwikify a string with the default for Jingo < 1.0", function() {
-
-      namer.configOverride({
-        pages: {
-          title: {
-            lowercase: true,
-            replaceWs: true
-          }
-        }
-      });
-
-      expect(namer.unwikify("34")).to.equal("34");
-      expect(namer.unwikify("disastro")).to.equal("Disastro");
-      expect(namer.unwikify("carne-fresca")).to.equal("Carne Fresca");
-      expect(namer.unwikify("carne fresca")).to.equal("Carne Fresca");
-      expect(namer.unwikify("Carne Fresca")).to.equal("Carne Fresca");
-    });
   });
 });

@@ -1,7 +1,6 @@
-var router = require("express").Router()
-  , path = require("path")
-  , models = require("../lib/models")
-  ;
+var router = require("express").Router(),
+    path = require("path")
+    models = require("../lib/models");
 
 models.use(Git);
 
@@ -9,8 +8,8 @@ router.get("/search", _getSearch);
 
 function _getSearch(req, res) {
 
-  var items = []
-    , record;
+  var items = [],
+      record;
 
   res.locals.matches = [];
   res.locals.term = req.query.term.trim();

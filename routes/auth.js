@@ -1,9 +1,8 @@
-var router = require("express").Router()
-  , app = require("../lib/app").getInstance()
-  , passportLocal  = require('passport-local')
-  , passportGoogle  = require('passport-google-oauth')
-  , tools = require("../lib/tools")
-  ;
+var router = require("express").Router(),
+    app = require("../lib/app").getInstance(),
+    passportLocal  = require('passport-local'),
+    passportGoogle  = require('passport-google-oauth'),
+    tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
 var passport = app.locals.passport;
