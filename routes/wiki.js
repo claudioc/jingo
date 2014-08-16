@@ -41,10 +41,11 @@ function _getHistory(req, res) {
 function _getWiki(req, res) {
 
   var items = [];
+  var pagen = 0|req.query.page;
 
   var pages = new models.Pages();
 
-  pages.fetch().then(function() {
+  pages.fetch(pagen).then(function() {
 
     pages.models.forEach(function(page) {
 
@@ -56,13 +57,10 @@ function _getWiki(req, res) {
       }
     });
 
-    items.sort(function(a, b) {
-      return b.page.metadata.timestamp - a.page.metadata.timestamp;
-    });
-
     res.render("list", {
-     title: "Document list – Sorted by update date",
-     items: items
+     items: items,
+     pageNumbers: Array.apply(null, Array(pages.totalPages)).map(function (x, i) { return i + 1; }),
+     pageCurrent: pages.currentPage
     });
   }).catch(function(ex) {
     console.log(ex);

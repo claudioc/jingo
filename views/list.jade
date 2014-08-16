@@ -2,7 +2,7 @@ extends layout
 
 block content
   #content.show
-    h1 #{title}
+    h1 Document list – Sorted by update date
     ul.doc-list
       each item in items
         li
@@ -30,3 +30,8 @@ block content
                     i.icon.ion-shuffle
             .message
               |&rarr; #{item.page.lastCommitMessage}
+
+    ul.paginator
+      each pageNumber in pageNumbers
+        li(class="#{pageNumber == pageCurrent ? 'current' : ''}")
+          a(href="?page=#{pageNumber}") #{pageNumber}
