@@ -27,6 +27,8 @@ Version 1.0.0, July 31, 2014
 - new YAML parser (js-yaml)
 - if you touch the pages config, you need to set all the keys!
 - it is possible to specify a custom binary for git
+- the list of documents is now paginated (configurable amount of items)
+- names of the components are now configurable
 
   This update requires to issue a `npm install`
 

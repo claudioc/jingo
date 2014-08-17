@@ -7,14 +7,14 @@
  * Copyright 2014 Claudio Cicali <claudio.cicali@gmail.com>
  * Released under the MIT license
  */
-var program = require('commander')
-  , http    = require('http')
-  , Tools   = require('./lib/tools')
-  , config  = require('./lib/config')
-  , http    = require('http')
-  , Fs      = require('fs')
-  , os      = require('os')
-  , semver  = require('semver');
+var program = require('commander'),
+    http    = require('http'),
+    tools   = require('./lib/tools'),
+    config  = require('./lib/config'),
+    http    = require('http'),
+    fs      = require('fs'),
+    os      = require('os'),
+    semver  = require('semver');
 
 global.Git = require('./lib/gitmech');
 
@@ -31,11 +31,11 @@ if (program.sampleConfig) {
 }
 
 if (program.hashString) {
-  console.log(Tools.hashify(program.hashString));
+  console.log(tools.hashify(program.hashString));
   process.exit(0);
 }
 
-if (!program.config || !Fs.existsSync(program.config)) {
+if (!program.config || !fs.existsSync(program.config)) {
   program.help();
   process.exit(-1);
 }
