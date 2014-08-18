@@ -35,6 +35,8 @@ Think of jingo as "the github wiki, without github but with more features". "Jin
 
 There is a demo server running at http://jingo.cica.li:6067/wiki/home
 
+![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss2.png)
+
 Features
 --------
 
@@ -60,6 +62,8 @@ Features
 
 For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
 
+![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss3.png)
+
 Installation
 ------------
 
@@ -82,6 +86,8 @@ If you define a remote to push to, be sure that the user who'll push has the rig
 If your documents reside in subdirectory of your repository, you need to specify its name using the `docSubdir` configuration option. The `repository` path _must_ be an absolute path pointing to the root of the repository.
 
 If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
+
+![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss4.png)
 
 Authentication and Authorization
 --------------------------------
