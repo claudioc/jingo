@@ -200,6 +200,10 @@ Configuration options reference
 
   Jingo will refuse to start if it founds a version of git which is known to be problematic. You can still force it to start anyway, providing `true` as the value for this option
 
+`application.loggingMode`
+
+  Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a verbose "standard" log and `2` for a coincise, coloured log (good for development). Default is `1`.
+
 `authentication.google.enabled`
 
   Boolean, defaults to `true`
