@@ -35,7 +35,7 @@
     "jade": "*",
     "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
-    "marked": ">= 0.2.x",
+    "marked": "^0.3.2",
     "method-override": "^2.0.2",
     "morgan": "^1.1.1",
     "node-syntaxhighlighter": "*",

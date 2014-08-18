@@ -1,36 +1,31 @@
 Version 1.0.0, July 31, 2014
 =============================
 
-- Bootstrap 3.2
-- Express 4
-- Promises (Bluebird)
-- don't show the avatar if there is no email
-- added some shortcut on the session message ("edit again?")
-- new code renderer
-- fixed an issue where the sidebar and footer were not rendered
-- code refactoring using another level of abstraction (aka models)
-- more mobile friendly
-- new look for custom sidebar and footer
-- provides a new `pages` configuration options. You may specify:
-  - nameSeparator: uses `dash` (default), `underscore` or `space` as the word
-    separator in the filename (My-document.md, My_document.md, My document.md)
-  - index: the name of the index page (defaults to 'Home')
-  - titleFrom: dictates where to "store" the index of the page; `filename` (new
-    default) will use the filename as the title, and `content` (default for older
-    Jingos) will use the first line of the file. When the title is from the
-    content, Jingo will continue to use the old method of handling titles: the
-    filenames of the newly created files will be lowercased and it won't be
-    possible to change the filename, even if the title has changed. However, if
-    the title is read from the filename, the case of the filename itself will be
-    left untouched and changing the name of the document will also change the
-    name of the file
-- new YAML parser (js-yaml)
-- if you touch the pages config, you need to set all the keys!
-- it is possible to specify a custom binary for git
-- the list of documents is now paginated (configurable amount of items)
-- names of the components are now configurable
+This version introduces a LOT of changes, but it is still compatible with the 0.6.1
 
-  This update requires to issue a `npm install`
+To upgrade, just run `npm install`. Please note that you will need `npm` version 1.3 or newer to install the dependencies or we will get the _Error: No compatible version found_ errors. To upgrade npm just run `npm update npm -g` (sudo may be required).
+
+- Upgraded to Bootstrap 3.2
+- Upgraded to Express 4
+- Upgraded to Codemirror 3.24
+- Code refactoring, now easier to maintain and to contribute
+- Added some shortcut on the session message ("edit again?")
+- New code tag renderer
+- Fixed an issue where the sidebar and footer were not rendered
+- Code refactoring using another level of abstraction (aka models)
+- More mobile friendly
+- New look for custom sidebar and footer
+- Provides a new `pages` configuration options
+- New YAML parser (js-yaml)
+- It is now possible to specify a custom binary for git
+- The list of documents is now paginated (configurable amount of items)
+- Names of the components are now configurable
+- Don't show the avatar if there is no email
+- Fixes #39
+- Fixes #37
+- Fixes #32
+- Fixes #27
+- Fixes #22
 
 Version 0.6.1, June 24th, 2014
 =============================
