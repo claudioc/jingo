@@ -37,7 +37,7 @@
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
     "method-override": "^2.0.2",
-    "morgan": "^1.1.1",
+    "morgan": "^1.2.3",
     "node-syntaxhighlighter": "*",
     "passport": "^0.2.0",
     "passport-google-oauth": "^0.1.5",

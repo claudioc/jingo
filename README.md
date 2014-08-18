@@ -202,7 +202,7 @@ Configuration options reference
 
 `application.loggingMode`
 
-  Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a verbose "standard" log and `2` for a coincise, coloured log (good for development). Default is `1`.
+  Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development). Default is `1`.
 
 `authentication.google.enabled`
 
