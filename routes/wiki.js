@@ -93,10 +93,16 @@ function _getWikiPage(req, res) {
     else {
 
       if (req.user) {
+
+        // Try sorting out redirect loops with case insentive fs
+        // Path 'xxxxx.md' exists on disk, but not in 'HEAD'.
+        if (/but not in 'HEAD'/.test(page.error)) {
+          page.setNames(page.name.slice(0,1).toUpperCase() + page.name.slice(1));
+        }
         res.redirect(page.urlFor("new"));
       } else {
 
-        // Special case for "home", anonymous user and an empty docbase
+        // Special case for the index page, anonymous user and an empty docbase
         if (page.isIndex()) {
           res.render("welcome", {
             title: "Welcome to " + app.locals.config.get("application").title
