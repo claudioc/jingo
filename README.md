@@ -1,5 +1,7 @@
 [![NPM](https://nodei.co/npm/jingo.png?compact=true)](https://npmjs.org/package/jingo)
 
+**Warning: the current version of Jingo (1.0.x) is very new and it has gone through some major rewrites. If you find yourself having problems with this version, you can still use the previous stable [version 0.6.1](https://github.com/claudioc/jingo/releases/tag/v0.6.1). If this is the case, please take a minute and fill out one [issue](https://github.com/claudioc/jingo/issues). And don't forget to take a look at the [list of changes](https://github.com/claudioc/jingo/blob/master/ChangeLog.md)!**
+
 JINGO
 =====
 
@@ -168,137 +170,137 @@ The above tag will link to `Jingo-Works.md` using "How Jingo Works" as the link 
 Configuration options reference
 -------------------------------
 
-`application.title`
+####application.title
 
   This will be showed on the upper left corner of all the pages, in the main toolbar
 
-`application.repository`
+####application.repository
 
   Absolute path for your documents repository (mandatory).
 
-`application.docSubdir`
+####application.docSubdir
 
   If your documents reside inside a directory of the repository, specify its name here.
 
-`application.remote`
+####application.remote
 
   This is the name of the remote you want to push/pull to/from (optional). You can also specify a specific branch using the syntax “remotename branchname”. If you don’t specify a branch, Jingo will use master.
 
-`application.pushInterval`
+####application.pushInterval
 
   Jingo will try to push to the remote (if present) every XX seconds (defaults to 30)
 
-`application.secret`
+####application.secret
 
   Just provide a string to be used to crypt the session cookie
 
-`application.git`
+####application.git
 
   You can specify a different git binary, if you use more than one in your system
 
-`application.skipGitCheck`
+####application.skipGitCheck
 
   Jingo will refuse to start if it founds a version of git which is known to be problematic. You can still force it to start anyway, providing `true` as the value for this option
 
-`application.loggingMode`
+####application.loggingMode
 
   Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development). Default is `1`.
 
-`authentication.google.enabled`
+####authentication.google.enabled
 
   Boolean, defaults to `true`
 
-`authentication.google.clientId`
-`authentication.google.clientSecret`
+####authentication.google.clientId
+####authentication.google.clientSecret
 
   Values required for Google OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
-`authentication.alone.enabled`
+####authentication.alone.enabled
 
   Boolean, defaults to `false`
 
-`authentication.alone.username`
+####authentication.alone.username
 
   Provide any username you like, as a string
 
-`authentication.alone.passwordHash`
+####authentication.alone.passwordHash
 
   Use an hash of your password. Create the hash with `jingo -# yourpassword`
 
-`authentication.alone.email`
+####authentication.alone.email
 
   If you want to use Gravatar, provide your gravatar email here.
 
-`features.markitup`
+####features.markitup
 
   Boolean, whether to enable Markitup or not (default false)
 
-`features.codemirror`
+####features.codemirror
 
   Boolean, whether to enable Codemirror or not (default true)
 
   Please note that you cannot enable both editors at the same time.
 
-`server.hostname`
+####server.hostname
 
   This is the hostname used to build the URL for your wiki pages. The reason for these options to exist is due to the need for the OAuth2 authentication to work (it needs an endpoint to get back to)
 
-`server.port`
+####server.port
 
   Jingo will listen on this port
 
-`server.localOnly`
+####server.localOnly
 
   Set this to `true` if you want to accept connection only _from_ localhost (default false)
 
-`server.baseUrl`
+####server.baseUrl
 
   Not used anymore (built with "//" + hostname + ":" + port)
 
-`authorization.anonRead`
+####authorization.anonRead
 
   Boolean to enable/disable the anonymous access to the wiki content (default true)
 
-`authorization.validMatches`
+####authorization.validMatches
 
   This is a regular expression which will be used against the user email account to be able to access the wiki. By default all google powered emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
 
-`pages.index`
+####pages.index
 
   Defines the page name for the index of the wiki (default is "Home")
 
-`pages.title.fromFilename`
+####pages.title.fromFilename
 
   If this is true, the title of each page will be derived from the document's filename. This is how Gollum works and from Jingo 1.0 this is now the default (default true). An important consequence of this behavior is that now Jingo is able _to rename_ documents (according to the new name it will be eventually given to), while previously it was impossible.
 
-`pages.title.fromContent`
+####pages.title.fromContent
 
   If this is true, the title of the document will be part of the document itself (the very first line). This is the default behavior of Jingo < 1.0 and the default is now false. If you have an old installation of Jingo, please set this value to true and `fromFilename` to false.
 
-`pages.title.asciiOnly`
+####pages.title.asciiOnly
 
   If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using iconv), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
-`pages.title.lowercase`
+####pages.title.lowercase
 
   If this is set to true, Jingo will lowercase any character of the title when creating the filename. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
-`pages.title.itemsPerPage`
+####pages.title.itemsPerPage
 
   This defines how many page item to show in the "list all page" page. Keep this value as low as possible (default to 10) for performance reasons.
 
-`customizations.sidebar`
+####customizations.sidebar
 
   Defines the name for the _sidebar_ component. Defaults to '_sidebar'. Please note that if you need to use a wiki coming from Github, this name should be set to '_Sidebar'
 
-`customizations.footer`
+####customizations.footer
 
   Defines the name for the _footer_ component. Defaults to '_footer'. Please note that if you need to use a wiki coming from Github, this name should be set to '_Footer'
 
-`customizations.style`
+####customizations.style
 
   Defines the name for the customized _style_ CSS component. Defaults to '_style'.
 
-`customizations.script`
+####customizations.script
 
   Defines the name for the customized _script_ JavaScript component. Defaults to '_script'.

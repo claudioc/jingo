@@ -17,10 +17,12 @@ To upgrade, just run `npm install`. Please note that you will need `npm` version
 - New look for custom sidebar and footer
 - Provides a new `pages` configuration options
 - New YAML parser (js-yaml)
+- Upgraded markdown parser
 - It is now possible to specify a custom binary for git
 - The list of documents is now paginated (configurable amount of items)
 - Names of the components are now configurable
 - Don't show the avatar if there is no email
+- Better tests for the validity of the configuration options
 - Fixes #39
 - Fixes #37
 - Fixes #32
