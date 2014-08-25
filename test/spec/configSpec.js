@@ -28,7 +28,6 @@ describe ("Config", function() {
     expect(def.server.hostname).to.equal('localhost');
     expect(def.server.port).to.equal(6067);
     expect(def.server.localOnly).to.be.false;
-    expect(def.server.baseUrl).to.equal("http://localhost:6067");
 
     expect(def.authorization.anonRead).to.be.true;
     expect(def.authorization.validMatches).to.equal('.+');
