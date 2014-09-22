@@ -1,6 +1,6 @@
 [![NPM](https://nodei.co/npm/jingo.png?compact=true)](https://npmjs.org/package/jingo)
 
-**Warning: the current version of Jingo (1.0.x) is very new and it has gone through some major rewrites. If you find yourself having problems with this version, you can still use the previous stable [version 0.6.1](https://github.com/claudioc/jingo/releases/tag/v0.6.1). If this is the case, please take a minute and fill out one [issue](https://github.com/claudioc/jingo/issues). And don't forget to take a look at the [list of changes](https://github.com/claudioc/jingo/blob/master/ChangeLog.md)!**
+**Warning: the current version of Jingo (1.x.x) is relatively new and it has gone through some major rewrites. If you find yourself having problems with this version, you can still use the previous stable [version 0.6.1](https://github.com/claudioc/jingo/releases/tag/v0.6.1). If this is the case, please take a minute and fill out one [issue](https://github.com/claudioc/jingo/issues). And don't forget to take a look at the [list of changes](https://github.com/claudioc/jingo/blob/master/ChangeLog.md)!**
 
 JINGO
 =====
@@ -205,6 +205,14 @@ Configuration options reference
 ####application.loggingMode
 
   Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development). Default is `1`.
+
+####application.pedanticMarkdown
+
+  Boolean, defaults to `true` (was `false` in jingo < 1.1.0)
+
+  The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. These produces some problems when rendering HTML embedded in a markdown document (see also the [https://github.com/claudioc/jingo/issues/48](issue 48). By default we now want to use the original parser and not the modified one (pedantic: true).
+
+  With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
 ####authentication.google.enabled
 

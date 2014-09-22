@@ -1,6 +1,6 @@
 {
   "name": "jingo",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A nodejs based wiki engine (sort of Gollum port)",
   "author": "Claudio Cicali <claudio.cicali@gmail.com>",
   "keywords": [
