@@ -210,7 +210,7 @@ Configuration options reference
 
   Boolean, defaults to `true` (was `false` in jingo < 1.1.0)
 
-  The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. These produces some problems when rendering HTML embedded in a markdown document (see also the [https://github.com/claudioc/jingo/issues/48](issue 48). By default we now want to use the original parser and not the modified one (pedantic: true).
+  The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. These produces some problems when rendering HTML embedded in a markdown document (see also issue https://github.com/claudioc/jingo/issues/48. By default we now want to use the original parser and not the modified one (pedantic: true).
 
   With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
