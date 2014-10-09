@@ -1,3 +1,17 @@
+
+Version 1.2.0, October 9, 2014
+=================================
+
+- Adds support for the GitHub logins
+- Adds support to be able to serve images and other assets from the repo
+
+Version 1.1.0, September 23, 2014
+=================================
+
+The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. These produces some problems when rendering HTML embedded in a markdown document see also issue #48. By default we now want to use the original parser and not the modified one (pedantic: true).
+
+There is a new option to override this behaviour (application.pedanticMarkdown).
+
 Version 1.0.0, July 31, 2014
 =============================
 
