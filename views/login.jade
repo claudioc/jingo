@@ -10,14 +10,20 @@ block content
 
     if (auth.google.enabled)
       p
-        b Authenticate via&nbsp;
-        a.btn.btn-primary(href="/auth/google") Google login
-      hr
+        a.btn-auth.btn-auth-google(href="/auth/google") Google login
+
+    if (auth.github.enabled)
+      p
+        a.btn-auth.btn-auth-github(href="/auth/github") Github login
+
+    if (auth.google.enabled || auth.github.enabled)
+      p
+        a(href="/") Cancel
 
     if (auth.alone.enabled)
 
       p
-        b Authenticate locally
+        h4 Authenticate locally
 
       mixin errors()
 
@@ -38,6 +44,3 @@ block content
             button.btn-primary.btn(type="submit") Login
             |&nbsp;or&nbsp;
             a(href="/") cancel
-
-
-      hr

@@ -198,7 +198,7 @@ hr {
 }
 
 .navbar-inverse {
-  background-color: rgba(0,0,0,.8);
+  background-color: rgba(0,0,0);
 }
 
 .alert {
@@ -544,6 +544,27 @@ li {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
+a.btn-auth {
+  background-image: url(/img/social-logins.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 5rem;
+  width: 40%;
+  background-size: cover;
+  color: transparent;
+}
+
+a.btn-auth.btn-auth-google {
+  background-position: 0px 103%;
+}
+
+a.btn-auth.btn-auth-github {
+  background-position: 0px 50%;
+}
+
+a.btn-auth:hover {
+  opacity: .9;
+}
 @media (min-width: 768px) {
 
   body {

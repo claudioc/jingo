@@ -1,7 +1,8 @@
 var router = require("express").Router(),
     app = require("../lib/app").getInstance(),
-    passportLocal  = require('passport-local'),
-    passportGoogle  = require('passport-google-oauth'),
+    passportLocal = require('passport-local'),
+    passportGoogle = require('passport-google-oauth'),
+    passportGithub = require('passport-github').Strategy,
     tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
@@ -15,7 +16,16 @@ router.get("/auth/done", _getAuthDone);
 router.get("/auth/google", passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.email'] }
 ));
-router.get("/oauth2callback", passport.authenticate('google', { successRedirect: '/auth/done', failureRedirect: '/login' }));
+router.get("/oauth2callback", passport.authenticate('google', {
+  successRedirect: '/auth/done',
+  failureRedirect: '/login'
+}));
+
+router.get("/auth/github", passport.authenticate('github'));
+router.get("/auth/github/callback", passport.authenticate('github', {
+  successRedirect: '/auth/done',
+  failureRedirect: '/login'
+}));
 
 if (auth.google.enabled) {
   passport.use(new passportGoogle.OAuth2Strategy({
@@ -28,6 +38,22 @@ if (auth.google.enabled) {
 
     function(accessToken, refreshToken, profile, done) {
       usedAuthentication("google");
+      done(null, profile);
+    }
+  ));
+}
+
+if (auth.github.enabled) {
+
+  // Register a new Application with Github https://github.com/settings/applications/new
+  // Authorization callback URL /auth/github/callback
+  passport.use(new passportGithub({
+      clientID: auth.github.clientId,
+      clientSecret: auth.github.clientSecret,
+      callbackURL: app.locals.baseUrl + '/auth/github/callback'
+    },
+    function(accessToken, refreshToken, profile, done) {
+      usedAuthentication("github");
       done(null, profile);
     }
   ));

@@ -43,7 +43,7 @@ Features
 --------
 
 - No database: uses a git repository as the document archive
-- No user management: authentication is provided via with Google logins or simple, one-user login
+- No user management: authentication is provided via a 3rd party provider or a simple, one-user login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
 - Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview (see the `features` key in the config file)
 - Provides a "distraction free", almost full screen editing mode
@@ -71,7 +71,7 @@ Installation
 
 `npm install jingo` or download/clone the whole thing and run "npm install".
 
-Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it (`jingo -s > config.yaml`). The config file contains all the available configuration keys. Be sure to provide a valid server hostname (like wiki.mycompany.com) for Google Auth to be able to get back to you.
+Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it (`jingo -s > config.yaml`). The config file contains all the available configuration keys. Be sure to provide a valid server hostname (like wiki.mycompany.com) if you use a 3rd party provider for authentication (like Google or GitHub) to be able for it to get back to you.
 
 This document contains also [the reference](#configuration-options-reference) for all the possible options.
 
@@ -94,11 +94,11 @@ If you want your wiki server to only listen to your `localhost`, set the configu
 Authentication and Authorization
 --------------------------------
 
-You can enable two authentication strategies: _Google logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "alone"). If you use the _alone_ method, you can have _only one user_ accessing the wiki (thus the name).
+You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "alone"). If you use the _alone_ method, you can have _only one user_ accessing the wiki (thus the name).
 
-The _Google Login_ uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google and put those informations in the configuration file.
+The _Google Login_ and the _GitHub login_ uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google or GitHub and put those informations in the configuration file.
 
-Follow these instructions:
+For Google, follow these instructions (you need to be logged in in Google):
 
 * Open the [Google developer console](https://code.google.com/apis/console/)
 * Create a new project (you can leave the _Project id_ as it is). This will take a little while
@@ -108,9 +108,19 @@ Follow these instructions:
   with a `/oauth2callback` URL, which is fine
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
+For GitHub, follow these instructions (you need to be logged in in GitHub):
+
+* Register a new application [here](https://github.com/settings/applications/new)
+* Enter whatever `Application name` you want
+* Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
+* Enter <your installation URL>/auth/github/callback as the `Authorization callback URL`
+* Press the `Register application` button
+* In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
+* Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+
 The _alone_ method uses a `username`, a `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
-You can enable both authentication options at the same time. The `alone` is disabled by default.
+You can enable all the authentications options at the same time. The `alone` is disabled by default.
 
 The _authorization_ section of the config file has two keys: `anonRead` and `validMatches`. If the `anonRead` is true, then anyone who can access the wiki can read anything.
 
@@ -167,6 +177,11 @@ If you'd like the link text to be something that doesn't map directly to the pag
 
 The above tag will link to `Jingo-Works.md` using "How Jingo Works" as the link text.
 
+Images
+------
+
+If you put images into the repository, Jingo will be able to serve them. You can enable Jingo to serve even other file types from the document directory: you need to change the `staticWhitelist` configuration option.
+
 Configuration options reference
 -------------------------------
 
@@ -214,6 +229,10 @@ Configuration options reference
 
   With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
+####authentication.staticWhitelist
+
+  This is to enable jingo to serve any kind of static file (like images) from the repository. By default, Jingo will serve `*.md` files and `*.jpg, *.png, *.gif`. Provide the values as a comma separated list of regular expressions.
+
 ####authentication.google.enabled
 
   Boolean, defaults to `true`
@@ -222,6 +241,15 @@ Configuration options reference
 ####authentication.google.clientSecret
 
   Values required for Google OAuth2 authentication. Refer to a previous section of this document on how to set them up.
+
+####authentication.github.enabled
+
+  Boolean, defaults to `false`
+
+####authentication.github.clientId
+####authentication.github.clientSecret
+
+  Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
 ####authentication.alone.enabled
 
