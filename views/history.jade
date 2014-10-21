@@ -20,7 +20,7 @@ block content
           td
             if item.email
               img(src=gravatar().url("#{item.email}", {s:16}))
-              &nbsp; 
+              |&nbsp;
             |#{item.author}
           td #{item.relDate}
           td #{item.subject}

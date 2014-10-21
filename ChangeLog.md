@@ -1,4 +1,13 @@
 
+Version 1.2.2, October 21st, 2014
+=================================
+
+- Fixes #54 (broken customizations)
+- Adds the jingo version to the meta generator
+- Better README
+- Fixes a potential crash
+- Adds missing page titles (regression bug)
+
 Version 1.2.1, October 13, 2014
 =================================
 

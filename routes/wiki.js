@@ -28,6 +28,7 @@ function _getHistory(req, res) {
     if (!page.error) {
       res.render("history", {
         items: history,
+        title: 'History of ' + page.name,
         page: page
       });
     } else {
@@ -59,6 +60,7 @@ function _getWiki(req, res) {
 
     res.render("list", {
      items: items,
+     title: 'All the pages',
      pageNumbers: Array.apply(null, Array(pages.totalPages)).map(function (x, i) { return i + 1; }),
      pageCurrent: pages.currentPage
     });
@@ -148,6 +150,7 @@ function _getCompare(req, res) {
       res.render('compare', {
         page: page,
         lines: lines,
+        title: 'Revisions compare',
         revs: revs
       });
 

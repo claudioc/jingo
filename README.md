@@ -33,7 +33,7 @@ Introduction
 
 The aim of this wiki engine is to provide an easy way to create a centralized documentation area for people used to work with **git** and **markdown**. It should fit well into a development team without the burden to have to learn a complex and usually overkill application.
 
-Jingo is very much inspired by (and compatible with) the github own wiki system [Gollum](https://github.com/gollum/gollum), but it tries to be more a stand-alone and complete system than gollum is.
+Jingo is very much inspired by (and format-compatible with) the github own wiki system [Gollum](https://github.com/gollum/gollum), but it tries to be more a stand-alone and complete system than Gollum is.
 
 Think of jingo as "the github wiki, without github but with more features". "Jingo" means "Jingo is not Gollum" for more than one reason.
 
@@ -44,7 +44,7 @@ There is a demo server running at http://jingo.cica.li:6067/wiki/home
 Features
 --------
 
-- No database: uses a git repository as the document archive
+- No database: it uses a git repository as the document archive
 - No user management: authentication is provided via a 3rd party provider or a simple, one-user login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
 - Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview (see the `features` key in the config file)
@@ -59,7 +59,7 @@ Features
 - Can include IFRAMEs in the document (es: embed a Google Drive document)
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
-- Detects unwritten pages (will appear in red)
+- Detects unwritten pages (which will appear in red)
 - Automatically push to a remote
 - Mobile friendly (based on Bootstrap 3.x)
 - Quite configurable, but also works out of the box
@@ -73,11 +73,11 @@ Installation
 
 `npm install jingo` or download/clone the whole thing and run "npm install".
 
-Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it (`jingo -s > config.yaml`). The config file contains all the available configuration keys. Be sure to provide a valid server hostname (like wiki.mycompany.com) if you use a 3rd party provider for authentication (like Google or GitHub) to be able for it to get back to you.
+Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it (`jingo -s > config.yaml`). The config file contains all the available configuration options. Be sure to provide a valid server hostname (like wiki.mycompany.com) if you use a 3rd party provider for authentication (like Google or GitHub). It is needed for them to be able to get back to you.
 
 This document contains also [the reference](#configuration-options-reference) for all the possible options.
 
-If you define a `remote` to push to, then jingo will automatically issue a push to that remote every `pushInterval` seconds. You can also specify a branch using the syntax "remotename branchname". If you don't specify a branch, Jingo will use `master`. Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try to resolve conflicts, though).
+If you define a `remote` to push to, then Jingo will automatically issue a push to that remote every `pushInterval` seconds. You can also specify a branch using the syntax "remotename branchname". If you don't specify a branch, Jingo will use `master`. Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try to resolve conflicts, though).
 
 The basic command to run the wiki will then be
 
@@ -152,12 +152,14 @@ Customization
 
 You can customize jingo in four different ways:
 
-- add a left sidebar to every page: just add a file named `_sidebar.md` containing the markdown you want to display to the repository. You can edit or create the sidebar from jingo itself, visiting `/wiki/_sidebar` (note that the title of the page in this case is useless)
-- add a footer to every page: the page you need to create is "_footer.md" and the same rules for the sidebar apply
-- add a custom CSS file, included in every page as the last file. The name of the file must be `_style.css` and must reside in the repository. It is not possible to edit the file from jingo itself
-- add a custom JavaScript file, included in every page as the last JavaScript file. The name of the file must be `_script.js` and must reside in the repository. It is not possible to edit the file from jingo itself
+- add a left sidebar to every page: just add a file named `_sidebar.md` containing the markdown you want to display to the repository. You can edit or create the sidebar from Jingo itself, visiting `/wiki/_sidebar` (note that the title of the page in this case is useless)
+- add a footer to every page: the page you need to create is `_footer.md` and the same rules for the sidebar apply
+- add a custom CSS file, included in every page as the last file. The default name of the file is `_style.css` and it must reside in the document directory (but can stay out of the repo). It is not possible to edit the file from jingo itself
+- add a custom JavaScript file, included in every page as the last JavaScript file. The default name of the file is `_script.js` and it must reside in the document directory (but can stay out of the repo). It is not possible to edit the file from jingo itself
 
-All those files are cached (thus, not re-read for every page load, but kept in memory). This means that for every modification in _style.css and _script.js you need to restart the server (sorry, working on that).
+All these names are customizable via the `customizations` option in the config file (see [the reference](#configuration-options-reference)).
+
+Once read, all those files are cached (thus, not re-read for every page load, but kept in memory). This means that for every modification in _style.css and _script.js you need to restart the server (sorry, working on that).
 
 This is not true for the footer and the sidebar but ONLY IF you edit those pages from jingo (which in that case will clear the cache by itself).
 
@@ -329,16 +331,16 @@ Configuration options reference
 
 ####customizations.sidebar
 
-  Defines the name for the _sidebar_ component. Defaults to '_sidebar'. Please note that if you need to use a wiki coming from Github, this name should be set to '_Sidebar'
+  Defines the name for the _sidebar_ component. Defaults to `_sidebar.md`. Please note that if you need to use a wiki coming from Github, this name should be set to `_Sidebar`
 
 ####customizations.footer
 
-  Defines the name for the _footer_ component. Defaults to '_footer'. Please note that if you need to use a wiki coming from Github, this name should be set to '_Footer'
+  Defines the name for the _footer_ component. Defaults to `_footer.md`. Please note that if you need to use a wiki coming from Github, this name should be set to '_Footer'
 
 ####customizations.style
 
-  Defines the name for the customized _style_ CSS component. Defaults to '_style'.
+  Defines the name for the customized _style_ CSS component. Defaults to `_style.css`.
 
 ####customizations.script
 
-  Defines the name for the customized _script_ JavaScript component. Defaults to '_script'.
+  Defines the name for the customized _script_ JavaScript component. Defaults to `_script.js`.
