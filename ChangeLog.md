@@ -1,4 +1,9 @@
 
+Version 1.2.3, October 27st, 2014
+=================================
+
+- Fixes #55 (footer links not clickable)
+
 Version 1.2.2, October 21st, 2014
 =================================
 
