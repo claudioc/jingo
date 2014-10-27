@@ -30,6 +30,7 @@ p.user {
 #main {
   background-color: white;
   box-shadow: 0 0 5px silver;
+  z-index: 2;
 }
 
 #content {
@@ -500,7 +501,7 @@ input#pageTitle {
   padding: 20px;
   overflow: auto;
   box-shadow: 0 0 5px silver;
-  z-index: -10;
+  z-index: 1;
 }
 
 a.absent {
