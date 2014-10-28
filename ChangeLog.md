@@ -1,4 +1,9 @@
 
+Version 1.2.4, October 28st, 2014
+=================================
+
+- Fixes #56 (unrecognized git version)
+
 Version 1.2.3, October 27st, 2014
 =================================
 
