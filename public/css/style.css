@@ -331,7 +331,7 @@ ul.doc-list > li .message {
 .tools {
   display: none;
   position: fixed;
-  z-index: 2;
+  z-index: 4;
   margin-top: -62px;
   background-color: rgba(27,27,27,.3);
   border: 1px solid gray;
