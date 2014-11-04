@@ -29,10 +29,10 @@ block content
 
       mixin saveAndCancel()
 
-  #preview(tabindex="-1").modal
+  #preview(tabindex="-1",role="dialog",aria-hidden="true").modal
     mixin dialogBox("Page preview")
 
-  #syntax-reference(tabindex="-1").modal
+  #syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts

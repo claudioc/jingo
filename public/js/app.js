@@ -158,7 +158,7 @@
     },
 
     preview: function() {
-      $("#preview").modal("show");
+      $("#preview").modal({keyboard: true, show: true, backdrop: false});
       $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
@@ -196,7 +196,7 @@
     },
 
     markdownSyntax: function() {
-      $("#syntax-reference").modal({keyboard: true, show: true});
+      $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
         $("#syntax-reference .modal-body").load("/misc/syntax-reference");
         cheatsheetShown = true;

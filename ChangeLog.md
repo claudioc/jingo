@@ -1,3 +1,10 @@
+Version 1.2.6, November 4th, 2014
+=================================
+
+- Fixes #57 (removes the backdrop from modal)
+- Better accessibility for modal boxes
+- Better layout and typography for modal boxes
+
 Version 1.2.5, October 28st, 2014
 =================================
 

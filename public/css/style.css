@@ -52,6 +52,23 @@ p.user {
   overflow: hidden;
 }
 
+.modal-content {
+  border-radius: 0;
+}
+
+.modal-dialog {
+  margin-top: 5rem;
+}
+
+.modal-dialog .modal-header {
+  background-color: #f1f1f1
+}
+
+.modal-dialog .modal-header h3 {
+  margin: 0;
+  font-weight: bold;
+}
+
 blockquote {
   text-indent: -1ex;
   padding-right: 15px;
@@ -461,6 +478,10 @@ ul.doc-list > li .message {
 input#pageTitle {
   font-weight: bold;
   font-size: 130%;
+}
+
+.cheatsheet-content {
+  overflow: auto;
 }
 
 .cheatsheet-content .col {
