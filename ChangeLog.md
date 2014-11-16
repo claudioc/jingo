@@ -1,3 +1,8 @@
+Version 1.2.7, November 16th, 2014
+=================================
+
+- Merges #59 (add a validation for Github parameters)
+
 Version 1.2.6, November 4th, 2014
 =================================
 
