@@ -1,3 +1,11 @@
+Version 1.2.8, December 15th, 2014
+=================================
+
+- Fixes a bug on the pull git pull (Jon Richter, @almereyda)
+- Updates README (Jon Richter, @almereyda)
+- Re-enable the baseUrl config option (Jon Richter, @almereyda)
+- Upgrade some modules to a newest version
+
 Version 1.2.7, November 16th, 2014
 =================================
 

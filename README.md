@@ -83,9 +83,9 @@ The basic command to run the wiki will then be
 
 `jingo -c /path/to/config.yaml`
 
-Before running jingo you need to initialise its git repository somewhere (`git init` is enough).
+Before running jingo you need to initialise its git repository somewhere (`git init` is enough). Additionally the user running the process needs to have `git config --global user.name` and `git config --global user.email` configured. Else your document's repo will get scrambled and you have to reinitialize it again (`rm -rf .git && git init`).
 
-If you define a remote to push to, be sure that the user who'll push has the right to do so.
+If you define a remote to push to, be sure that the user who'll push has the right to do so. This means you have to configure the remote via the `git://` URI that uses ssh authentication to push and have [created and published the process user's ssh public key](https://help.github.com/articles/generating-ssh-keys/) to the remote.
 
 If your documents reside in subdirectory of your repository, you need to specify its name using the `docSubdir` configuration option. The `repository` path _must_ be an absolute path pointing to the root of the repository.
 
