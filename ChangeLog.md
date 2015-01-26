@@ -1,3 +1,10 @@
+Version 1.2.9, January 26th, 2014
+=================================
+
+- Fixes #64 (crash serving favicon)
+- Fixes #62 (missing titles on new and edit)
+- Fixes #60 (no sidebar on login page)
+
 Version 1.2.8, December 15th, 2014
 =================================
 

@@ -64,6 +64,7 @@ function _getPagesNew(req, res) {
   delete req.session.formData;
 
   res.render("create", {
+    title: "Jingo – Create page " + title,
     pageTitle: title,
     pageName: page ? page.wikiname : ""
   });
@@ -257,6 +258,7 @@ function _getPagesEdit(req, res) {
     delete req.session.formData;
 
     res.render('edit', {
+      title: "Jingo – Edit page " + page.title,
       page: page,
       warning: warning
     });
