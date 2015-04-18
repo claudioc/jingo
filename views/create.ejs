@@ -1,0 +1,100 @@
+<% layout('layout') -%>
+<% var str = "";
+if (hasFeature('markitup')){
+  str = str + '\
+    <link rel="stylesheet" href="/vendor/widearea/widearea.min.css"> \n\
+    <link rel="stylesheet" href="/vendor/markitup/skins/simple/style.css"> \n\
+    <link rel="stylesheet" href="/vendor/markitup/sets/markdown/style.css"> \n';  
+}
+if (hasFeature('codemirror')){
+  str = str + '\
+    <link rel="stylesheet" href="/vendor/codemirror/codemirror.css"> \n\
+    <link rel="stylesheet" href="/vendor/codemirror/fullscreen.css"> \n';  
+}
+block('styles').append(str) %>
+
+<div id="content">
+<%
+  var errors = locals.errors;
+  if ((typeof(errors) != 'undefined' && Object.keys(errors).length > 0)){ %>
+    <div class="alert bg-danger">
+      <ul>
+  <%  errors.forEach(function(v){ -%>
+        <li><b><%= v.msg || v %></b></li>
+<%    }) -%>
+      </ul>
+    </div>
+<%
+  } -%>
+  <h1>Create a new page</h1>
+  <form action='/pages' method='post' class='edit'>
+    <input type="hidden" name="pageName" value="<%= coalesce(pageName, '') %>">      
+    <div class="form-group">
+      <input class="form-control" id="pageTitle" required type="text" placeholder='Enter the page title' name='pageTitle' value="<%= coalesce(formData.pageTitle, pageTitle) %>">
+    </div>
+    <div class="form-group">
+      <textarea class="form-control" id="editor" name="content" data-widearea="enable" rows='25'><%= coalesce(formData.content, '') %></textarea>
+    </div>
+    <div class="well">
+      <input class='btn btn-primary' type='submit' value='Save'>
+      &nbsp;
+      <a href="/" class="btn">Cancel</a>
+    </div>
+  </form>
+</div>
+<div id="preview" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+        <h3>Page preview</h3>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+<div id="syntax-reference" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+        <h3>Markdown cheatsheet</h3>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
+<% var str = "";
+if (hasFeature('markitup')){
+  str = str + '\
+    <script src="/vendor/jquery-migrate-1.1.0.min.js"></script> \n\
+    <script src="/vendor/markitup/jquery.markitup.js"></script> \n\
+    <script src="/vendor/markitup/sets/markdown/set.js"></script> \n\
+    <script src="/vendor/widearea/widearea.min.js"></script> \n\
+    <script> \n\
+      $("#editor").markItUp(markdownSettings); \n\
+      wideArea(); \n\
+    </script>'
+}
+if (hasFeature('codemirror')){
+  str = str + '\
+    <script src="/vendor/codemirror/codemirror.min.js"></script> \n\
+    <script> \n\
+      Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), { \n\
+        lineNumbers: true, \n\
+        mode: "markdown", \n\
+        matchBrackets: true, \n\
+        lineWrapping: true, \n\
+        extraKeys: { \n\
+          "Ctrl-Enter": function(cm) { \n\
+            Jingo.toggleFullscreen(); \n\
+          } \n\
+        } \n\
+      }); \n\
+      Jingo.toolbar(); \n\
+    </script>'
+}
+block('scripts').append(str) %>

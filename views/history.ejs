@@ -1,0 +1,40 @@
+<% layout('layout');
+
+var tools = '\
+  <ul> \n\
+    <li> \n\
+      <a href="/wiki" title="All pages" class="btn btn-sm btn-default"> \n\
+        <i class="icon ion-grid"></i> \n\
+      </a> \n\
+    </li> \n\
+  </ul> \n';
+
+block('tools').append(tools); %>
+
+<div id="content" class="show">
+  <h2>Revisions of:&nbsp;
+    <b class="page-param"><%= page.title %></b>
+  </h2>
+  <p>
+    <button id="rev-compare" data-pageName="<%= page.name %>" class="btn btn-primary">Compare revisions</button>
+  </p>
+  <table class="history table table-striped table-bordered table-hover table-condensed">
+<%
+  items.forEach(function(item){ -%>
+    <tr>
+      <td><input type="checkbox" value="<%=item.hashRef %>"></td>
+      <td>
+<%    if (item.email) { -%>
+        <img src="<%= gravatar().url(item.email, {s:16}) %>">
+        &nbsp;
+<%    }; -%>
+        <%= item.author %>
+      </td>
+      <td><%= item.relDate %></td>
+      <td><%= item.subject %></td>
+      <td><a href="<%= page.urlForShow() %>/<%= item.hashRef || '' %>" id="<%= item.hashRef || 'CURRENT' %>"></td>
+    </tr>
+<%
+  }); -%>
+  </table>
+</div>

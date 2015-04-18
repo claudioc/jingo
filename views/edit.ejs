@@ -1,0 +1,129 @@
+<% layout('layout') -%>
+<% var style = "";
+if (hasFeature('markitup')){
+  style = style + '\
+    <link rel="stylesheet" href="/vendor/widearea/widearea.min.css"> \n\
+    <link rel="stylesheet" href="/vendor/markitup/skins/simple/style.css"> \n\
+    <link rel="stylesheet" href="/vendor/markitup/sets/markdown/style.css"> \n';
+}
+if (hasFeature('codemirror')){
+  style = style + '\
+    <link rel="stylesheet" type="text/css" href="/vendor/codemirror/codemirror.css"/> \n\
+    <link rel="stylesheet" type="text/css" href="/vendor/codemirror/fullscreen.css"/> \n';
+}
+block('styles').append(style);
+
+var tools = '\
+      <ul> \n';
+
+if (page.wikiname != 'home'){
+  tools = tools + '\
+        <li> \n\
+          <form action="/pages/' + page.wikiname + '" method="post" style="display:inline"> \n\
+            <input type="hidden" name="_method" value="delete"/> \n\
+            <input type="submit" value="Delete this page" class="confirm-delete-page btn btn-default"/> \n\
+          </form> \n\
+        </li> \n';
+}
+
+tools = tools + '\
+      </ul> \n';
+
+block('tools').append(tools) -%>
+<div id="content" class="edit">
+<%
+  var errors = locals.errors;
+  if (typeof(errors) != 'undefined' && Object.keys(errors).length > 0){ -%>
+    <div class="alert bg-danger">
+      <ul>
+  <%  errors.forEach(function(v){ -%>
+        <li><b><%= v.msg || v %></b></li>
+  <%  }) -%>
+      </ul>
+    </div>
+<%
+  }
+
+  var warning = locals.warning;
+  if (typeof(warning) != 'undefined'){ -%>
+    <div class="alert alert-block alert-warning">
+      <%- warning %>
+    </div>
+<%
+  } -%>
+  <h1>Edit page</h1>
+  <form action='<%= page.urlForEditPut() %>' method='post' class='edit'>
+    <div class="form-group">
+      <input class="form-control" id="pageTitle" required type="text" placeholder='Enter the page title' name='pageTitle' value="<%= coalesce(formData.pageTitle, '') %>">
+      <input type="hidden" name="_method" value="put">
+    </div>
+    <div class="form-group">
+      <textarea class="form-control" id="editor" name="content" data-widearea="enable" rows='25'><%= coalesce(formData.content, '') %></textarea>
+    </div>
+    <div class="form-group">
+      <input class="form-control span8" id="message" type="text" placeholder='Write a small message here explaining this change (optional)' name='message' >
+    </div>
+    <div class="well">
+      <input class='btn btn-primary' type='submit' value='Save'/>
+      &nbsp;
+      <a href="/" class="btn">Cancel</a>
+    </div>
+  </form>
+</div>
+<div id="preview" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+        <h3>Page preview</h3>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+<div id="syntax-reference" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+        <h3>Markdown cheatsheet</h3>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+<% var scripts = "";
+if (hasFeature('markitup')){
+  scripts = scripts + '\
+    <script src="/vendor/jquery-migrate-1.1.0.min.js"></script> \n\
+    <script src="/vendor/markitup/jquery.markitup.js"></script> \n\
+    <script src="/vendor/markitup/sets/markdown/set.js"></script> \n\
+    <script src="/vendor/widearea/widearea.min.js"></script> \n\
+    <script> \n\
+      $("#editor").markItUp(markdownSettings); \n\
+      wideArea(); \n\
+    </script> \n';
+}
+
+if (hasFeature('codemirror')){
+  scripts = scripts + '\
+    <script src="/vendor/codemirror/codemirror.min.js"></script> \n\
+    <script> \n\
+      Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), { \n\
+        lineNumbers: true, \n\
+        mode: "markdown", \n\
+        matchBrackets: true, \n\
+        lineWrapping: true, \n\
+        extraKeys: { \n\
+          "Ctrl-Enter": function(cm) { \n\
+            Jingo.toggleFullscreen(); \n\
+          } \n\
+        } \n\
+      }); \n\
+      Jingo.toolbar(); \n\
+    </script> \n';
+}
+
+block('scripts').append(scripts) -%>
