@@ -18,7 +18,7 @@ block content
     form(action='#{page.urlForEditPut()}', method='post', class='edit')
 
       .form-group
-        input.form-control(rquired, type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
+        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
         input(type="hidden", name="_method", value="put")
 
       .form-group

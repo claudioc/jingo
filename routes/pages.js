@@ -17,11 +17,11 @@ var pagesConfig = app.locals.config.get("pages");
 
 function _deletePages(req, res) {
 
-  var page = new models.Page(req.params.page);
+  var page = new models.Page(req.params.page, res.locals.mountpath);
 
   if (page.isIndex() || !page.exists()) {
     req.session.notice = "The page cannot be deleted.";
-    res.redirect("/");
+    res.redirect(res.locals.mountpath + "/");
     return;
   }
 
@@ -51,7 +51,7 @@ function _getPagesNew(req, res) {
   if (req.params.page) {
     // This is not perfect, unfortunately
     title = namer.unwikify(req.params.page);
-    page = new models.Page(title);
+    page = new models.Page(title, res.locals.mountpath);
     if (page.exists()) {
       res.redirect(page.urlForShow());
       return;
@@ -63,7 +63,7 @@ function _getPagesNew(req, res) {
   delete req.session.errors;
   delete req.session.formData;
 
-  res.render("create", {
+  res.layoutify("create", {
     title: "Jingo – Create page " + title,
     pageTitle: title,
     pageName: page ? page.wikiname : ""
@@ -83,7 +83,7 @@ function _postPages(req, res) {
     pageName = (namer.unwikify(req.body.pageName) || req.body.pageTitle);
   }
 
-  var page = new models.Page(pageName);
+  var page = new models.Page(pageName, res.locals.mountpath);
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -123,7 +123,7 @@ function _postPages(req, res) {
     res.locals.title = "500 - Internal server error";
     res.statusCode = 500;
     console.log(err);
-    res.render('500.jade', {
+    res.layoutify('500.jade', {
       message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
       error: err
     });
@@ -135,7 +135,7 @@ function _putPages(req, res) {
   var errors,
       page;
 
-  page = new models.Page(req.params.page);
+  page = new models.Page(req.params.page, res.locals.mountpath);
 
   req.check('pageTitle', 'The page title cannot be empty').notEmpty();
   req.check('content',   'The page content cannot be empty').notEmpty();
@@ -150,7 +150,7 @@ function _putPages(req, res) {
   // Highly unluckly (someone deleted the page we were editing)
   if (!page.exists()) {
     req.session.notice = "The page does not exist anymore.";
-    res.redirect("/");
+    res.redirect(res.locals.mountpath + "/");
     return;
   }
 
@@ -202,7 +202,7 @@ function _putPages(req, res) {
       res.locals.title = "500 - Internal server error";
       res.statusCode = 500;
       console.log(err);
-      res.render('500.jade', {
+      res.layoutify('500.jade', {
         message: "Sorry, something went wrong and I cannot recover. If you think this might be a bug in Jingo, please file a detailed report about what you were doing here: https://github.com/claudioc/jingo/issues . Thank you!",
         error: err
       });
@@ -225,7 +225,7 @@ function _putPages(req, res) {
 
 function _getPagesEdit(req, res) {
 
-  var page = new models.Page(req.params.page),
+  var page = new models.Page(req.params.page, res.locals.mountpath),
       warning;
 
   if (!page.lock(req.user)) {
@@ -257,7 +257,7 @@ function _getPagesEdit(req, res) {
     delete req.session.errors;
     delete req.session.formData;
 
-    res.render('edit', {
+    res.layoutify('edit', {
       title: "Jingo – Edit page " + page.title,
       page: page,
       warning: warning

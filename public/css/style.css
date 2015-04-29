@@ -1,12 +1,12 @@
 body {
   padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
-  font-family: "Ubuntu";
-  background-image: url(/img/bodybg.png);
+  font-family: "Ubuntu";/*
+  background-image: url(/img/bodybg.png);*/
 }
 
 a[href^="https://"],
-a[href^="http://"] {
-  background: url(/img/ext.png) center right no-repeat;
+a[href^="http://"] {/*
+  background: url(/img/ext.png) center right no-repeat;*/
   padding-right: 13px;
 }
 
@@ -137,8 +137,8 @@ h4 a, h4 a:hover {
   color: inherit;
 }
 
-hr {
-  background: transparent url(/img/hr-bg.png) repeat-x 0 0;
+hr {/*
+  background: transparent url(/img/hr-bg.png) repeat-x 0 0;*/
   border: 0 none;
   color: #ccc;
   height: 4px;
@@ -436,6 +436,7 @@ ul.doc-list > li .message {
   background-repeat: no-repeat;
 }
 
+/*
 .toolbar li.fullscreen span {
   background-image:url(../img/fullscreen_16.png);
 }
@@ -445,7 +446,7 @@ ul.doc-list > li .message {
 .toolbar li.preview span {
   background-image:url(../img/preview_16.png);
 }
-
+*/
 .toolbar.fullscreen {
   position: fixed;
   top: 50px;
@@ -566,8 +567,8 @@ li {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
-a.btn-auth {
-  background-image: url(/img/social-logins.png);
+a.btn-auth {/*
+  background-image: url(/img/social-logins.png);*/
   background-repeat: no-repeat;
   display: block;
   height: 5rem;

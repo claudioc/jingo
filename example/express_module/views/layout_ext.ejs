@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<% var mountpath = jingoLocals.mountpath
+     , assets_prefix = jingoLocals.mountpath + jingoLocals.assets_prefix; -%>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="jingo 1.2.10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="<%= assets_prefix %>/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed">
+    <link rel="stylesheet" href="<%= assets_prefix %>/css/style.css">
+    <link rel="stylesheet" href="<%= assets_prefix %>/css/ionicons.min.css">
+    <link rel="stylesheet" href="<%= assets_prefix %>/css/shCoreDefault.css">
+    <style type="text/css">
+      body {
+        background-image: url(<%= assets_prefix %>/img/bodybg.png);
+      }
+
+      a[href^="https://"],
+      a[href^="http://"] {
+        background: url(<%= assets_prefix %>/img/ext.png) center right no-repeat;
+      }
+
+      hr {
+        background: transparent url(<%= assets_prefix %>/img/hr-bg.png) repeat-x 0 0;
+      }
+
+      .toolbar li.fullscreen span {
+        background-image:url(<%= assets_prefix %>/img/fullscreen_16.png);
+      }
+      .toolbar li.info span {
+        background-image:url(<%= assets_prefix %>/img/info_16.png);
+      }
+      .toolbar li.preview span {
+        background-image:url(<%= assets_prefix %>/img/preview_16.png);
+      }
+
+      a.btn-auth {
+        background-image: url(<%= assets_prefix %>/img/social-logins.png);
+      }
+    </style>
+  </head>
+  <body>
+<%  var term_ph = (typeof term == "undefined" ? "" : term) -%>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="<%= mountpath %>/" class="navbar-brand"><%= appTitle %></a>
+          <form action="<%= mountpath %>/search" class="navbar-form navbar-left">
+            <div class="input-group input-group-sm search">
+              <input type="text" value="<%= term_ph %>" data-i-search-input="true" name="term" placeholder="Search the wiki" class="form-control">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<%- body -%>
+
+  </body>
+</html>

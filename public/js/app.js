@@ -6,8 +6,17 @@
   var $toolbar;
 
   var Jingo = {
+    mountPath: "",
+    init: function(mountPath) {
+      this.mountPath = mountPath;
 
-    init: function() {
+      // TODO ne marche que si il n'y a que '/' en caractère spécial.
+      //Trouver une fonction "startWith" ou "findPos" qui permette d'arriver au même résultat
+      this.relPath = window.location.pathname;
+      if (this.relPath.lastIndexOf(mountPath, 0) === 0) {
+        this.relPath = this.relPath.replace(mountPath, "");
+      };
+
       var navh = $(".navbar").height(),
           $tools = $(".tools"),
           qs, hl = null;
@@ -87,12 +96,12 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = $(this).data("urlforcompare") + "/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
-      if (/^\/pages\/.*\/edit/.test(window.location.pathname) || 
-          /^\/pages\/new/.test(window.location.pathname)) {
+      if (/^\/pages\/.*\/edit/.test(this.relPath) ||
+          /^\/pages\/new/.test(this.relPath)) {
         $("#editor").closest("form").on("submit", function () {
           if (Jingo.cmInstance) {
             Jingo.cmInstance.save();
@@ -105,13 +114,13 @@
           if (content = window.sessionStorage.getItem("jingo-page")) {
             $("#editor").val(content);
           }
-        } 
+        }
         else {
           window.sessionStorage.removeItem("jingo-page");
         }
       }
 
-      if (/^\/wiki\//.test(window.location.pathname)) {
+      if (/^\/wiki\//.test(this.relPath)) {
         var pages = []
           , match
           , href;
@@ -123,7 +132,7 @@
           }
         });
 
-        $.getJSON("/misc/existence", {data: pages}, function(result) {
+        $.getJSON(this.mountPath + "/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
             $("#content a[href='\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
@@ -159,7 +168,7 @@
 
     preview: function() {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(this.mountPath + "/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
@@ -198,7 +207,7 @@
     markdownSyntax: function() {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load("/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(this.mountPath + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }

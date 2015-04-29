@@ -1,72 +1,25 @@
-doctype html
-html
-  head
-    meta(charset="utf-8")
-    meta(name="generator", content="jingo #{jingoVersion}")
-    meta(name="viewport", content="width=device-width, initial-scale=1")
-    title= title
-    link(rel="stylesheet", href="/vendor/bootstrap/css/bootstrap.min.css")
-    link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
-    link(rel="stylesheet", href="/css/style.css")
-    link(rel="stylesheet", href="/css/ionicons.min.css")
-    link(rel="stylesheet", href="/css/shCoreDefault.css")
-    block styles
-    if hasCustomStyle()
-      style.
-        !{_style}
-  body
-    -var term_ph = (typeof term == "undefined" ? "" : term)
-    .navbar.navbar-inverse.navbar-fixed-top
-      .container-fluid
-        .navbar-header
-          a(href="/").navbar-brand #{appTitle}
-          if canSearch()
-            form(action="/search").navbar-form.navbar-left
-              .input-group.input-group-sm.search
-                input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
-                span.input-group-btn
-                  button.btn.btn-primary(type="submit") Search
-        .navbar-collapse.collapse
-          if isAnonymous()
-            p.user.navbar-right You're not&nbsp;
-              a(id='login',href='/login?destination', title='Access login page') logged in
-          else
-            p.user.navbar-right
-              if user.email
-                img(src=gravatar().url("#{user.email}", {s:24}))
-              b &nbsp;#{user.displayName}&nbsp;
-              a.logout(href='/logout', title='Become anonymous')
-                i.icon.ion-power
+block styles
 
-    .tools
-      block tools
+.tools
+  block tools
 
-    .container
+.container
 
-      .row
-        if hasSidebar()
-          .col-md-2.with-sidebar
-            .content !{_sidebar}
-        else
-          .col-md-2
+  .row
+    if hasSidebar()
+      .col-md-2.with-sidebar
+        .content !{_sidebar}
+    else
+      .col-md-2
 
-        #main.hide-tools.col-md-8
-          block content
+    #main.hide-tools.col-md-8
+      block content
 
-      if hasFooter()
-        .row
-          .col-md-2
-          .col-md-8.with-footer
-            .content !{_footer}
-
-    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
-    script.
-      window.jQuery || document.write("<sc" + "ript src='/vendor/jquery.min.js'></scr" + "ipt>");
-    script(src="/vendor/bootstrap/js/bootstrap.min.js")
-    script(src="/js/app.js")
-    script.
-      Jingo.init();
-    block scripts
-    if hasCustomScript()
-      script.
-        !{_script}
+script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
+script.
+  window.jQuery || document.write("<sc" + "ript src='#{mountpath}#{assets_prefix}/vendor/jquery.min.js'></scr" + "ipt>");
+script(src="#{mountpath}#{assets_prefix}/vendor/bootstrap/js/bootstrap.min.js")
+script(src="#{mountpath}#{assets_prefix}/js/app.js")
+script.
+  Jingo.init("#{mountpath}");
+block scripts

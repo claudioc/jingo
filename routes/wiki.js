@@ -15,9 +15,9 @@ router.get("/wiki/:page/history", _getHistory);
 router.get("/wiki/:page/:version", _getWikiPage);
 router.get("/wiki/:page/compare/:revisions", _getCompare);
 
-function _getHistory(req, res) {
+function _getHistory(req, res, next) {
 
-  var page = new models.Page(req.params.page);
+  var page = new models.Page(req.params.page, res.locals.mountpath);
 
   page.fetch().then(function() {
 
@@ -26,15 +26,15 @@ function _getHistory(req, res) {
 
     // FIXME better manage an error here
     if (!page.error) {
-      res.render("history", {
+      res.layoutify("history", {
         items: history,
         title: 'History of ' + page.name,
         page: page
       });
     } else {
-      res.locals.title = "404 - Not found";
-      res.statusCode = 404;
-      res.render("404.jade");
+      var err = new Error('404 - Not found');
+      err.status = 404;
+      next(err);
     }
   });
 }
@@ -44,7 +44,7 @@ function _getWiki(req, res) {
   var items = [];
   var pagen = 0|req.query.page;
 
-  var pages = new models.Pages();
+  var pages = new models.Pages(res.locals.mountpath);
 
   pages.fetch(pagen).then(function() {
 
@@ -58,7 +58,7 @@ function _getWiki(req, res) {
       }
     });
 
-    res.render("list", {
+    res.layoutify("list", {
      items: items,
      title: 'All the pages',
      pageNumbers: Array.apply(null, Array(pages.totalPages)).map(function (x, i) { return i + 1; }),
@@ -69,9 +69,9 @@ function _getWiki(req, res) {
   });
 }
 
-function _getWikiPage(req, res) {
+function _getWikiPage(req, res, next) {
 
-  var page = new models.Page(req.params.page, req.params.version);
+  var page = new models.Page(req.params.page, res.locals.mountpath, req.params.version);
 
   page.fetch().then(function() {
 
@@ -86,7 +86,7 @@ function _getWikiPage(req, res) {
       res.locals.notice = req.session.notice;
       delete req.session.notice;
 
-      res.render("show", {
+      res.layoutify("show", {
         page: page,
         title: app.locals.config.get("application").title + " – " + page.title,
         content: renderer.render("#" + page.title + "\n" + page.content)
@@ -106,15 +106,14 @@ function _getWikiPage(req, res) {
 
         // Special case for the index page, anonymous user and an empty docbase
         if (page.isIndex()) {
-          res.render("welcome", {
+          res.layoutify("welcome", {
             title: "Welcome to " + app.locals.config.get("application").title
           });
         }
         else {
-          res.locals.title = "404 - Not found";
-          res.statusCode = 404;
-          res.render('404.jade');
-          return;
+          var err = new Error('404 - Not found');
+          err.status = 404;
+          next(err);
         }
       }
     }
@@ -122,10 +121,9 @@ function _getWikiPage(req, res) {
 }
 
 function _getCompare(req, res) {
-
   var revisions = req.params.revisions;
 
-  var page = new models.Page(req.params.page);
+  var page = new models.Page(req.params.page, res.locals.mountpath);
 
   page.fetch().then(function() {
 
@@ -147,7 +145,7 @@ function _getCompare(req, res) {
       });
 
       var revs = req.params.revisions.split("..");
-      res.render('compare', {
+      res.layoutify('compare', {
         page: page,
         lines: lines,
         title: 'Revisions compare',
@@ -156,10 +154,9 @@ function _getCompare(req, res) {
 
     }
     else {
-      res.locals.title = "404 - Not found";
-      res.statusCode = 404;
-      res.render('404.jade');
-      return;
+      var err = new Error('404 - Not found');
+      err.status = 404;
+      return next(err);
     }
   });
 
@@ -227,7 +224,7 @@ function _getCompare(req, res) {
 }
 
 function _getIndex(req, res) {
-  res.redirect('/wiki/' + app.locals.config.get("pages").index);
+  res.redirect(res.locals.mountpath + '/wiki/' + app.locals.config.get("pages").index);
 }
 
 module.exports = router;

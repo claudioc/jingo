@@ -7,80 +7,123 @@
  * Copyright 2015 Claudio Cicali <claudio.cicali@gmail.com>
  * Released under the MIT license
  */
-var program = require('commander'),
-    http    = require('http'),
-    tools   = require('./lib/tools'),
-    config  = require('./lib/config'),
-    http    = require('http'),
-    fs      = require('fs'),
+
+
+var config  = require('./lib/config'),
     os      = require('os'),
-    semver  = require('semver');
+    fs      = require('fs');
 
 global.Git = require('./lib/gitmech');
 
-program.version('1.2.10')
-       .option('-c, --config <path>', 'Specify the config file')
-       .option('-#, --hash-string <string>', 'Create an hash for a string')
-       .option('-l, --local', 'Listen on localhost only')
-       .option('-s, --sample-config', 'Dumps a config file template and exits')
-       .parse(process.argv);
+var refspec, is_standalone = (require.main === module);
 
-if (program.sampleConfig) {
-  console.log(config.sample());
-  process.exit(0);
-}
+if (is_standalone) {
+  var program = require('commander'),
+      http    = require('http'),
+      tools   = require('./lib/tools'),
+      semver  = require('semver');
 
-if (program.hashString) {
-  console.log(tools.hashify(program.hashString));
-  process.exit(0);
-}
+  program.version('1.2.10')
+         .option('-c, --config <path>', 'Specify the config file')
+         .option('-#, --hash-string <string>', 'Create an hash for a string')
+         .option('-l, --local', 'Listen on localhost only')
+         .option('-s, --sample-config', 'Dumps a config file template and exits')
+         .parse(process.argv);
 
-if (!program.config || !fs.existsSync(program.config)) {
-  program.help();
-  process.exit(-1);
-}
-
-if (!config.load(program.config)) {
-  console.log("Error: " + config.getError());
-  process.exit(-1);
-}
-
-if (!config.validate()) {
-  console.log("Error: " + config.getError());
-  process.exit(-1);
-}
-
-var refspec = config.get("application").remote.split(/\s+/);
-
-Git.setup(config.get("application").git,
-          config.get("application").repository,
-          config.get("application").docSubdir,
-          refspec, function(err, version) {
-
-  if (err) {
-    console.log(err);
-    process.exit(-1);
+  if (program.sampleConfig) {
+    console.log(config.sample());
+    process.exit(0);
   }
 
-  if (os.platform() == "darwin" &&
-      !config.get("application").skipGitCheck &&
-      config.get("pages").title.fromFilename && 
-      !semver.satisfies(version, ">=1.8.5")) {
-    console.log("Your current setup uses the filename of the wiki page as the page title.");
-    console.log("Unfortunately this version of git (" + version + ".x) on OSX doesn't handle");
-    console.log("very well non ASCII characters used in filenames, therefore I rather not start.");
-    console.log("You can continue anyway, setting `application.skipGitCheck` to true in the");
-    console.log("config file but you should better upgrade your git. Thank you.");
-    process.exit(-1);
+  if (program.hashString) {
+    console.log(tools.hashify(program.hashString));
+    process.exit(0);
   }
 
-  start();
-});
+  if (!program.config || !fs.existsSync(program.config)) {
+    program.help();
+    process.exit(-1);
+  }
+}
 
-function start() {
+var loadConfig = function(params){
+  if (is_standalone) {
+    if (!config.load(program.config)) {
+      console.log("Error: " + config.getError());
+      process.exit(-1);
+    }
+  }
+  else {
+    if (params && Object.keys(params).length) {
+      if (!config.setParams(params)) {
+        throw new Error("Jingo Error: " + config.getError());
+      }
+    }
+    else config.setDefault();
 
-  var app = require("./lib/app").initialize(config);
+  }
 
+  if (!config.validate()) {
+    console.log("Error: " + config.getError());
+    process.exit(-1);
+  }
+}
+
+var init = function(params){
+  loadConfig(params);
+
+  refspec = config.get("application").remote.split(/\s+/);
+
+  var getApp = require("./lib/app").initialize(config, is_standalone);
+  Git.setup(config.get("application").git,
+            config.get("application").repository,
+            config.get("application").docSubdir,
+            refspec, function(err, version) {
+
+    if (err) {
+      if (is_standalone) {
+        console.error(err);
+        process.exit(-1);        
+      }
+      else throw new Error("Jingo Error: " + err);
+    }
+
+    if (os.platform() == "darwin" &&
+        !config.get("application").skipGitCheck &&
+        config.get("pages").title.fromFilename && 
+        !semver.satisfies(version, ">=1.8.5")) {
+      console.error("Your current setup uses the filename of the wiki page as the page title.");
+      console.error("Unfortunately this version of git (" + version + ".x) on OSX doesn't handle");
+      console.error("very well non ASCII characters used in filenames, therefore I rather not start.");
+      console.error("You can continue anyway, setting `application.skipGitCheck` to true in the");
+      console.error("config file but you should better upgrade your git. Thank you.");
+
+      if (is_standalone) process.exit(-1);
+      else throw new Error("Jingo Error: see previous stdout");
+    }
+
+    if(is_standalone) start_srv(getApp());
+
+    auto_push();
+  });
+
+  return getApp;
+}
+
+function auto_push() {
+  if (config.get("application").pushInterval && refspec.length > 0) {
+    setInterval(function() {
+      Git.pull(function(err) {
+        if (err) console.log("Error: " + err);
+        else Git.push(function(err) {
+          if (err) console.log("Error: " + err);
+        });
+      });
+    }, config.get("application").pushInterval * 1000);
+  }
+}
+
+function start_srv(app) {
   var listenAddr = process.env.NW_ADDR || "";
   if (config.get("server").localOnly) {
     listenAddr = "localhost";
@@ -89,20 +132,7 @@ function start() {
   http.createServer(app).listen(config.get("server").port, listenAddr, function() {
     console.log((new Date()) + " - Jingo%sserver v%s listening on port %s", config.get("server").localOnly ? " (local) " : " ", program.version(), config.get("server").port);
   });
-
-  if (config.get("application").pushInterval && refspec.length > 0) {
-    setInterval(function() {
-      Git.pull(function(err) {
-        if (err) {
-          console.log("Error: " + err);
-        } else {
-          Git.push(function(err) {
-            if (err) {
-              console.log("Error: " + err);
-            }
-          });
-        }
-      });
-    }, config.get("application").pushInterval * 1000);
-  }
 }
+
+if (is_standalone) init();
+else exports.init = init;
