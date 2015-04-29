@@ -44,7 +44,7 @@ function _getExistence(req, res) {
 }
 
 //handle 404
-router.all(function(req, res, next) {
+router.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
