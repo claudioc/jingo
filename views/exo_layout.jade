@@ -1,0 +1,82 @@
+doctype html
+- var mountpath = jingoLocals.mountpath;
+- var assets_prefix = jingoLocals.mountpath + jingoLocals.assets_prefix;
+
+html
+  head
+    meta(charset="utf-8")
+    meta(name="generator", content="jingo #{jingoVersion}")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title= title
+    link(rel="stylesheet", href="#{assets_prefix}/vendor/bootstrap/css/bootstrap.min.css")
+    link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
+    link(rel="stylesheet", href="#{assets_prefix}/css/style.css")
+    link(rel="stylesheet", href="#{assets_prefix}/css/ionicons.min.css")
+    link(rel="stylesheet", href="#{assets_prefix}/css/shCoreDefault.css")
+    if hasCustomStyle()
+      style.
+        !{_style}
+
+    style.
+      body {
+        background-image: url(#{assets_prefix}/img/bodybg.png);
+      }
+
+      a[href^="https://"],
+      a[href^="http://"] {
+        background: url(#{assets_prefix}/img/ext.png) center right no-repeat;
+      }
+
+      hr {
+        background: transparent url(#{assets_prefix}/img/hr-bg.png) repeat-x 0 0;
+      }
+
+      .toolbar li.fullscreen span {
+        background-image:url(#{assets_prefix}/img/fullscreen_16.png);
+      }
+      .toolbar li.info span {
+        background-image:url(#{assets_prefix}/img/info_16.png);
+      }
+      .toolbar li.preview span {
+        background-image:url(#{assets_prefix}/img/preview_16.png);
+      }
+
+      a.btn-auth {
+        background-image: url(#{assets_prefix}/img/social-logins.png);
+      }
+
+  body
+    -var term_ph = (typeof term == "undefined" ? "" : term)
+    .navbar.navbar-inverse.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+          a(href="#{mountpath}/").navbar-brand #{appTitle}
+          if canSearch()
+            form(action="#{mountpath}/search").navbar-form.navbar-left
+              .input-group.input-group-sm.search
+                input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
+                span.input-group-btn
+                  button.btn.btn-primary(type="submit") Search
+        .navbar-collapse.collapse
+          if isAnonymous()
+            p.user.navbar-right You're not&nbsp;
+              a(id='login',href='#{mountpath}/login?destination', title='Access login page') logged in
+          else
+            p.user.navbar-right
+              if user.email
+                img(src=gravatar().url("#{user.email}", {s:24}))
+              b &nbsp;#{user.displayName}&nbsp;
+              a.logout(href='#{mountpath}/logout', title='Become anonymous')
+                i.icon.ion-power
+
+    != body
+
+    if hasFooter()
+      .row
+        .col-md-2
+        .col-md-8.with-footer
+          .content !{_footer}
+
+    if hasCustomScript()
+      script.
+        !{_script}

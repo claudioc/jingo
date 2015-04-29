@@ -38,7 +38,7 @@ function _getSearch(req, res) {
   }
 
   function renderResults() {
-    res.render("search", {
+    res.layoutify("search", {
       title: "Search results"
     });
   }

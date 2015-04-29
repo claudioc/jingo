@@ -10,7 +10,7 @@ block content
     h2 Revisions of:&nbsp;
       b.page-param #{page.title}
     p
-      button(id="rev-compare", data-pageName="#{page.name}").btn.btn-primary Compare revisions
+      button(id="rev-compare", data-pageName="#{page.name}", data-UrlForCompare="#{page.urlForCompare()}").btn.btn-primary Compare revisions
 
     table.history.table.table-striped.table-bordered.table-hover.table-condensed
       each item in items

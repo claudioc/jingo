@@ -5,9 +5,9 @@ var router = require("express").Router(),
 
 models.use(Git);
 
-router.get("/misc/syntax-reference", _getSyntaxReference);
-router.post("/misc/preview",         _postPreview);
-router.get("/misc/existence",        _getExistence);
+router.get( "/misc/syntax-reference", _getSyntaxReference);
+router.post("/misc/preview",          _postPreview);
+router.get( "/misc/existence",        _getExistence);
 
 function _getSyntaxReference(req, res) {
   res.render('syntax');
@@ -32,7 +32,7 @@ function _getExistence(req, res) {
 
   req.query.data.forEach(function(pageName, idx) {
     (function(name, index) {
-      page = new models.Page(name);
+      page = new models.Page(name, res.locals.mountpath);
       if (!fs.existsSync(page.pathname)) {
         result.push(name);
       }
@@ -43,10 +43,11 @@ function _getExistence(req, res) {
   });
 }
 
-router.all('*', function(req, res) {
-  res.locals.title = "404 - Not found";
-  res.statusCode = 404;
-  res.render('404.jade');
+//handle 404
+router.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 module.exports = router;

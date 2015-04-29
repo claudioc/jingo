@@ -135,7 +135,7 @@ function _getLogin(req, res) {
 
   res.locals.errors = req.flash();
 
-  res.render('login', {
+  res.layoutify('login', {
     title: app.locals.config.get("application").title,
     auth: auth
   });
