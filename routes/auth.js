@@ -160,7 +160,7 @@ function fixDestination(destination) {
   var baseUrl = app.locals.baseUrl;
   // if baseUrl starts with // parse it with http: in front to make sure the parsed path is correct
   var pathToRemove = url.parse(baseUrl.indexOf('//') === 0 ? 'http:' + baseUrl : baseUrl).pathname;
-  return destination.indexOf(pathToRemove) === 0 ? destination.slice(pathToRemove.length) : destination;
+  return (destination && destination.indexOf(pathToRemove) === 0) ? destination.slice(pathToRemove.length) : destination;
 }
 
 function _getLogin(req, res) {
