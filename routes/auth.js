@@ -1,8 +1,10 @@
 var router = require("express").Router(),
     app = require("../lib/app").getInstance(),
+    _ = require('lodash'),
     passportLocal = require('passport-local'),
     passportGoogle = require('passport-google-oauth'),
     passportGithub = require('passport-github').Strategy,
+    url = require('url'),
     tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
@@ -81,6 +83,34 @@ if (auth.alone.enabled) {
   ));
 }
 
+if (auth.local.enabled) {
+
+  passport.use(new passportLocal.Strategy(
+
+    function(username, password, done) {
+
+      var wantedUsername = username.toLowerCase();
+      var wantedPasswordHash = tools.hashify(password);
+
+      var foundUser = _.find(auth.local.accounts, function (account) {
+          return account.username.toLowerCase() === wantedUsername &&
+            account.passwordHash === wantedPasswordHash;
+      });
+
+      if (!foundUser) {
+        return done(null, false, { message: 'Incorrect username or password' });
+      }
+
+      usedAuthentication("local");
+
+      return done(null, {
+        displayName: foundUser.username,
+        email: foundUser.email || ""
+      });
+    }
+  ));
+}
+
 function usedAuthentication(name) {
   for (var a in auth) {
     auth[a].used = (a == name);
@@ -125,9 +155,17 @@ function _getAuthDone(req, res) {
   }
 }
 
+// remove the baseurl from the destination to avoid adding another subpath from proxy rewrites
+function fixDestination(destination) {
+  var baseUrl = app.locals.baseUrl;
+  // if baseUrl starts with // parse it with http: in front to make sure the parsed path is correct
+  var pathToRemove = url.parse(baseUrl.indexOf('//') === 0 ? 'http:' + baseUrl : baseUrl).pathname;
+  return (destination && destination.indexOf(pathToRemove) === 0) ? destination.slice(pathToRemove.length) : destination;
+}
+
 function _getLogin(req, res) {
 
-  req.session.destination = req.query.destination;
+  req.session.destination = fixDestination(req.query.destination);
 
   if (req.session.destination == '/login') {
     req.session.destination = '/';
