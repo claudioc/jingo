@@ -1,12 +1,12 @@
 body {
   padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
   font-family: "Ubuntu";
-  background-image: url(/img/bodybg.png);
+  background-image: url(../img/bodybg.png);
 }
 
 a[href^="https://"],
 a[href^="http://"] {
-  background: url(/img/ext.png) center right no-repeat;
+  background: url(../img/ext.png) center right no-repeat;
   padding-right: 13px;
 }
 
