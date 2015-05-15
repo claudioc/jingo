@@ -25,4 +25,4 @@ block content
           td #{item.relDate}
           td #{item.subject}
           td
-            a(href="#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
+            a(href="#{baseUrl}#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}

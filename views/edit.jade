@@ -15,7 +15,7 @@ block content
     mixin warning()
     h1 Edit page
 
-    form(action='#{page.urlForEditPut()}', method='post', class='edit')
+    form(action='#{baseUrl}#{page.urlForEditPut()}', method='post', class='edit')
 
       .form-group
         input.form-control(rquired, type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, '')}")#pageTitle
