@@ -87,7 +87,7 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = window.jingobaseurl + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
@@ -159,7 +159,7 @@
 
     preview: function() {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(window.jingobaseurl + "/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
@@ -198,7 +198,7 @@
     markdownSyntax: function() {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load("/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(window.jingobaseurl + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }
