@@ -37,8 +37,12 @@ if (auth.google.enabled) {
     },
 
     function(accessToken, refreshToken, profile, done) {
-      usedAuthentication("google");
-      done(null, profile);
+        if(profile._json.hd === auth.google.domain ){
+            usedAuthentication("google");
+            done(null, profile);
+        }else{
+            done(null, false,{ message: 'Incorrect domain'});
+        }
     }
   ));
 }
