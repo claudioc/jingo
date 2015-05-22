@@ -142,7 +142,7 @@ function _getAuthDone(req, res) {
     return;
   }
 
-  if (!auth.alone.used && !tools.isAuthorized(res.locals.user.email, app.locals.config.get("authorization").validMatches)) {
+  if (!auth.alone.used && !auth.local.used && !tools.isAuthorized(res.locals.user.email, app.locals.config.get("authorization").validMatches)) {
     req.logout();
     req.session = null;
     res.statusCode = 403;

@@ -96,7 +96,7 @@ If you want your wiki server to only listen to your `localhost`, set the configu
 Authentication and Authorization
 --------------------------------
 
-You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "alone"). If you use the _alone_ method, you can have _only one user_ accessing the wiki (thus the name).
+You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "local").
 
 The _Google Login_ and the _GitHub login_ uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google or GitHub and put those informations in the configuration file.
 
@@ -120,9 +120,9 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
-The _alone_ method uses a `username`, a `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
+The _local_ method uses an array of `username`, `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
-You can enable all the authentications options at the same time. The `alone` is disabled by default.
+You can enable all the authentications options at the same time. The `local` is disabled by default.
 
 The _authorization_ section of the config file has two keys: `anonRead` and `validMatches`. If the `anonRead` is true, then anyone who can access the wiki can read anything.
 
@@ -189,43 +189,43 @@ If you put images into the repository, Jingo will be able to serve them. You can
 Configuration options reference
 -------------------------------
 
-####application.title
+#### application.title
 
   This will be showed on the upper left corner of all the pages, in the main toolbar
 
-####application.repository
+#### application.repository
 
   Absolute path for your documents repository (mandatory).
 
-####application.docSubdir
+#### application.docSubdir
 
   If your documents reside inside a directory of the repository, specify its name here.
 
-####application.remote
+#### application.remote
 
   This is the name of the remote you want to push/pull to/from (optional). You can also specify a specific branch using the syntax “remotename branchname”. If you don’t specify a branch, Jingo will use master.
 
-####application.pushInterval
+#### application.pushInterval
 
   Jingo will try to push to the remote (if present) every XX seconds (defaults to 30)
 
-####application.secret
+#### application.secret
 
   Just provide a string to be used to crypt the session cookie
 
-####application.git
+#### application.git
 
   You can specify a different git binary, if you use more than one in your system
 
-####application.skipGitCheck
+#### application.skipGitCheck
 
   Jingo will refuse to start if it founds a version of git which is known to be problematic. You can still force it to start anyway, providing `true` as the value for this option
 
-####application.loggingMode
+#### application.loggingMode
 
   Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development). Default is `1`.
 
-####application.pedanticMarkdown
+#### application.pedanticMarkdown
 
   Boolean, defaults to `true` (was `false` in jingo < 1.1.0)
 
@@ -233,114 +233,137 @@ Configuration options reference
 
   With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
-####authentication.staticWhitelist
+#### authentication.staticWhitelist
 
   This is to enable jingo to serve any kind of static file (like images) from the repository. By default, Jingo will serve `*.md` files and `*.jpg, *.png, *.gif`. Provide the values as a comma separated list of regular expressions.
 
-####authentication.google.enabled
+#### authentication.google.enabled
 
   Boolean, defaults to `true`
 
-####authentication.google.clientId
-####authentication.google.clientSecret
+#### authentication.google.clientId
+#### authentication.google.clientSecret
 
   Values required for Google OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
-####authentication.github.enabled
+#### authentication.github.enabled
 
   Boolean, defaults to `false`
 
-####authentication.github.clientId
-####authentication.github.clientSecret
+#### authentication.github.clientId
+#### authentication.github.clientSecret
 
   Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
-####authentication.alone.enabled
+#### authentication.local.enabled
 
   Boolean, defaults to `false`
 
-####authentication.alone.username
+  The Local setup allows you to specify an array of username/password/email elements that
+  will have access to the Wiki. All the accounts must resides in the configuration `authentication.local.accounts` array
+
+#### authentication.local.[accounts].username
 
   Provide any username you like, as a string
 
-####authentication.alone.passwordHash
+#### authentication.local.[accounts].passwordHash
 
   Use an hash of your password. Create the hash with `jingo -# yourpassword`
 
-####authentication.alone.email
+#### authentication.local.[accounts].email
 
   If you want to use Gravatar, provide your gravatar email here.
 
-####features.markitup
+#### authentication.alone.enabled
+
+  Boolean, defaults to `false`
+  _The Alone authentication option is deprecated in favor of the Local one_
+
+#### authentication.alone.username
+
+  Provide any username you like, as a string
+  _The Alone authentication option is deprecated in favor of the Local one_
+
+#### authentication.alone.passwordHash
+
+  Use an hash of your password. Create the hash with `jingo -# yourpassword`
+  _The Alone authentication option is deprecated in favor of the Local one_
+
+#### authentication.alone.email
+
+  If you want to use Gravatar, provide your gravatar email here.
+  _The Alone authentication option is deprecated in favor of the Local one_
+
+#### features.markitup
 
   Boolean, whether to enable Markitup or not (default false)
 
-####features.codemirror
+#### features.codemirror
 
   Boolean, whether to enable Codemirror or not (default true)
 
   Please note that you cannot enable both editors at the same time.
 
-####server.hostname
+#### server.hostname
 
   This is the hostname used to build the URL for your wiki pages. The reason for these options to exist is due to the need for the OAuth2 authentication to work (it needs an endpoint to get back to)
 
-####server.port
+#### server.port
 
   Jingo will listen on this port
 
-####server.localOnly
+#### server.localOnly
 
   Set this to `true` if you want to accept connection only _from_ localhost (default false)
 
-####server.baseUrl
+#### server.baseUrl
 
   Not used anymore (built with "//" + hostname + ":" + port)
 
-####authorization.anonRead
+#### authorization.anonRead
 
   Boolean to enable/disable the anonymous access to the wiki content (default true)
 
-####authorization.validMatches
+#### authorization.validMatches
 
   This is a regular expression which will be used against the user email account to be able to access the wiki. By default all google powered emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
 
-####pages.index
+#### pages.index
 
   Defines the page name for the index of the wiki (default is "Home")
 
-####pages.title.fromFilename
+#### pages.title.fromFilename
 
   If this is true, the title of each page will be derived from the document's filename. This is how Gollum works and from Jingo 1.0 this is now the default (default true). An important consequence of this behavior is that now Jingo is able _to rename_ documents (according to the new name it will be eventually given to), while previously it was impossible.
 
-####pages.title.fromContent
+#### pages.title.fromContent
 
   If this is true, the title of the document will be part of the document itself (the very first line). This is the default behavior of Jingo < 1.0 and the default is now false. If you have an old installation of Jingo, please set this value to true and `fromFilename` to false.
 
-####pages.title.asciiOnly
+#### pages.title.asciiOnly
 
   If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using iconv), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
-####pages.title.lowercase
+#### pages.title.lowercase
 
   If this is set to true, Jingo will lowercase any character of the title when creating the filename. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
-####pages.title.itemsPerPage
+#### pages.title.itemsPerPage
 
   This defines how many page item to show in the "list all page" page. Keep this value as low as possible (default to 10) for performance reasons.
 
-####customizations.sidebar
+#### customizations.sidebar
 
   Defines the name for the _sidebar_ component. Defaults to `_sidebar.md`. Please note that if you need to use a wiki coming from Github, this name should be set to `_Sidebar`
 
-####customizations.footer
+#### customizations.footer
 
   Defines the name for the _footer_ component. Defaults to `_footer.md`. Please note that if you need to use a wiki coming from Github, this name should be set to '_Footer'
 
-####customizations.style
+#### customizations.style
 
   Defines the name for the customized _style_ CSS component. Defaults to `_style.css`.
 
-####customizations.script
+#### customizations.script
 
   Defines the name for the customized _script_ JavaScript component. Defaults to `_script.js`.
