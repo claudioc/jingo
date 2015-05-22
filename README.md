@@ -233,7 +233,11 @@ Configuration options reference
 
   With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
-#### authentication.staticWhitelist
+####application.gfmBreaks
+
+  Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines) (defaults to `true`).
+
+####authentication.staticWhitelist
 
   This is to enable jingo to serve any kind of static file (like images) from the repository. By default, Jingo will serve `*.md` files and `*.jpg, *.png, *.gif`. Provide the values as a comma separated list of regular expressions.
 
