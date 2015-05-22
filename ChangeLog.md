@@ -1,4 +1,11 @@
-Version 1.2.9, January 26th, 2014
+Version 1.2.11, May 22th, 2015
+=================================
+
+- Merge PR #78 (Local authentication support, by @vschoettke)
+- Merge PR #75 (Gfm line breaks, by @apskim)
+- Deprecated the Alone authentication method
+
+Version 1.2.9, January 26th, 2015
 =================================
 
 - Fixes #64 (crash serving favicon)
