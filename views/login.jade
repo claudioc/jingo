@@ -20,7 +20,7 @@ block content
       p
         a(href="/") Cancel
 
-    if (auth.alone.enabled)
+    if (auth.alone.enabled || auth.local.enabled)
 
       p
         h4 Authenticate locally

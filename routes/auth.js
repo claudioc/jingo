@@ -1,5 +1,6 @@
 var router = require("express").Router(),
     app = require("../lib/app").getInstance(),
+    _ = require('lodash'),
     passportLocal = require('passport-local'),
     passportGoogle = require('passport-google-oauth'),
     passportGithub = require('passport-github').Strategy,
@@ -77,6 +78,34 @@ if (auth.alone.enabled) {
       usedAuthentication("alone");
 
       return done(null, user);
+    }
+  ));
+}
+
+if (auth.local.enabled) {
+
+  passport.use(new passportLocal.Strategy(
+
+    function(username, password, done) {
+
+      var wantedUsername = username.toLowerCase();
+      var wantedPasswordHash = tools.hashify(password);
+
+      var foundUser = _.find(auth.local.accounts, function (account) {
+          return account.username.toLowerCase() === wantedUsername &&
+            account.passwordHash === wantedPasswordHash;
+      });
+
+      if (!foundUser) {
+        return done(null, false, { message: 'Incorrect username or password' });
+      }
+
+      usedAuthentication("local");
+
+      return done(null, {
+        displayName: foundUser.username,
+        email: foundUser.email || ""
+      });
     }
   ));
 }
