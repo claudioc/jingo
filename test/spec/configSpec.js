@@ -33,10 +33,7 @@ describe ("Config", function() {
     expect(def.authorization.validMatches).to.equal('.+');
 
     expect(def.authentication.google.enabled).to.be.true;
-    expect(def.authentication.alone.enabled).to.be.false;
-    expect(def.authentication.alone.username).to.equal('');
-    expect(def.authentication.alone.passwordHash).to.equal('');
-    expect(def.authentication.alone.email).to.equal('');
+    expect(def.authentication.local.enabled).to.be.false;
   });
 
   it ("should get the config as a whole", function() {
