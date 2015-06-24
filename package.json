@@ -40,6 +40,7 @@
     "method-override": "^2.3.0",
     "morgan": "^1.5.0",
     "node-syntaxhighlighter": "*",
+    "parse-katex": "^0.2.0",
     "passport": "^0.2.0",
     "passport-github": "^0.1.5",
     "passport-google-oauth": "^0.1.5",
