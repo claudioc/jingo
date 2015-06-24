@@ -105,7 +105,7 @@ The Docker container also uses environment variables to work around the problem 
 
 Once you've built your Docker container, you can run the app by doing:
 
-`sudo docker run -p 80:80 -d -v <absolute path to docs repo>:/src/data -t jingo-latex -e GITNAME=crockpotveggies -e GITEMAIL=crockpotveggies@users.github.com -e GITMACHINE=github.com -e GITLOGIN=crockpotveggies -e GITPASS=password123`
+`sudo docker run -e "GITNAME=crockpotveggies" -e "GITEMAIL=crockpotveggies@users.github.com" -e "GITMACHINE=github.com" -e "GITLOGIN=crockpotveggies" -e "GITPASS=password123" -p 80:80 -d -v <absolute path to docs repo>:/src/data -t jingo-latex`
 
 Authentication and Authorization
 --------------------------------
