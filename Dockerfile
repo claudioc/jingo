@@ -9,7 +9,7 @@ ADD . /src
 # Install app dependencies
 RUN cd /src; npm install
 
-EXPOSE  6067
+EXPOSE  80
 
 RUN chmod +x /src/jingo
 RUN mkdir /src/data
