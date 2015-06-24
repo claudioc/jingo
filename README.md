@@ -63,6 +63,7 @@ Features
 - Automatically push to a remote
 - Mobile friendly (based on Bootstrap 3.x)
 - Quite configurable, but also works out of the box
+- Supports LaTeX input by using Katex
 
 For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
 
@@ -92,6 +93,17 @@ If your documents reside in subdirectory of your repository, you need to specify
 If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
 
 ![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss4.png)
+
+Docker Container
+----------------
+
+A Dockerfile has been included with Jingo to allow you to build your own image and containerize the app. The `Dockerfile` is set up so that you mount your own docs repository to Docker and keep your documents in the host filesystem. The Dockerfile also expects your `config.yaml` file to exist at the root of the external repository, allowing you to customize configuration outside of Docker.
+
+If your external repository exists at `/home/ubuntu/jingo-docs/` then your configuration file needs to be at `/home/ubuntu/jingo-docs/config.yaml`. Note: the configuration file must be called `config.yaml`.
+
+Once you've built your Docker container, you can run the app by doing:
+
+`sudo docker run -p 6067:6067 -d -v <absolute path to docs repo>:/src/data -t jingo-latex`
 
 Authentication and Authorization
 --------------------------------
