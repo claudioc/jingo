@@ -101,9 +101,11 @@ A Dockerfile has been included with Jingo to allow you to build your own image a
 
 If your external repository exists at `/home/ubuntu/jingo-docs/` then your configuration file needs to be at `/home/ubuntu/jingo-docs/config.yaml`. Note: the configuration file must be called `config.yaml`.
 
+The Docker container also uses environment variables to work around the problem where git needs a user and email in the global config. You can also optionally set variables for a `~/.netrc` file. You will see the environment variables in the run command below.
+
 Once you've built your Docker container, you can run the app by doing:
 
-`sudo docker run -p 6067:6067 -d -v <absolute path to docs repo>:/src/data -t jingo-latex`
+`sudo docker run -p 6067:6067 -d -v <absolute path to docs repo>:/src/data -t jingo-latex -e GITNAME=crockpotveggies GITEMAIL=crockpotveggies@users.github.com GITMACHINE=github.com GITLOGIN=crockpotveggies GITPASS=password123`
 
 Authentication and Authorization
 --------------------------------

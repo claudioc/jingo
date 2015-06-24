@@ -12,6 +12,7 @@ RUN cd /src; npm install
 EXPOSE  80
 
 RUN chmod +x /src/jingo
-RUN mkdir /src/data
+RUN mkdir /src/data 
 
-ENTRYPOINT /src/jingo -c /src/data/config.yaml
+# use environment variables to set git credentials
+ENTRYPOINT "machine $GITMACHINE \n login $GITLOGIN \n password $GITPASS" >> ~/.netrc && git config --global user.email "$GITEMAIL" &&  git config --global user.name "$GITNAME" && /src/jingo -c /src/data/config.yaml
