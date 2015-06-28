@@ -1,3 +1,9 @@
+Version 1.2.12, June 28th, 2015
+=================================
+
+- Fixes #85 – Jingo crash on search
+- Fixes #45 – Jingo now works on mobile too
+
 Version 1.2.11, May 22th, 2015
 =================================
 
