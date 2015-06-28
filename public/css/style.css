@@ -34,7 +34,8 @@ p.user {
 }
 
 #content {
-  padding: 20px 15px;
+  padding: 20px 5px;
+  padding-bottom: 5px;
   overflow: hidden;
 }
 
@@ -346,14 +347,13 @@ ul.doc-list > li .message {
 }
 
 .tools {
-  display: none;
   position: fixed;
   z-index: 4;
   margin-top: -62px;
   background-color: rgba(27,27,27,.3);
   border: 1px solid gray;
   padding: 0px 5px;
-  right: 280px;
+  right: 0;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -394,9 +394,9 @@ ul.doc-list > li .message {
   width: 35px;
   height: 14px;
   right: 0;
-  left: 60%;
+  left: 75%;
   color: white;
-  top: 41px;
+  top: 62px;
   text-align: center;
   font-size: 9px;
   line-height: 12px;
@@ -587,8 +587,8 @@ a.btn-auth.btn-auth-github {
 a.btn-auth:hover {
   opacity: .9;
 }
-@media (min-width: 768px) {
 
+@media (min-width: 768px) {
   body {
     padding-top: 60px;
   }
@@ -598,7 +598,10 @@ a.btn-auth:hover {
   }
 
   .tools {
-    display: block;
+    right: 280px;
   }
-
+  .tools-handle {
+    top: 41px;
+    left: 60%;
+  }
 }

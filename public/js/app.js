@@ -47,9 +47,9 @@
 
       if ($(".tools > ul > li").length > 0) {
         var $pah = $("<li class=\"tools-handle\">Tools</li>");
-        var pahTo;
+        var pahTo, bodyPadding = $('body').css('padding-top');
         $pah.on("mouseover", function() {
-          $tools.animate({"margin-top": "-20px"});
+          $tools.animate({"margin-top": bodyPadding == "40px" ? "0" : "-20"});
           $pah.slideUp();
         });
         $tools.on("mouseenter", function() {
