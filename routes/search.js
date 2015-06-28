@@ -20,6 +20,14 @@ function _getSearch(req, res) {
     renderResults();
   } else {
 
+    try {
+      new RegExp(res.locals.term);
+    } catch(e) {
+      res.locals.warning = "The format of the search string is invalid.";
+      renderResults();
+      return;
+    }
+
     models.pages.findStringAsync(res.locals.term).then(function(items) {
 
       items.forEach(function(item) {
