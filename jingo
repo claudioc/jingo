@@ -8,7 +8,6 @@
  * Released under the MIT license
  */
 var program = require('commander'),
-    http    = require('http'),
     tools   = require('./lib/tools'),
     config  = require('./lib/config'),
     http    = require('http'),
