@@ -13,6 +13,7 @@
           qs, hl = null;
 
       if (location.search !== "") {
+        $("input[name=term]").focus();
         qs = $.map(location.search.substr(1).split("&"), function(kv) {
           kv = kv.split("=");
           return { k: kv[0], v: decodeURIComponent(kv[1]) };

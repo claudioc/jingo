@@ -35,7 +35,7 @@ describe ("Renderer", function() {
 
   it ("should render bracket tags7", function() {
     var text = "a [[Foo / Bar]] b";
-    expect(Renderer.render(text)).to.be.equal("<p>a <a class=\"internal\" href=\"/wiki/Foo---Bar\">Foo / Bar</a> b</p>\n");
+    expect(Renderer.render(text)).to.be.equal("<p>a <a class=\"internal\" href=\"/wiki/Foo-%2B-Bar\">Foo / Bar</a> b</p>\n");
   });
 
 

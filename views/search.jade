@@ -4,12 +4,20 @@ include mixins/form
 
 block content
 
-  #content
+  #content.search.show
 
     mixin warning()
 
-    h2 #{title} for&nbsp;
-      b.page-param #{term}
+    if canSearch()
+      form(action="/search").search-form
+        .input-group.input-group-sm
+          input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
+          span.input-group-btn
+            button.btn.btn-primary(type="submit") Search
+
+    if (term)
+      h2 #{title} for&nbsp;
+        b.page-param #{term}
 
     dl.search-results
       each match in matches

@@ -21,22 +21,22 @@ html
         .navbar-header
           a(href="/").navbar-brand #{appTitle}
           if canSearch()
-            form(action="/search").navbar-form.navbar-left
+            form(action="/search").navbar-form.search.navbar-left
               .input-group.input-group-sm.search
                 input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
                 span.input-group-btn
                   button.btn.btn-primary(type="submit") Search
-        .navbar-collapse.collapse
-          if isAnonymous()
-            p.user.navbar-right You're not&nbsp;
-              a(id='login',href='/login?destination', title='Access login page') logged in
-          else
-            p.user.navbar-right
-              if user.email
-                img(src=gravatar().url("#{user.email}", {s:24}))
-              b &nbsp;#{user.displayName}&nbsp;
-              a.logout(href='/logout', title='Become anonymous')
-                i.icon.ion-power
+          .navbar-right
+            if isAnonymous()
+              p.user You're not&nbsp;
+                a(id='login',href='/login?destination', title='Access login page') logged in
+            else
+              p.user
+                if user.email
+                  img(src=gravatar().url("#{user.email}", {s:24}))
+                b &nbsp;#{user.displayName}&nbsp;
+                a.logout(href='/logout', title='Become anonymous')
+                  i.icon.ion-power
 
     .tools
       block tools

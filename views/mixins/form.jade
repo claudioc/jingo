@@ -25,6 +25,11 @@ mixin tools(action, pageName)
         a(href="/wiki", title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
+      if canSearch()
+        li
+          a(href="/search", title="Search through the pages").btn.btn-sm.btn-default
+            i.icon.ion-search
+
   if action == 'history'
     ul
       li

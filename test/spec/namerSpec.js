@@ -37,7 +37,7 @@ describe("namer", function() {
       expect(namer.wikify(" nell - aria ")).to.equal("nell---aria");
       expect(namer.wikify("Caffé")).to.equal("Caffé");
       expect(namer.wikify("Caffé corretto!")).to.equal("Caffé-corretto!");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caffpe-p-senza-schiuma");
+      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("Caffpe+p-senza-schiuma");
       expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per-favore:-nessun,-dico;-E-un-punto...");
       expect(namer.wikify("prova.md")).to.equal("prova.md");
     });
@@ -77,6 +77,14 @@ describe("namer", function() {
       expect(namer.wikify("È@@@É")).to.equal("è@@@é");
     });
 
+    it ("should wikify a string with slashes", function() {
+      expect(namer.wikify("/1/")).to.equal("+1+");
+      expect(namer.wikify("1/")).to.equal("1+");
+      expect(namer.wikify("/1")).to.equal("+1");
+      expect(namer.wikify("1//")).to.equal("1++");
+      expect(namer.wikify("///")).to.equal("+++");
+    });
+
     it ("should wikify a string with the defaults of Jingo < 1.0", function() {
       namer.configOverride({
         pages: {
@@ -96,7 +104,7 @@ describe("namer", function() {
       expect(namer.wikify(" nell - aria ")).to.equal("nell---aria");
       expect(namer.wikify("Caffé")).to.equal("caffe");
       expect(namer.wikify("Caffé corretto!")).to.equal("caffe-corretto");
-      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("caffpe-p-senza-schiuma");
+      expect(namer.wikify("Caff<p>e</p> senza schiuma")).to.equal("caffpep-senza-schiuma");
       expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("per-favore-nessun-dico-e-un-punto");
     });
   });

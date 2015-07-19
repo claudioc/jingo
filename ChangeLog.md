@@ -1,3 +1,13 @@
+Version 1.3.0, July 19th, 2015
+=================================
+
+- Fixes #80 – Crash when a title starts with /
+- Fixes #87 – Better management of slashes in titles (replaced by "+")
+- Adds the search form to the search pages, so that we could...
+- ...show the login option on mobile (removes the search field) because we...
+- ...added the search icon to the toolbox
+- Merges #88 and #89
+
 Version 1.2.12, June 28th, 2015
 =================================
 

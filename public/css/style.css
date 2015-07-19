@@ -25,6 +25,7 @@ p.user {
   color: white;
   padding: 8px 0 0;
   margin-bottom: 0px;
+  margin-right: -20px;
 }
 
 #main {
@@ -208,13 +209,21 @@ hr {
 
 /* Overrides Bootstrap */
 
+.navbar-right {
+  float: right;
+}
+
 .navbar-form {
   padding: 0;
   margin-top: 5px;
 }
 
+.navbar-form.search {
+  display: none;
+}
+
 .navbar-header {
-  min-width: 50%;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -516,6 +525,10 @@ input#pageTitle {
   color: #aaa;
 }
 
+.search .search-form {
+  margin-bottom: 20px;
+}
+
 .with-sidebar {
   background-color: rgba(255,255,255,0.5);
   padding: 10px;
@@ -599,13 +612,22 @@ a.btn-auth:hover {
     padding-top: 60px;
   }
 
+  p.user {
+    margin-right: auto;
+  }
+
   #content {
     padding: 40px 25px;
+  }
+
+  .navbar-form.search {
+    display: block;
   }
 
   .tools {
     right: 280px;
   }
+
   .tools-handle {
     top: 41px;
     left: 60%;
