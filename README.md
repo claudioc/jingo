@@ -77,7 +77,17 @@ Jingo needs a config file and to create a sample config file, just run `jingo -s
 
 This document contains also [the reference](#configuration-options-reference) for all the possible options.
 
-If you define a `remote` to push to, then Jingo will automatically issue a push to that remote every `pushInterval` seconds. You can also specify a branch using the syntax "remotename branchname". If you don't specify a branch, Jingo will use `master`. Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try to resolve conflicts, though).
+If you define a `remote` to push to, then Jingo will automatically issue a push to that remote every `pushInterval` seconds. To declare a `remote` for Jingo to use, you'll need to identify the name of your local remote. The following example shows how a local remote is typically defined: 
+
+`git remote add origin https://github.com/joeuser/jingorepo.git'`
+
+Based on that example, you would update config.yaml with the remote name "origin" as follows:
+
+`remote: "origin"`
+
+You can also use the `git remote` command to get the name of your remote.
+
+You can also specify a branch using the syntax "remotename branchname". If you don't specify a branch, Jingo will use `master`. Please note that before the `push`, a `pull` will also be issued (at the moment Jingo will not try to resolve conflicts, though).
 
 The basic command to run the wiki will then be
 
