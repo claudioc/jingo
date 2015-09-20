@@ -503,6 +503,9 @@ ul.doc-list > li .message {
 .toolbar li.preview span {
   background-image:url(../img/preview_16.png);
 }
+.toolbar li.upload span {
+  background-image:url(../img/upload_16.png);
+}
 
 .toolbar.fullscreen {
   position: fixed;
