@@ -121,10 +121,20 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
+
   if (user.emails && user.emails.length > 0) { // Google
     user.email = user.emails[0].value;
     delete user.emails;
   }
+
+  if (!user.displayName && user.username) {
+    user.displayName = user.username;
+  }
+
+  if (!user.email) {
+    user.email = 'jingouser';
+  }
+
   user.asGitAuthor = user.displayName + " <" + user.email + ">";
   done(undefined, user);
 });
@@ -142,7 +152,9 @@ function _getAuthDone(req, res) {
     return;
   }
 
-  if (!auth.alone.used && !auth.local.used && !tools.isAuthorized(res.locals.user.email, app.locals.config.get("authorization").validMatches)) {
+  if (!auth.alone.used &&
+      !auth.local.used &&
+      !tools.isAuthorized(res.locals.user.email, app.locals.config.get("authorization").validMatches)) {
     req.logout();
     req.session = null;
     res.statusCode = 403;

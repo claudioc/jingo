@@ -1,3 +1,10 @@
+Version 1.3.1, October 4th, 2015
+=================================
+
+- Upgrades CodeMirror to 5.7
+- Uses _github flavoured markdown_ as the default CodeMirror mode (Closes #99)
+- Uses github username if the displayName is empty (Closes #95)
+
 Version 1.3.0, July 19th, 2015
 =================================
 

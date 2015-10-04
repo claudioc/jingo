@@ -57,6 +57,7 @@ mixin featuresStylesheets()
     link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")
     link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")
   if hasFeature('codemirror')
+    link(rel="stylesheet", type="text/css", href="/css/codemirror-ext.css")
     link(rel="stylesheet", type="text/css", href="/vendor/codemirror/codemirror.css")
     link(rel="stylesheet", type="text/css", href="/vendor/codemirror/fullscreen.css")
 
@@ -74,7 +75,7 @@ mixin featuresJavaScripts()
     script.
       Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
         lineNumbers: true,
-        mode: 'markdown',
+        mode: 'gfm',
         matchBrackets: true,
         lineWrapping: true,
         extraKeys: {
