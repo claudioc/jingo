@@ -2,8 +2,6 @@
 
 [ ![Codeship Status for claudioc/jingo](https://www.codeship.io/projects/4c413870-353e-0132-115c-220292a78f73/status)](https://www.codeship.io/projects/40997)
 
-**Warning: the current version of Jingo (1.x.x) is relatively new and it has gone through some major rewrites. If you find yourself having problems with this version, you can still use the previous stable [version 0.6.1](https://github.com/claudioc/jingo/releases/tag/v0.6.1). If this is the case, please take a minute and fill out one [issue](https://github.com/claudioc/jingo/issues). And don't forget to take a look at the [list of changes](https://github.com/claudioc/jingo/blob/master/ChangeLog.md)!**
-
 JINGO
 =====
 
@@ -139,11 +137,6 @@ The _authorization_ section of the config file has two keys: `anonRead` and `val
 If anonRead is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
 
 The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
-
-Common problems
----------------
-
-Sometimes upgrading your version of node.js could break the `iconv` module. Try updating it with `npm install iconv`.
 
 Known limitations
 -----------------
@@ -356,7 +349,7 @@ Configuration options reference
 
 #### pages.title.asciiOnly
 
-  If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using iconv), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
+  If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using transliteration), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
 #### pages.title.lowercase
 
