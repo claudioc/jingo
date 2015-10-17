@@ -1,6 +1,6 @@
 {
   "name": "jingo",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A nodejs based wiki engine (sort of Gollum port)",
   "author": "Claudio Cicali <claudio.cicali@gmail.com>",
   "keywords": [
@@ -35,7 +35,7 @@
     "jade": "*",
     "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
-    "marked": "^0.3.2",
+    "marked": "^0.3.5",
     "method-override": "^2.3.0",
     "morgan": "^1.5.0",
     "node-syntaxhighlighter": "*",
@@ -59,10 +59,5 @@
     "node": "0.8.x",
     "npm": "1.1.x"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/claudioc/jingo/raw/master/LICENSE"
-    }
-  ]
+  "license": "MIT"
 }

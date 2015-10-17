@@ -1,3 +1,9 @@
+Version 1.4.1, October 17th, 2015
+=================================
+
+- Fixes #68, CSS support for markdown tables
+- Removes deprecated `licenses` object in packages.json
+
 Version 1.4.0, October 11th, 2015
 =================================
 

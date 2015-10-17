@@ -69,7 +69,9 @@ For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. Fo
 Installation
 ------------
 
-`npm install jingo` or download/clone the whole thing and run "npm install".
+`npm install jingo` or download/clone the whole thing and run `npm install`.
+
+Note: if you already have Jingo installed, please also run `npm prune` (some modules can be stale and need to be removed).
 
 Jingo needs a config file and to create a sample config file, just run `jingo -s`, redirect the output on a file and then edit it (`jingo -s > config.yaml`). The config file contains all the available configuration options. Be sure to provide a valid server hostname (like wiki.mycompany.com) if you use a 3rd party provider for authentication (like Google or GitHub). It is needed for them to be able to get back to you.
 
