@@ -58,7 +58,7 @@ mixin warning()
 mixin notice()
   -var notice = locals.notice;
   - if (typeof(notice) != 'undefined')
-    .alert.alert-block.alert-info !{notice}
+    .alert.alert-block.alert-info.alert-dismissible !{notice}
 
 mixin dialogBox(h)
   .modal-header
