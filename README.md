@@ -261,7 +261,7 @@ Configuration options reference
 
 #### authentication.github.clientId
 #### authentication.github.clientSecret
-#### authentication.github.callbackBaseURL
+#### authentication.github.callbackUrl
 
   Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
