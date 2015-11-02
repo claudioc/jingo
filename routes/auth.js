@@ -51,7 +51,7 @@ if (auth.github.enabled) {
   passport.use(new passportGithub({
       clientID: auth.github.clientId,
       clientSecret: auth.github.clientSecret,
-      callbackURL: app.locals.baseUrl + '/auth/github/callback'
+      callbackURL: auth.github.callbackUrl
     },
     function(accessToken, refreshToken, profile, done) {
       usedAuthentication("github");

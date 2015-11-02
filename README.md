@@ -127,8 +127,8 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
 * Enter <your installation URL>/auth/github/callback as the `Authorization callback URL`
 * Press the `Register application` button
-* In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
-* Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+* In the following page, on the top right corner, take note of the values for `Client ID`, `Client Secret` and `Authorization callback URL`
+* Now you need to copy the `Client ID`, `Client secret` and `callbackUrl` in your jingo config file in the proper places
 
 The _local_ method uses an array of `username`, `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
@@ -261,6 +261,7 @@ Configuration options reference
 
 #### authentication.github.clientId
 #### authentication.github.clientSecret
+#### authentication.github.callbackUrl
 
   Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 

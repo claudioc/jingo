@@ -2,3 +2,5 @@ node_modules/*
 config.yaml
 config.yml
 data/*
+*.iml
+.idea
