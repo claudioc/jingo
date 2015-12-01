@@ -12,6 +12,7 @@ router.get("/pages/:page/edit", _getPagesEdit);
 router.post("/pages", _postPages);
 router.put("/pages/:page", _putPages);
 router.delete("/pages/:page", _deletePages);
+router.get("/pages/:page/revert/:version", _getRevert);
 
 var pagesConfig = app.locals.config.get("pages");
 
@@ -262,6 +263,26 @@ function _getPagesEdit(req, res) {
       page: page,
       warning: warning
     });
+  });
+}
+
+function _getRevert(req, res) {
+
+  var page = new models.Page(req.params.page, req.params.version);
+
+  page.author = req.user.asGitAuthor;
+
+  page.fetch().then(function() {
+    if (!page.error) {
+      page.revert();
+      res.redirect(page.urlFor("history"));
+    }
+    else {
+      res.locals.title = "500 - Internal Server Error";
+      res.statusCode = 500;
+      res.render('500.jade');
+      return;
+    }
   });
 }
 

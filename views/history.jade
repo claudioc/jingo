@@ -26,3 +26,5 @@ block content
           td #{item.subject}
           td
             a(href="#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
+          td
+            a(href="#{page.urlForRevert()}/#{item.fullhash}") Revert To
