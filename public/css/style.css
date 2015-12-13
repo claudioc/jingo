@@ -171,12 +171,27 @@ hr {
   background-color: #eee;
 }
 
+#content .history img {
+  display: inline;
+}
+
 .history td:first-child {
   width: 10px;
 }
 
 .history td:nth-child(3) {
   white-space: nowrap;
+}
+
+.history td:nth-child(4) {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.history td.revert a {
+  color: black;
+  font-size: 16px;
 }
 
 .page-param {

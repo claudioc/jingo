@@ -337,6 +337,10 @@ Configuration options reference
 
   This is a regular expression which will be used against the user email account to be able to access the wiki. By default all google powered emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
 
+#### authorization.emptyEmailMatches
+
+  If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway (defaults to true)
+
 #### pages.index
 
   Defines the page name for the index of the wiki (default is "Home")

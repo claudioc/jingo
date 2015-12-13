@@ -69,6 +69,10 @@
         return window.confirm("Do you really want to delete this page?");
       });
 
+      $(".confirm-revert").on("click", function(evt) {
+        return window.confirm("Do you really want to revert to this revision?");
+      });
+
       var $hCol1 = $(".history td:first-child");
 
       if ($("#content").hasClass("edit")) {

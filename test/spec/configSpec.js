@@ -5,7 +5,10 @@ var Config = require("../../lib/config");
 
 describe ("Config", function() {
 
-  beforeEach(function() {
+  Config.setup();
+
+  afterEach(function() {
+    // Unset the config
     Config.setup();
   });  
 
@@ -31,6 +34,7 @@ describe ("Config", function() {
 
     expect(def.authorization.anonRead).to.be.true;
     expect(def.authorization.validMatches).to.equal('.+');
+    expect(def.authorization.emptyEmailMatches).to.be.false;
 
     expect(def.authentication.google.enabled).to.be.true;
     expect(def.authentication.local.enabled).to.be.false;
@@ -38,9 +42,14 @@ describe ("Config", function() {
 
   it ("should get the config as a whole", function() {
 
-    var c = Config.get();
+    var c;
+    try {
+      var c = Config.get();
+    } catch(e) {
+      c = 'boom';
+    }
 
-    expect(c).to.be.an("undefined");
+    expect(c).to.equal('boom');
 
     Config.setup({
       test: 23

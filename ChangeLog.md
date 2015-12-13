@@ -1,3 +1,17 @@
+Version 1.5.0, December 12th, 2015
+=================================
+
+- Adds the ability to revert to a specific revision from the history page (@brad7928)
+- Adds support for directives (see PR #115) (@creynold)
+- Adds support for Table of Contents (@creynold and @brad7928)
+- Adds a new `emptyEmailMatches` configuration parameter (see README)
+- Added the /etc configuration directory (for useful configurations we may need)
+- Fixes #110 (@brad7928)
+- Fixes #109
+- Fixes #10
+
+- Merged #115, #113, #110
+
 Version 1.4.1, October 17th, 2015
 =================================
 

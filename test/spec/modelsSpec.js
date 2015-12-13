@@ -3,6 +3,8 @@ var models = require("../../lib/models");
 
 var m;
 
+models.use(Git);
+
 describe ("Models", function () {
 
   afterEach(function () {
