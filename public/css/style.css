@@ -115,6 +115,7 @@ dl.search-results dt {
   font-size: 120%;
 }
 
+.toc-heading,
 h2,
 h1 {
   border-bottom: 1px solid #ddd;
@@ -126,6 +127,7 @@ h1 {
   font-size: 32px;
 }
 
+.toc-heading,
 h2 {
   font-size: 24px;
 }
