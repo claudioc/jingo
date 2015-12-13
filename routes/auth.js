@@ -15,7 +15,7 @@ router.post("/login", passport.authenticate('local', { successRedirect: '/auth/d
 router.get("/auth/done", _getAuthDone);
 
 router.get("/auth/google", passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.email'] }
+  scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile' ] }
 ));
 router.get("/oauth2callback", passport.authenticate('google', {
   successRedirect: '/auth/done',
