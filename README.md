@@ -147,7 +147,6 @@ Known limitations
 - The repository is "flat" (no directories or namespaces)
 - Authorization is only based on a regexp'ed white list with matches on the user email address
 - There is one authorization level only (no "administrators" and "editors")
-- At the moment there is no "restore previous revision", just a revision browser
 - No scheduled pull or fetch from the remote is provided (because handling conflicts would be a bit too... _interesting_)
 
 Please note that at the moment it is quite "risky" to have someone else, other than jingo itself, have write access to the remote / branch jingo is pushing to. The push operation is supposed to always be successfull and there is no pull or fetch. You can of course manage to handle pull requests yourself.
