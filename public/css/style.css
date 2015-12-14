@@ -132,6 +132,9 @@ h2 {
 
 h3 {
   font-size: 18px;
+}
+
+h3 {
   margin: 0 0 10px 0;
 }
 
@@ -140,73 +143,6 @@ h2 a, h2 a:hover,
 h3 a, h3 a:hover,
 h4 a, h4 a:hover {
   color: inherit;
-}
-
-/*
-  Fix Navbar floating over top of heading
- */
-h1:before,
-h2:before,
-h3:before,
-h4:before,
-h5:before,
-h6:before {
-  display: block;
-  content: " ";
-  margin-top: -50px;
-  height: 50px;
-  visibility: hidden;
-}
-
-/*
-  Default styles for heading fragment (h6)
- */
-.headingFragment {
-  float: left;
-  line-height: 1;
-  font-size: 20px;
-  position: relative;
-  left: -22px;
-  top: -25px;
-  display: none;
-}
-
-/*
-  Hide heading fragment until heading or fragment is hovered
- */
-.headingFragment a {
-  position: relative;
-  visibility: hidden;
-}
-
-/*
-  Show fragment on hover
- */
-h1:hover + .headingFragment a,
-h2:hover + .headingFragment a,
-h3:hover + .headingFragment a,
-h4:hover + .headingFragment a,
-h5:hover + .headingFragment a,
-h6:hover + .headingFragment a,
-.headingFragment:hover a {
-  visibility: visible;
-}
-
-/*
-  Set offsets based on font-size
- */
-h1 + .headingFragment {
-  top: -46px;
-}
-h2 + .headingFragment {
-  top: -44px;
-}
-h3 + .headingFragment,
-h4 + .headingFragment {
-  top: -28px;
-}
-h5 + .headingFragment {
-  top: -27px;
 }
 
 hr {
@@ -705,9 +641,5 @@ a.btn-auth:hover {
   .tools-handle {
     top: 41px;
     left: 60%;
-  }
-
-  .headingFragment {
-    display: block;
   }
 }
