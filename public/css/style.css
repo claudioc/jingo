@@ -168,6 +168,7 @@ h6:before {
   position: relative;
   left: -22px;
   top: -25px;
+  display: none;
 }
 
 /*
@@ -704,5 +705,9 @@ a.btn-auth:hover {
   .tools-handle {
     top: 41px;
     left: 60%;
+  }
+
+  .headingFragment {
+    display: block;
   }
 }
