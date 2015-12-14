@@ -1,3 +1,13 @@
+Version 1.5.2, December 14th, 2015
+=================================
+
+- Fixes an authentication bug on 1.5.1 (#120)
+
+Version 1.5.1, December 12th, 2015
+=================================
+
+DO NOT USE THIS VERSION
+
 Version 1.5.0, December 12th, 2015
 =================================
 

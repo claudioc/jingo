@@ -152,8 +152,6 @@ function _getAuthDone(req, res) {
     return;
   }
 
-res.locals.user.email = 'jingouser';
-
   if (!auth.alone.used &&
       !auth.local.used &&
       !tools.isAuthorized(res.locals.user.email,
