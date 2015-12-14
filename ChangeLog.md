@@ -1,3 +1,8 @@
+Version 1.5.3, December 14th, 2015
+=================================
+
+- Adds the `redirectURL` to the configuration (#121)
+
 Version 1.5.2, December 14th, 2015
 =================================
 

@@ -17,7 +17,7 @@ var program = require('commander'),
 
 global.Git = require('./lib/gitmech');
 
-program.version('1.5.2')
+program.version('1.5.3')
        .option('-c, --config <path>', 'Specify the config file')
        .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')
