@@ -29,12 +29,13 @@ router.get("/auth/github/callback", passport.authenticate('github', {
 }));
 
 if (auth.google.enabled) {
+  var redirectURL = auth.google.redirectURL || app.locals.baseUrl + '/oauth2callback';
   passport.use(new passportGoogle.OAuth2Strategy({
       clientID: auth.google.clientId,
       clientSecret: auth.google.clientSecret,
       // I will leave the horrible name as the default to make the painful creation
       // of the client id/secret simpler
-      callbackURL: app.locals.baseUrl + '/oauth2callback'
+      callbackURL: redirectURL
     },
 
     function(accessToken, refreshToken, profile, done) {
@@ -45,13 +46,14 @@ if (auth.google.enabled) {
 }
 
 if (auth.github.enabled) {
+  var redirectURL = auth.github.redirectURL || app.locals.baseUrl + '/auth/github/callback';
 
   // Register a new Application with Github https://github.com/settings/applications/new
   // Authorization callback URL /auth/github/callback
   passport.use(new passportGithub({
       clientID: auth.github.clientId,
       clientSecret: auth.github.clientSecret,
-      callbackURL: app.locals.baseUrl + '/auth/github/callback'
+      callbackURL: redirectURL
     },
     function(accessToken, refreshToken, profile, done) {
       usedAuthentication("github");
