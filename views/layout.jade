@@ -7,11 +7,11 @@ html
     meta(name="generator", content="jingo #{jingoVersion}")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title= title
-    +cssAsset("/vendor/bootstrap/css/bootstrap.min.css")
+    +asset("/vendor/bootstrap/css/bootstrap.min.css")
     link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
-    +cssAsset("/css/style.css")
-    +cssAsset("/css/ionicons.min.css")
-    +cssAsset("/css/shCoreDefault.css")
+    +asset("/css/style.css")
+    +asset("/css/ionicons.min.css")
+    +asset("/css/shCoreDefault.css")
     block styles
     if hasCustomStyle()
       style.
@@ -64,8 +64,8 @@ html
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
     script.
       window.jQuery || document.write("<sc" + "ript src='#{staticpath}/vendor/jquery.min.js'></scr" + "ipt>");
-    +scriptAsset("/vendor/bootstrap/js/bootstrap.min.js")
-    +scriptAsset("/js/app.js")
+    +asset("/vendor/bootstrap/js/bootstrap.min.js")
+    +asset("/js/app.js")
     script.
       Jingo.init("#{mountpath}");
     block scripts

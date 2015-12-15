@@ -2,8 +2,12 @@ mixin relHref(url, name)
   a(href="#{mountpath}" + url)&attributes(attributes)= name
     block
 
-mixin cssAsset(url)
-  link(rel="stylesheet", href="#{staticpath}" + url)
-
-mixin scriptAsset(url)
-  script(src="#{staticpath}" + url)
+mixin asset(url)
+  -
+    var link = staticpath + url
+    var match = /^.*?\.([a-zA-Z]+)$/.exec(url)
+    var ext = match.length > 1 ? match[1] : ''
+  if ext === 'css'
+    link(rel="stylesheet", href=link)
+  else if ext === 'js'
+    script(src=link)

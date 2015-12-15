@@ -55,25 +55,25 @@ mixin errors(err)
 
 mixin featuresStylesheets()
   if hasFeature('markitup')
-    +cssAsset("/vendor/widearea/widearea.min.css")(type="text/css")
-    +cssAsset("/vendor/markitup/skins/simple/style.css")(type="text/css")
-    +cssAsset("/vendor/markitup/sets/markdown/style.css")(type="text/css")
+    +asset("/vendor/widearea/widearea.min.css")(type="text/css")
+    +asset("/vendor/markitup/skins/simple/style.css")(type="text/css")
+    +asset("/vendor/markitup/sets/markdown/style.css")(type="text/css")
   if hasFeature('codemirror')
-    +cssAsset("/css/codemirror-ext.css")(type="text/css")
-    +cssAsset("/vendor/codemirror/codemirror.css")(type="text/css")
-    +cssAsset("/vendor/codemirror/fullscreen.css")(type="text/css")
+    +asset("/css/codemirror-ext.css")(type="text/css")
+    +asset("/vendor/codemirror/codemirror.css")(type="text/css")
+    +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
 
 mixin featuresJavaScripts()
   if hasFeature('markitup')
-    +scriptAsset("/vendor/jquery-migrate-1.1.0.min.js")
-    +scriptAsset("/vendor/markitup/jquery.markitup.js")
-    +scriptAsset("/vendor/markitup/sets/markdown/set.js")
-    +scriptAsset("/vendor/widearea/widearea.min.js")
+    +asset("/vendor/jquery-migrate-1.1.0.min.js")
+    +asset("/vendor/markitup/jquery.markitup.js")
+    +asset("/vendor/markitup/sets/markdown/set.js")
+    +asset("/vendor/widearea/widearea.min.js")
     script.
      $('#editor').markItUp(markdownSettings);
      wideArea();
   if hasFeature('codemirror')
-    +scriptAsset("/vendor/codemirror/codemirror.min.js")
+    +asset("/vendor/codemirror/codemirror.min.js")
     script.
       Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
         lineNumbers: true,
