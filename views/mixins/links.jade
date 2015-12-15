@@ -1,0 +1,9 @@
+mixin relHref(url, name)
+  a(href="#{mountpath}" + url)&attributes(attributes)= name
+    block
+
+mixin cssAsset(url)
+  link(rel="stylesheet", href="#{staticpath}" + url)
+
+mixin scriptAsset(url)
+  script(src="#{staticpath}" + url)

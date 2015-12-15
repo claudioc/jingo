@@ -5,9 +5,13 @@
 
   var $toolbar;
 
+  var mountpath;
+
   var Jingo = {
 
-    init: function() {
+    init: function(setMountpath) {
+      mountpath = setMountpath;
+
       var navh = $(".navbar").height(),
           $tools = $(".tools"),
           qs, hl = null;
@@ -128,7 +132,7 @@
           }
         });
 
-        $.getJSON("/misc/existence", {data: pages}, function(result) {
+        $.getJSON(mountpath + "/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
             $("#content a[href='\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
@@ -164,7 +168,7 @@
 
     preview: function() {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(mountpath + "/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
