@@ -127,6 +127,7 @@
 
         $("#content a.internal").each(function(i, a) {
           href = $(a).attr("href");
+          href = href.slice(mountpath.length);
           if (match = /\/wiki\/(.+)/.exec(href)) {
             pages.push(decodeURIComponent(match[1]));
           }
@@ -134,7 +135,7 @@
 
         $.getJSON(mountpath + "/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href='\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
+            $("#content a[href='" + mountpath.split('/').join('\\/') + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
         });
       }
