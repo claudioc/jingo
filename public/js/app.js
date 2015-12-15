@@ -96,7 +96,7 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = mountpath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
@@ -207,7 +207,7 @@
     markdownSyntax: function() {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load("/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(mountpath + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }
