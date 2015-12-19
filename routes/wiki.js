@@ -1,10 +1,9 @@
 var router = require("express").Router(),
-    tools  = require("../lib/tools"),
-    path = require("path"),
-    renderer = require('../lib/renderer'),
-    models = require("../lib/models"),
-    app    = require("../lib/app").getInstance(),
-    Promise = require("bluebird");
+  tools  = require("../lib/tools"),
+  path = require("path"),
+  renderer = require("../lib/renderer"),
+  models = require("../lib/models"),
+  app    = require("../lib/app").getInstance();
 
 var mountPath = app.locals.config.get("application").mountPath;
 
@@ -21,19 +20,20 @@ function _getHistory(req, res) {
 
   var page = new models.Page(req.params.page);
 
-  page.fetch().then(function() {
+  page.fetch().then(function () {
 
     return page.fetchHistory();
-  }).then(function(history) {
+  }).then(function (history) {
 
     // FIXME better manage an error here
     if (!page.error) {
       res.render("history", {
         items: history,
-        title: 'History of ' + page.name,
+        title: "History of " + page.name,
         page: page
       });
-    } else {
+    }
+    else {
       res.locals.title = "404 - Not found";
       res.statusCode = 404;
       res.render("404.jade");
@@ -48,9 +48,9 @@ function _getWiki(req, res) {
 
   var pages = new models.Pages();
 
-  pages.fetch(pagen).then(function() {
+  pages.fetch(pagen).then(function () {
 
-    pages.models.forEach(function(page) {
+    pages.models.forEach(function (page) {
 
       if (!page.error) {
         items.push({
@@ -61,12 +61,14 @@ function _getWiki(req, res) {
     });
 
     res.render("list", {
-     items: items,
-     title: 'All the pages',
-     pageNumbers: Array.apply(null, Array(pages.totalPages)).map(function (x, i) { return i + 1; }),
-     pageCurrent: pages.currentPage
+      items: items,
+      title: "All the pages",
+      pageNumbers: Array.apply(null, Array(pages.totalPages)).map(function (x, i) {
+        return i + 1;
+      }),
+      pageCurrent: pages.currentPage
     });
-  }).catch(function(ex) {
+  }).catch(function (ex) {
     console.log(ex);
   });
 }
@@ -75,7 +77,7 @@ function _getWikiPage(req, res) {
 
   var page = new models.Page(req.params.page, req.params.version);
 
-  page.fetch().then(function() {
+  page.fetch().then(function () {
 
     if (!page.error) {
 
@@ -104,7 +106,8 @@ function _getWikiPage(req, res) {
           page.setNames(page.name.slice(0,1).toUpperCase() + page.name.slice(1));
         }
         res.redirect(page.urlFor("new"));
-      } else {
+      }
+      else {
 
         // Special case for the index page, anonymous user and an empty docbase
         if (page.isIndex()) {
@@ -115,7 +118,7 @@ function _getWikiPage(req, res) {
         else {
           res.locals.title = "404 - Not found";
           res.statusCode = 404;
-          res.render('404.jade');
+          res.render("404.jade");
           return;
         }
       }
@@ -129,16 +132,16 @@ function _getCompare(req, res) {
 
   var page = new models.Page(req.params.page);
 
-  page.fetch().then(function() {
+  page.fetch().then(function () {
 
     return page.fetchRevisionsDiff(req.params.revisions);
-  }).then(function(diff) {
+  }).then(function (diff) {
     if (!page.error) {
 
       var lines = [];
-      diff.split("\n").slice(4).forEach(function(line) {
+      diff.split("\n").slice(4).forEach(function (line) {
 
-        if (line.slice(0,1) != '\\') {
+        if (line.slice(0,1) != "\\") {
           lines.push({
             text: line,
             ldln: leftDiffLineNumber(0, line),
@@ -149,10 +152,10 @@ function _getCompare(req, res) {
       });
 
       var revs = req.params.revisions.split("..");
-      res.render('compare', {
+      res.render("compare", {
         page: page,
         lines: lines,
-        title: 'Revisions compare',
+        title: "Revisions compare",
         revs: revs
       });
 
@@ -160,30 +163,30 @@ function _getCompare(req, res) {
     else {
       res.locals.title = "404 - Not found";
       res.statusCode = 404;
-      res.render('404.jade');
+      res.render("404.jade");
       return;
     }
   });
 
   var ldln = 0,
-      cdln;
+    cdln;
 
   function leftDiffLineNumber(id, line) {
 
     var li;
 
-    switch(true) {
+    switch (true) {
 
-      case line.slice(0,2) == '@@':
+      case line.slice(0,2) == "@@":
         li = line.match(/\-(\d+)/)[1];
         ldln = parseInt(li, 10);
         cdln = ldln;
-        return '...';
+        return "...";
 
-      case line.slice(0,1) == '+':
+      case line.slice(0,1) == "+":
         return "";
 
-      case line.slice(0,1) == '-':
+      case line.slice(0,1) == "-":
       default:
         ldln++;
         cdln = ldln - 1;
@@ -191,23 +194,23 @@ function _getCompare(req, res) {
     }
   }
 
-   var rdln = 0;
-   function rightDiffLineNumber(id, line) {
+  var rdln = 0;
+  function rightDiffLineNumber(id, line) {
 
     var ri;
 
-    switch(true) {
+    switch (true) {
 
-      case line.slice(0,2) == '@@':
+      case line.slice(0,2) == "@@":
         ri = line.match(/\+(\d+)/)[1];
         rdln = parseInt(ri, 10);
         cdln = rdln;
-        return '...';
+        return "...";
 
-      case line.slice(0,1) == '-':
-        return ' ';
+      case line.slice(0,1) == "-":
+        return " ";
 
-      case line.slice(0,1) == '+':
+      case line.slice(0,1) == "+":
       default:
         rdln += 1;
         cdln = rdln - 1;
@@ -216,20 +219,20 @@ function _getCompare(req, res) {
   }
 
   function lineClass(line) {
-    if (line.slice(0,2) === '@@') {
+    if (line.slice(0,2) === "@@") {
       return "gc";
     }
-    if (line.slice(0,1) === '-') {
+    if (line.slice(0,1) === "-") {
       return "gd";
     }
-    if (line.slice(0,1) === '+') {
+    if (line.slice(0,1) === "+") {
       return "gi";
     }
   }
 }
 
 function _getIndex(req, res) {
-  res.redirect(mountPath + '/wiki/' + app.locals.config.get("pages").index);
+  res.redirect(mountPath + "/wiki/" + app.locals.config.get("pages").index);
 }
 
 module.exports = router;
