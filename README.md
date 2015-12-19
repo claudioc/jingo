@@ -43,22 +43,21 @@ Features
 --------
 
 - No database: it uses a git repository as the document archive
-- No user management: authentication is provided via a 3rd party provider or a simple, one-user login
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
 - Uses [Codemirror](http://codemirror.net/) or [Markitup](http://markitup.jaysalvat.com/home/) as the markup editor, with a nice (ajax) preview (see the `features` key in the config file)
 - Provides a "distraction free", almost full screen editing mode
 - Compatible with a wiki created with the [Gollum](https://github.com/github/gollum) wiki
-- Revision history for all the pages
+- Revision history for all the pages (and restore)
 - Show differences between document revisions
 - Paginated list of all the pages, with a quick way to find changes between revisions
 - Search through the content _and_ the page names
-- Layout accepts custom sidebar and footer
+- Page layout accepts custom sidebar and footer
 - Gravatar support
 - Can include IFRAMEs in the document (es: embed a Google Drive document)
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (which will appear in red)
-- Automatically push to a remote
+- Automatically push to a remote (optionally)
 - Mobile friendly (based on Bootstrap 3.x)
 - Quite configurable, but also works out of the box
 
@@ -240,6 +239,10 @@ Configuration options reference
 ####application.gfmBreaks
 
   Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines) (defaults to `true`).
+
+####application.mountPath
+  
+  The mountPath is a part of the path that can be added seaminglessy to all the paths of the wiki. Where you normally have something like http://mywiki.com/wiki/Home using "foobar" as the mountPath you could use http://mywiki.com/foobar/wiki/Home
 
 ####authentication.staticWhitelist
 

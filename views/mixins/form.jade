@@ -5,7 +5,7 @@ mixin tools(action, pageName)
     ul
       if pageName != 'home'
         li
-          form(action="#{mountpath}/pages/#{pageName}", method="post", style="display:inline")
+          form(action="#{mountPath}/pages/#{pageName}", method="post", style="display:inline")
             input(type="hidden", name="_method", value="delete")
             input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-default
 

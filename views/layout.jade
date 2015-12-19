@@ -23,7 +23,7 @@ html
         .navbar-header
           +relHref("/", appTitle).navbar-brand
           if canSearch()
-            form(action="#{mountpath}/search").navbar-form.search.navbar-left
+            form(action="#{mountPath}/search").navbar-form.search.navbar-left
               .input-group.input-group-sm.search
                 input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
                 span.input-group-btn
@@ -63,11 +63,11 @@ html
 
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
     script.
-      window.jQuery || document.write("<sc" + "ript src='#{staticpath}/vendor/jquery.min.js'></scr" + "ipt>");
+      window.jQuery || document.write("<sc" + "ript src='#{staticPath}/vendor/jquery.min.js'></scr" + "ipt>");
     +asset("/vendor/bootstrap/js/bootstrap.min.js")
     +asset("/js/app.js")
     script.
-      Jingo.init("#{mountpath}");
+      Jingo.init("#{mountPath}");
     block scripts
     if hasCustomScript()
       script.

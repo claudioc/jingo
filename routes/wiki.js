@@ -6,7 +6,7 @@ var router = require("express").Router(),
     app    = require("../lib/app").getInstance(),
     Promise = require("bluebird");
 
-var mountpath = app.locals.config.get("application").mountpath;
+var mountPath = app.locals.config.get("application").mountPath;
 
 models.use(Git);
 
@@ -229,7 +229,7 @@ function _getCompare(req, res) {
 }
 
 function _getIndex(req, res) {
-  res.redirect(mountpath + '/wiki/' + app.locals.config.get("pages").index);
+  res.redirect(mountPath + '/wiki/' + app.locals.config.get("pages").index);
 }
 
 module.exports = router;

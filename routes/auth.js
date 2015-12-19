@@ -8,13 +8,13 @@ var router = require("express").Router(),
 
 var auth = app.locals.config.get("authentication");
 var passport = app.locals.passport;
-var mountpath = app.locals.config.get("application").mountpath;
+var mountPath = app.locals.config.get("application").mountPath;
 
 router.get("/login", _getLogin);
 router.get("/logout", _getLogout);
 router.post("/login", passport.authenticate('local', {
-    successRedirect: mountpath + '/auth/done',
-    failureRedirect: mountpath + '/login',
+    successRedirect: mountPath + '/auth/done',
+    failureRedirect: mountPath + '/login',
     failureFlash: true 
 }));
 router.get("/auth/done", _getAuthDone);
@@ -23,14 +23,14 @@ router.get("/auth/google", passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile' ] }
 ));
 router.get("/oauth2callback", passport.authenticate('google', {
-  successRedirect: mountpath + '/auth/done',
-  failureRedirect: mountpath + '/login'
+  successRedirect: mountPath + '/auth/done',
+  failureRedirect: mountPath + '/login'
 }));
 
 router.get("/auth/github", passport.authenticate('github'));
 router.get("/auth/github/callback", passport.authenticate('github', {
-  successRedirect: mountpath + '/auth/done',
-  failureRedirect: mountpath + '/login'
+  successRedirect: mountPath + '/auth/done',
+  failureRedirect: mountPath + '/login'
 }));
 
 if (auth.google.enabled) {
@@ -149,13 +149,13 @@ passport.deserializeUser(function(user, done) {
 function _getLogout(req, res) {
   req.logout();
   req.session = null;
-  res.redirect(mountpath + '/');
+  res.redirect(mountPath + '/');
 }
 
 function _getAuthDone(req, res) {
 
   if (!res.locals.user) {
-    res.redirect(mountpath + "/");
+    res.redirect(mountPath + "/");
     return;
   }
 
@@ -169,7 +169,7 @@ function _getAuthDone(req, res) {
     res.statusCode = 403;
     res.end('<h1>Forbidden</h1>');
   } else {
-    var dst = req.session.destination || mountpath + "/";
+    var dst = req.session.destination || mountPath + "/";
     delete req.session.destination;
     res.redirect(dst);
   }
