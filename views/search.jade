@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/form
+include mixins/links
 
 block content
 
@@ -9,7 +10,7 @@ block content
     mixin warning()
 
     if canSearch()
-      form(action="/search").search-form
+      form(action="#{mountpath}/search").search-form
         .input-group.input-group-sm
           input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
           span.input-group-btn
@@ -22,6 +23,6 @@ block content
     dl.search-results
       each match in matches
         dt
-          a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
+          +relHref("/wiki/" + match.pageName + "?hl=" + encodeURIComponent(term), match.pageName)
           span.nl #{match.line}
         dd #{match.text}
