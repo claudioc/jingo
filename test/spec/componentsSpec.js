@@ -1,13 +1,5 @@
-var chai   = require("chai");
-var expect = chai.expect;
 
 var Components = require("../../lib/components");
-
-Components.init({
-  absPath: function(name) {
-    return name;
-  }
-});
 
 describe ("Components", function() {
 

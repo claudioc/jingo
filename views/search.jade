@@ -3,15 +3,25 @@ extends layout
 include mixins/form
 
 block content
-  h2 #{title} for 
-    b.page-param #{term}
 
-  mixin warning()
+  #content.search.show
 
-  #content
+    mixin warning()
+
+    if canSearch()
+      form(action="/search").search-form
+        .input-group.input-group-sm
+          input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
+          span.input-group-btn
+            button.btn.btn-primary(type="submit") Search
+
+    if (term)
+      h2 #{title} for&nbsp;
+        b.page-param #{term}
+
     dl.search-results
       each match in matches
-        dt 
+        dt
           a(href="/wiki/#{match.pageName}?hl=#{encodeURIComponent(term)}") #{match.pageName}
           span.nl #{match.line}
         dd #{match.text}

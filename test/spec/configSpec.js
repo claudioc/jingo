@@ -1,14 +1,14 @@
-var chai   = require("chai");
-var expect = chai.expect;
-var yaml   = require('yaml-js');
+var yaml   = require('js-yaml');
 
-var configKeys = ['application', 'features', 'server', 'authorization', 'authentication'];
-
+var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations'];
 var Config = require("../../lib/config");
 
 describe ("Config", function() {
 
-  beforeEach(function() {
+  Config.setup();
+
+  afterEach(function() {
+    // Unset the config
     Config.setup();
   });  
 
@@ -19,7 +19,7 @@ describe ("Config", function() {
     expect(Object.keys(def).join('')).to.equal(configKeys.join(''));
 
     expect(def.application.title).to.equal('Jingo');
-    expect(def.application.repository).to.equal('/absolute/path/to/your/repo');
+    expect(def.application.repository).to.equal('');
     expect(def.application.docSubdir).to.equal('');
     expect(def.application.remote).to.equal('');
     expect(def.application.pushInterval).to.equal(30);
@@ -31,23 +31,25 @@ describe ("Config", function() {
     expect(def.server.hostname).to.equal('localhost');
     expect(def.server.port).to.equal(6067);
     expect(def.server.localOnly).to.be.false;
-    expect(def.server.baseUrl).to.equal("http://localhost:6067");
 
     expect(def.authorization.anonRead).to.be.true;
     expect(def.authorization.validMatches).to.equal('.+');
+    expect(def.authorization.emptyEmailMatches).to.be.false;
 
     expect(def.authentication.google.enabled).to.be.true;
-    expect(def.authentication.alone.enabled).to.be.false;
-    expect(def.authentication.alone.username).to.equal('');
-    expect(def.authentication.alone.passwordHash).to.equal('');
-    expect(def.authentication.alone.email).to.equal('');
+    expect(def.authentication.local.enabled).to.be.false;
   });
 
   it ("should get the config as a whole", function() {
 
-    var c = Config.get();
+    var c;
+    try {
+      var c = Config.get();
+    } catch(e) {
+      c = 'boom';
+    }
 
-    expect(c).to.be.an("undefined");
+    expect(c).to.equal('boom');
 
     Config.setup({
       test: 23
@@ -66,9 +68,7 @@ describe ("Config", function() {
     });
 
     expect(Config.get("test")).to.equal(23);
-    expect(Config.get("test1.test2")).to.equal(44);
-    expect(Config.get("test1.test3")).to.be.an("undefined");
-    expect(Config.get("test1.test3", "pop-art")).to.equal("pop-art");
+    expect(Config.get("test1").test2).to.equal(44);
   });
 
 });

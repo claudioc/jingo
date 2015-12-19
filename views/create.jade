@@ -6,27 +6,26 @@ block styles
   mixin featuresStylesheets()
 
 block content
-  mixin errors()
   #content
-
-    h1 #{title}
+    mixin errors()
+    h1 Create a new page
 
     form(action='/pages', method='post', class='edit')
 
       input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 
-      div
-        input(type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
+      .form-group
+        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value="#{coalesce(formData.pageTitle, pageTitle)}")#pageTitle
 
-      div
-        textarea(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
+      .form-group
+        textarea.form-control(name="content", data-widearea="enable", rows=25)#editor #{coalesce(formData.content, '')}
 
       mixin saveAndCancel()
 
-  #preview.modal.hide
+  #preview(tabindex="-1",role="dialog",aria-hidden="true").modal
     mixin dialogBox("Page preview")
 
-  #syntax-reference.modal.hide.fade
+  #syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
     mixin dialogBox("Markdown cheatsheet")
 
 block scripts

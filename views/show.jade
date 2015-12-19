@@ -2,33 +2,20 @@ extends layout
 
 include mixins/form
 
-block page-actions
-  ul.page-actions
-    if !isAnonymous()
-      li 
-        a(href="/pages/new", title="Create new page").btn.btn-small
-          i.icon.ion-plus-round
-    if !isAnonymous() && canEdit
-      li 
-        a(href="/pages/#{pageName}/edit", title="Edit this page").btn.btn-small
-          i.icon.ion-compose
-
-    li
-      a(href="/wiki/#{pageName}/history", title="Page history").btn.btn-small
-        i.icon.ion-clock
-    li 
-      a(href="/wiki", title="All pages").btn.btn-small
-        i.icon.ion-grid
+block tools
+  mixin tools('show', page.wikiname)
 
 block content
 
-  mixin notice()
-  mixin warning()
+  #content.show
+    mixin notice()
+    mixin warning()
+    !=content
 
-  #content.show!=content
-
-  p.footer Updated by 
-    img(src=gravatar().url("#{metadata.email}", {s:16}))
-    b  #{metadata.author}, 
-    b(title="#{metadata.date}") #{metadata.relDate} 
-    | &ndash; #{metadata.hash}
+  p.footer Updated by&nbsp;
+    if page.metadata.email
+      img(src=gravatar().url("#{page.metadata.email}", {s:16}))
+    b  #{page.metadata.author}
+    |,&nbsp;
+    b(title="#{page.metadata.date}") #{page.metadata.relDate}&nbsp;
+    | &ndash; #{page.metadata.hash}
