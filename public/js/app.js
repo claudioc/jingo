@@ -5,9 +5,13 @@
 
   var $toolbar;
 
+  var mountPath;
+
   var Jingo = {
 
-    init: function() {
+    init: function(setMountPath) {
+      mountPath = setMountPath;
+
       var navh = $(".navbar").height(),
           $tools = $(".tools"),
           qs, hl = null;
@@ -92,7 +96,7 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = mountPath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
@@ -123,14 +127,15 @@
 
         $("#content a.internal").each(function(i, a) {
           href = $(a).attr("href");
+          href = href.slice(mountPath.length);
           if (match = /\/wiki\/(.+)/.exec(href)) {
             pages.push(decodeURIComponent(match[1]));
           }
         });
 
-        $.getJSON("/misc/existence", {data: pages}, function(result) {
+        $.getJSON(mountPath + "/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href='\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
+            $("#content a[href='" + mountPath.split('/').join('\\/') + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
         });
       }
@@ -164,7 +169,7 @@
 
     preview: function() {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post("/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(mountPath + "/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
@@ -203,7 +208,7 @@
     markdownSyntax: function() {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load("/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(mountPath + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }

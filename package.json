@@ -56,7 +56,9 @@
     "sinon": "^1.10.3"
   },
   "scripts": {
-    "test": "mocha test/spec"
+    "test": "mocha test/spec",
+    "start": "./jingo -c config.yaml",
+    "start-dev": "nodemon ./jingo -c config.yaml"
   },
   "engines": {
     "node": "0.8.x",

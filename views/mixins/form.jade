@@ -1,9 +1,11 @@
+include links
+
 mixin tools(action, pageName)
   if action == 'edit'
     ul
       if pageName != 'home'
         li
-          form(action="/pages/#{pageName}", method="post", style="display:inline")
+          form(action="#{mountPath}/pages/#{pageName}", method="post", style="display:inline")
             input(type="hidden", name="_method", value="delete")
             input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-default
 
@@ -11,36 +13,36 @@ mixin tools(action, pageName)
     ul
       if !isAnonymous()
         li
-          a(href="/pages/new", title="Create new page").btn.btn-sm.btn-default
+          +relHref("/pages/new")(title="Create new page").btn.btn-sm.btn-default
             i.icon.ion-plus-round
       if !isAnonymous() && canEdit
         li
-          a(href="/pages/#{pageName}/edit", title="Edit this page").btn.btn-sm.btn-default
+          +relHref("/pages/" + pageName + "/edit")(title="Edit this page").btn.btn-sm.btn-default
             i.icon.ion-compose
 
       li
-        a(href="/wiki/#{pageName}/history", title="Page history").btn.btn-sm.btn-default
+        +relHref("/wiki/" + pageName + "/history")(title="Page history").btn.btn-sm.btn-default
           i.icon.ion-clock
       li
-        a(href="/wiki", title="All pages").btn.btn-sm.btn-default
+        +relHref("/wiki")(title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
       if canSearch()
         li
-          a(href="/search", title="Search through the pages").btn.btn-sm.btn-default
+          +relHref("/search")(title="Search through the pages").btn.btn-sm.btn-default
             i.icon.ion-search
 
   if action == 'history'
     ul
       li
-        a(href="/wiki", title="All pages").btn.btn-sm.btn-default
+        +relHref("/wiki")(title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
 mixin saveAndCancel(saveText)
   .well
     input(type='submit',value=saveText || 'Save').btn.btn-primary
     |&nbsp;
-    a(href="/").btn Cancel
+    +relHref("/", "Cancel").btn
 
 mixin errors(err)
   -var errors = locals.errors;
@@ -53,25 +55,25 @@ mixin errors(err)
 
 mixin featuresStylesheets()
   if hasFeature('markitup')
-    link(rel="stylesheet", type="text/css", href="/vendor/widearea/widearea.min.css")
-    link(rel="stylesheet", type="text/css", href="/vendor/markitup/skins/simple/style.css")
-    link(rel="stylesheet", type="text/css", href="/vendor/markitup/sets/markdown/style.css")
+    +asset("/vendor/widearea/widearea.min.css")(type="text/css")
+    +asset("/vendor/markitup/skins/simple/style.css")(type="text/css")
+    +asset("/vendor/markitup/sets/markdown/style.css")(type="text/css")
   if hasFeature('codemirror')
-    link(rel="stylesheet", type="text/css", href="/css/codemirror-ext.css")
-    link(rel="stylesheet", type="text/css", href="/vendor/codemirror/codemirror.css")
-    link(rel="stylesheet", type="text/css", href="/vendor/codemirror/fullscreen.css")
+    +asset("/css/codemirror-ext.css")(type="text/css")
+    +asset("/vendor/codemirror/codemirror.css")(type="text/css")
+    +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
 
 mixin featuresJavaScripts()
   if hasFeature('markitup')
-    script(src="/vendor/jquery-migrate-1.1.0.min.js")
-    script(src="/vendor/markitup/jquery.markitup.js")
-    script(src="/vendor/markitup/sets/markdown/set.js")
-    script(src="/vendor/widearea/widearea.min.js")
+    +asset("/vendor/jquery-migrate-1.1.0.min.js")
+    +asset("/vendor/markitup/jquery.markitup.js")
+    +asset("/vendor/markitup/sets/markdown/set.js")
+    +asset("/vendor/widearea/widearea.min.js")
     script.
      $('#editor').markItUp(markdownSettings);
      wideArea();
   if hasFeature('codemirror')
-    script(src="/vendor/codemirror/codemirror.min.js")
+    +asset("/vendor/codemirror/codemirror.min.js")
     script.
       Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
         lineNumbers: true,
