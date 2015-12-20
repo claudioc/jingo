@@ -5,12 +5,12 @@
 
   var $toolbar;
 
-  var mountpath;
+  var mountPath;
 
   var Jingo = {
 
-    init: function(setMountpath) {
-      mountpath = setMountpath;
+    init: function(setMountPath) {
+      mountPath = setMountPath;
 
       var navh = $(".navbar").height(),
           $tools = $(".tools"),
@@ -96,7 +96,7 @@
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = mountpath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = mountPath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
@@ -127,15 +127,15 @@
 
         $("#content a.internal").each(function(i, a) {
           href = $(a).attr("href");
-          href = href.slice(mountpath.length);
+          href = href.slice(mountPath.length);
           if (match = /\/wiki\/(.+)/.exec(href)) {
             pages.push(decodeURIComponent(match[1]));
           }
         });
 
-        $.getJSON(mountpath + "/misc/existence", {data: pages}, function(result) {
+        $.getJSON(mountPath + "/misc/existence", {data: pages}, function(result) {
           $.each(result.data, function(href, a) {
-            $("#content a[href='" + mountpath.split('/').join('\\/') + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
+            $("#content a[href='" + mountPath.split('/').join('\\/') + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
         });
       }
@@ -169,7 +169,7 @@
 
     preview: function() {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post(mountpath + "/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(mountPath + "/misc/preview", {data: $("#editor").val()}, function(data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
@@ -208,7 +208,7 @@
     markdownSyntax: function() {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load(mountpath + "/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(mountPath + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }
