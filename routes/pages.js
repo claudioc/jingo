@@ -15,6 +15,7 @@ router.delete("/pages/:page", _deletePages);
 router.get("/pages/:page/revert/:version", _getRevert);
 
 var pagesConfig = app.locals.config.get("pages");
+var mountpath = app.locals.config.get("application").mountpath;
 
 function _deletePages(req, res) {
 
@@ -22,7 +23,7 @@ function _deletePages(req, res) {
 
   if (page.isIndex() || !page.exists()) {
     req.session.notice = "The page cannot be deleted.";
-    res.redirect("/");
+    res.redirect(mountpath + "/");
     return;
   }
 
@@ -41,7 +42,7 @@ function _deletePages(req, res) {
     }
 
     req.session.notice = "The page `" + page.wikiname + "` has been deleted.";
-    res.redirect("/");
+    res.redirect(mountpath + "/");
   });
 }
 
@@ -151,7 +152,7 @@ function _putPages(req, res) {
   // Highly unluckly (someone deleted the page we were editing)
   if (!page.exists()) {
     req.session.notice = "The page does not exist anymore.";
-    res.redirect("/");
+    res.redirect(mountpath + "/");
     return;
   }
 
