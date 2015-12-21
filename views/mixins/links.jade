@@ -4,7 +4,7 @@ mixin relHref(url, name)
 
 mixin asset(url)
   -
-    var link = staticpath + url
+    var link = mountpath + url
     var match = /^.*?\.([a-zA-Z]+)$/.exec(url)
     var ext = match.length > 1 ? match[1] : ''
   if ext === 'css'
