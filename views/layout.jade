@@ -34,7 +34,7 @@ html
                 +relHref('/login?destination', 'logged in')#login(title='Access login page')
             else
               p.user
-                if user.email
+                if user.email && user.email != 'jingouser'
                   img(src=gravatar().url("#{user.email}", {s:24}))
                 b &nbsp;#{user.displayName}&nbsp;
                 +relHref('/logout')(title='Become anonymous')

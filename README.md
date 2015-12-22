@@ -60,6 +60,7 @@ Features
 - Automatically push to a remote (optionally)
 - Mobile friendly (based on Bootstrap 3.x)
 - Quite configurable, but also works out of the box
+- Works well behind a proxy (i.e.: the wiki can be "mounted" as a directory in another website)
 
 For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
 
@@ -240,9 +241,9 @@ Configuration options reference
 
   Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines) (defaults to `true`).
 
-####application.mountPath
+####application.proxyPath
   
-  The mountPath is a part of the path that can be added seaminglessy to all the paths of the wiki. Where you normally have something like http://mywiki.com/wiki/Home using "foobar" as the mountPath you could use http://mywiki.com/foobar/wiki/Home
+  If you want jingo to work "behind" another website (for example in a /wiki directory of already existing intranet), you need to configure it to be aware of that so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
 
 ####authentication.staticWhitelist
 
