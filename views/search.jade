@@ -10,7 +10,7 @@ block content
     mixin warning()
 
     if canSearch()
-      form(action="#{mountPath}/search").search-form
+      form(action="#{proxyPath}/search").search-form
         .input-group.input-group-sm
           input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
           span.input-group-btn

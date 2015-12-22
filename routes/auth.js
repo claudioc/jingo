@@ -8,13 +8,13 @@ var router = require("express").Router(),
 
 var auth = app.locals.config.get("authentication");
 var passport = app.locals.passport;
-var mountPath = app.locals.config.get("application").mountPath;
+var proxyPath = app.locals.config.getProxyPath();
 
 router.get("/login", _getLogin);
 router.get("/logout", _getLogout);
 router.post("/login", passport.authenticate("local", {
-  successRedirect: mountPath + "/auth/done",
-  failureRedirect: mountPath + "/login",
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login",
   failureFlash: true 
 }));
 router.get("/auth/done", _getAuthDone);
@@ -23,14 +23,14 @@ router.get("/auth/google", passport.authenticate("google", {
   scope: ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile" ] }
 ));
 router.get("/oauth2callback", passport.authenticate("google", {
-  successRedirect: mountPath + "/auth/done",
-  failureRedirect: mountPath + "/login"
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login"
 }));
 
 router.get("/auth/github", passport.authenticate("github"));
 router.get("/auth/github/callback", passport.authenticate("github", {
-  successRedirect: mountPath + "/auth/done",
-  failureRedirect: mountPath + "/login"
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login"
 }));
 
 if (auth.google.enabled) {
@@ -151,13 +151,13 @@ passport.deserializeUser(function (user, done) {
 function _getLogout(req, res) {
   req.logout();
   req.session = null;
-  res.redirect(mountPath + "/");
+  res.redirect(proxyPath + "/");
 }
 
 function _getAuthDone(req, res) {
 
   if (!res.locals.user) {
-    res.redirect(mountPath + "/");
+    res.redirect(proxyPath + "/");
     return;
   }
 
@@ -172,7 +172,7 @@ function _getAuthDone(req, res) {
     res.end("<h1>Forbidden</h1>");
   }
   else {
-    var dst = req.session.destination || mountPath + "/";
+    var dst = req.session.destination || proxyPath + "/";
     delete req.session.destination;
     res.redirect(dst);
   }

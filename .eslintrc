@@ -22,13 +22,12 @@ rules:
     wrap-iife: 2
  
 globals:
-    define: true
-    require: true
-    requirejs: true
     process: true
+    require: true
     module: true
     console: true
     __dirname: true
     Buffer: true
     Git: true
+    jQuery: true,
     global: true

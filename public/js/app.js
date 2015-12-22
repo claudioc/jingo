@@ -1,79 +1,86 @@
-
-!(function(window, $, undefined) {
+!(function (window, $, undefined) {
 
   var cheatsheetShown = false;
 
   var $toolbar;
 
-  var mountPath;
+  var proxyPath;
 
   var Jingo = {
 
-    init: function(setMountPath) {
-      mountPath = setMountPath;
+    init: function (setProxyPath) {
+      proxyPath = setProxyPath;
 
       var navh = $(".navbar").height(),
-          $tools = $(".tools"),
-          qs, hl = null;
+        $tools = $(".tools"),
+        qs, hl = null;
 
       if (location.search !== "") {
         $("input[name=term]").focus();
-        qs = $.map(location.search.substr(1).split("&"), function(kv) {
+        qs = $.map(location.search.substr(1).split("&"), function (kv) {
           kv = kv.split("=");
           return { k: kv[0], v: decodeURIComponent(kv[1]) };
         });
-        $.each(qs, function(i, t) { if (t.k == "hl") { hl = t.v; } });
+        $.each(qs, function (i, t) {
+          if (t.k == "hl") {
+            hl = t.v;
+          }
+        });
         if (hl) {
           if (window.find && window.getSelection) {
-              document.designMode = "on";
-              var sel = window.getSelection();
-              sel.collapse(document.body, 0);
-              while (window.find(hl)) {
-                document.execCommand("HiliteColor", false, "yellow");
-                sel.collapseToEnd();
-              }
-              sel.collapse(document.body, 0);
-              window.find(hl);
+            document.designMode = "on";
+            var sel = window.getSelection();
+            sel.collapse(document.body, 0);
+            while (window.find(hl)) {
+              document.execCommand("HiliteColor", false, "yellow");
               sel.collapseToEnd();
-              document.designMode = "off";
-          } else if (document.body.createTextRange) {
+            }
+            sel.collapse(document.body, 0);
+            window.find(hl);
+            sel.collapseToEnd();
+            document.designMode = "off";
+          }
+          else {
+            if (document.body.createTextRange) {
               var textRange = document.body.createTextRange();
               while (textRange.findText(hl)) {
-                  textRange.execCommand("BackColor", false, "yellow");
-                  textRange.collapse(false);
+                textRange.execCommand("BackColor", false, "yellow");
+                textRange.collapse(false);
               }
+            }
           }
         }
       }
 
-      $("#login").attr("href", function() { return $(this).attr("href").replace("destination", "destination=" + encodeURIComponent(location.pathname)); });
+      $("#login").attr("href", function () {
+        return $(this).attr("href").replace("destination", "destination=" + encodeURIComponent(location.pathname));
+      });
 
       $(".tools").height(navh);
 
       if ($(".tools > ul > li").length > 0) {
         var $pah = $("<li class=\"tools-handle\">Tools</li>");
-        var pahTo, bodyPadding = $('body').css('padding-top');
-        $pah.on("mouseover", function() {
+        var pahTo, bodyPadding = $("body").css("padding-top");
+        $pah.on("mouseover", function () {
           $tools.animate({"margin-top": bodyPadding == "40px" ? "0" : "-20"});
           $pah.slideUp();
         });
-        $tools.on("mouseenter", function() {
+        $tools.on("mouseenter", function () {
           clearTimeout(pahTo);
-        }).on("mouseleave", function() {
-          pahTo = setTimeout(function() {
+        }).on("mouseleave", function () {
+          pahTo = setTimeout(function () {
             $tools.animate({"margin-top": "-62"});
             $pah.slideDown();
           }, 500);
         });
         $(".tools > ul").append($pah);
-      } else {
       }
 
-      $(".confirm-delete-page").on("click", function(evt) {
+      $(".confirm-delete-page").on("click", function (evt) {
         return window.confirm("Do you really want to delete this page?");
       });
 
-      $(".confirm-revert").on("click", function(evt) {
+      $(".confirm-revert").on("click", function (evt) {
         return window.confirm("Do you really want to revert to this revision?");
       });
 
@@ -81,22 +88,23 @@
 
       if ($("#content").hasClass("edit")) {
         $("#editor").focus();
-      } else {
+      }
+      else {
         $("#pageTitle").focus();
       }
 
       $("#rev-compare").attr("disabled", true);
 
       toggleCompareCheckboxes();
-      $hCol1.find("input").on("click", function() {
+      $hCol1.find("input").on("click", function () {
         toggleCompareCheckboxes();
       });
 
-      $("#rev-compare").on("click", function() {
+      $("#rev-compare").on("click", function () {
         if ($hCol1.find(":checked").length < 2) {
           return false;
         }
-        window.location.href = mountPath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
+        window.location.href = proxyPath + "/wiki/" + $(this).data("pagename") + "/compare/" + $hCol1.find(":checked").map(function() { return $(this).val(); }).toArray().reverse().join("..");
         return false;
       });
 
@@ -121,21 +129,21 @@
       }
 
       if (/^\/wiki\//.test(window.location.pathname)) {
-        var pages = []
-          , match
-          , href;
+        var pages = [],
+          match,
+          href;
 
-        $("#content a.internal").each(function(i, a) {
+        $("#content a.internal").each(function (i, a) {
           href = $(a).attr("href");
-          href = href.slice(mountPath.length);
+          href = href.slice(proxyPath.length);
           if (match = /\/wiki\/(.+)/.exec(href)) {
             pages.push(decodeURIComponent(match[1]));
           }
         });
 
-        $.getJSON(mountPath + "/misc/existence", {data: pages}, function(result) {
-          $.each(result.data, function(href, a) {
-            $("#content a[href='" + mountPath.split('/').join('\\/') + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
+        $.getJSON(proxyPath + "/misc/existence", {data: pages}, function (result) {
+          $.each(result.data, function (href, a) {
+            $("#content a[href='" + proxyPath.split("/").join("\\/") + "\\/wiki\\/" + encodeURIComponent(a) + "']").addClass("absent");
           });
         });
       }
@@ -157,7 +165,8 @@
           $hCol1.find(":checked")
                 .parents("tr")
                 .css({"color": "black"});
-        } else {
+        }
+        else {
           $hCol1.find("input")
                 .show()
                 .parents("tr")
@@ -167,14 +176,14 @@
 
     },
 
-    preview: function() {
+    preview: function () {
       $("#preview").modal({keyboard: true, show: true, backdrop: false});
-      $.post(mountPath + "/misc/preview", {data: $("#editor").val()}, function(data) {
+      $.post(proxyPath + "/misc/preview", {data: $("#editor").val()}, function (data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
     },
 
-    toggleFullscreen: function() {
+    toggleFullscreen: function () {
 
       var isFullscreen = Jingo.cmInstance.getOption("fullScreen");
 
@@ -184,14 +193,14 @@
       $toolbar.toggleClass("fullscreen", !isFullscreen);
     },
 
-    toolbar: function() {
+    toolbar: function () {
 
       $toolbar = $("<ul class='toolbar'>");
       $toolbar.append("<li title=\"Toggle fullscreen (Ctrl/Cmd+Enter)\" class=\"fullscreen\"><span></span></li>\
         <li title=\"Syntax help\" class=\"info\"><span></span></li>\
         <li title=\"Preview\" class=\"preview\"><span></span></li></ul>").insertBefore($("form.edit textarea:first").closest("div"));
 
-      $("ul.toolbar").on("click", "span", function() {
+      $("ul.toolbar").on("click", "span", function () {
         if (this.parentNode.className == "info") {
           Jingo.markdownSyntax();
         }
@@ -205,10 +214,10 @@
       });
     },
 
-    markdownSyntax: function() {
+    markdownSyntax: function () {
       $("#syntax-reference").modal({keyboard: true, show: true, backdrop: false});
       if (!cheatsheetShown) {
-        $("#syntax-reference .modal-body").load(mountPath + "/misc/syntax-reference");
+        $("#syntax-reference .modal-body").load(proxyPath + "/misc/syntax-reference");
         cheatsheetShown = true;
       }
     }
@@ -216,4 +225,4 @@
 
   window.Jingo = Jingo;
 
-})(this, jQuery);
+}(this, jQuery));

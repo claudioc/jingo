@@ -243,7 +243,9 @@ Configuration options reference
 
 ####application.proxyPath
   
-  If you want jingo to work "behind" another website (for example in a /wiki directory of already existing intranet), you need to configure it to be aware of that so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
+  If you want jingo to work "behind" another website (for example in a /wiki directory of an already existing intranet), you need to configure it to be aware of that situation so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
+
+  Please note that jingo won't work correctly if this option is activated.
 
 ####authentication.staticWhitelist
 
