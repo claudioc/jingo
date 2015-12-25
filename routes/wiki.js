@@ -5,7 +5,7 @@ var router = require("express").Router(),
   models = require("../lib/models"),
   app    = require("../lib/app").getInstance();
 
-var mountPath = app.locals.config.get("application").mountPath;
+var proxyPath = app.locals.config.getProxyPath();
 
 models.use(Git);
 
@@ -232,7 +232,7 @@ function _getCompare(req, res) {
 }
 
 function _getIndex(req, res) {
-  res.redirect(mountPath + "/wiki/" + app.locals.config.get("pages").index);
+  res.redirect(proxyPath + "/wiki/" + app.locals.config.get("pages").index);
 }
 
 module.exports = router;

@@ -1,5 +1,6 @@
-var fs = require('fs');
+var fs = require("fs");
 var models = require("../../lib/models");
+var Configurable = require("../../lib/configurable");
 
 var m;
 
@@ -45,18 +46,18 @@ describe ("Models", function () {
     describe("Rename method", function () {
 
       it ("should not rename if the destination exists", function (done) {
-        var stub0 = sinon.stub(fs, 'existsSync').returns(true);
+        var stub0 = sinon.stub(fs, "existsSync").returns(true);
         m = getModel("verguenza");
-        m.renameTo('vergogna').catch(function() {
+        m.renameTo("vergogna").catch(function() {
           stub0.restore();
           done();
         });
       });
 
       it ("should rename if the destination does not exist", function (done) {
-        var stub0 = sinon.stub(fs, 'existsSync').returns(false);
+        var stub0 = sinon.stub(fs, "existsSync").returns(false);
         m = getModel("verguenza");
-        m.renameTo('vergogna').then(function () {
+        m.renameTo("vergogna").then(function () {
           expect(m.name).to.equal("vergogna");
           expect(m.wikiname).to.equal("vergogna");
           expect(m.filename).to.equal("vergogna.md");
@@ -73,7 +74,7 @@ describe ("Models", function () {
         m = getModel("verguenza");
         m.title = "The huge";
         m.content = "The verge";
-        var stub0 = sinon.stub(fs, 'writeFile').callsArgOn(2, m);
+        var stub0 = sinon.stub(fs, "writeFile").callsArgOn(2, m);
         m.save().then(function (content) {
           expect(content).to.equal("The verge");
           stub0.restore();
@@ -96,7 +97,7 @@ describe ("Models", function () {
 
         m.title = "The huge";
         m.content = "The verge";
-        var stub0 = sinon.stub(fs, 'writeFile').callsArgOn(2, m);
+        var stub0 = sinon.stub(fs, "writeFile").callsArgOn(2, m);
         m.save().then(function (content) {
           expect(content).to.equal("# The huge\nThe verge");
           stub0.restore();
@@ -107,20 +108,69 @@ describe ("Models", function () {
 
     describe("UrlFor method", function () {
 
-      it ("should generate the correct url for page actions", function () {
+      it ("should generate the correct url for page actions when a proxypath is not set", function () {
 
-        m = getModel("verguenza");
+        var Page = models.Page,
+          pname = "verguenza";
 
-        expect(m.urlFor('show')).to.equal('/wiki/verguenza');
-        expect(m.urlFor('edit')).to.equal('/pages/verguenza/edit');
-        expect(m.urlFor('edit error')).to.equal('/pages/verguenza/edit?e=1');
-        expect(m.urlFor('edit put')).to.equal('/pages/verguenza');
-        expect(m.urlFor('history')).to.equal('/wiki/verguenza/history');
-        expect(m.urlFor('compare')).to.equal('/wiki/verguenza/compare');
-        expect(m.urlFor('new')).to.equal('/pages/new/verguenza');
-        expect(m.urlFor('new error')).to.equal('/pages/new/verguenza?e=1');
+        expect(Page.urlFor(pname, "show")).to.equal("/wiki/verguenza");
+        expect(Page.urlFor(pname, "edit")).to.equal("/pages/verguenza/edit");
+        expect(Page.urlFor(pname, "edit error")).to.equal("/pages/verguenza/edit?e=1");
+        expect(Page.urlFor(pname, "edit put")).to.equal("/pages/verguenza");
+        expect(Page.urlFor(pname, "history")).to.equal("/wiki/verguenza/history");
+        expect(Page.urlFor(pname, "compare")).to.equal("/wiki/verguenza/compare");
+        expect(Page.urlFor(pname, "new")).to.equal("/pages/new/verguenza");
+        expect(Page.urlFor(pname, "new error")).to.equal("/pages/new/verguenza?e=1");
       });
 
+      it ("should generate the correct url for page actions when a proxypath is set", function () {
+
+        var Page = models.Page,
+          pname = "verguenza";
+
+        expect(Page.urlFor(pname, "show", "/bazinga")).to.equal("/bazinga/wiki/verguenza");
+        expect(Page.urlFor(pname, "edit", "/bazinga")).to.equal("/bazinga/pages/verguenza/edit");
+        expect(Page.urlFor(pname, "edit error", "/bazinga")).to.equal("/bazinga/pages/verguenza/edit?e=1");
+        expect(Page.urlFor(pname, "edit put", "/bazinga")).to.equal("/bazinga/pages/verguenza");
+        expect(Page.urlFor(pname, "history", "/bazinga")).to.equal("/bazinga/wiki/verguenza/history");
+        expect(Page.urlFor(pname, "compare", "/bazinga")).to.equal("/bazinga/wiki/verguenza/compare");
+        expect(Page.urlFor(pname, "new", "/bazinga")).to.equal("/bazinga/pages/new/verguenza");
+        expect(Page.urlFor(pname, "new error", "/bazinga")).to.equal("/bazinga/pages/new/verguenza?e=1");
+      });
+
+      it ("should generate the correct url for page actions", function () {
+
+        m = getModel("chupito");
+
+        expect(m.urlFor("show")).to.equal("/wiki/chupito");
+        expect(m.urlFor("edit")).to.equal("/pages/chupito/edit");
+        expect(m.urlFor("edit error")).to.equal("/pages/chupito/edit?e=1");
+        expect(m.urlFor("edit put")).to.equal("/pages/chupito");
+        expect(m.urlFor("history")).to.equal("/wiki/chupito/history");
+        expect(m.urlFor("compare")).to.equal("/wiki/chupito/compare");
+        expect(m.urlFor("new")).to.equal("/pages/new/chupito");
+        expect(m.urlFor("new error")).to.equal("/pages/new/chupito?e=1");
+      });
+
+      it ("should generate the correct url for page actions with a set proxypath", function () {
+
+        m = getModel("chupito");
+
+        m.configOverride({
+          application: {
+            proxyPath: "lovely"
+          }
+        });
+
+        expect(m.urlFor("show")).to.equal("/lovely/wiki/chupito");
+        expect(m.urlFor("edit")).to.equal("/lovely/pages/chupito/edit");
+        expect(m.urlFor("edit error")).to.equal("/lovely/pages/chupito/edit?e=1");
+        expect(m.urlFor("edit put")).to.equal("/lovely/pages/chupito");
+        expect(m.urlFor("history")).to.equal("/lovely/wiki/chupito/history");
+        expect(m.urlFor("compare")).to.equal("/lovely/wiki/chupito/compare");
+        expect(m.urlFor("new")).to.equal("/lovely/pages/new/chupito");
+        expect(m.urlFor("new error")).to.equal("/lovely/pages/new/chupito?e=1");
+      });
     });
 
     describe("isIndex method", function () {

@@ -25,7 +25,13 @@ globals:
     process: true
     require: true
     module: true
+    sinon: true
     console: true
+    expect: true
+    describe: true
+    it: true
+    afterEach: true
+    beforeEach: true
     __dirname: true
     Buffer: true
     Git: true
