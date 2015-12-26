@@ -1,10 +1,12 @@
 var router = require("express").Router(),
   path = require("path"),
+  corsEnabler = require("../lib/cors-enabler"),
   models = require("../lib/models");
 
 models.use(Git);
 
-router.get("/search", _getSearch);
+router.options("/search", corsEnabler);
+router.get("/search", corsEnabler, _getSearch);
 
 function _getSearch(req, res) {
 

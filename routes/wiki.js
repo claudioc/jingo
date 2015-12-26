@@ -3,7 +3,8 @@ var router = require("express").Router(),
   path = require("path"),
   renderer = require("../lib/renderer"),
   models = require("../lib/models"),
-  app    = require("../lib/app").getInstance();
+  corsEnabler = require("../lib/cors-enabler"),
+  app = require("../lib/app").getInstance();
 
 var proxyPath = app.locals.config.getProxyPath();
 
@@ -11,7 +12,8 @@ models.use(Git);
 
 router.get("/", _getIndex);
 router.get("/wiki", _getWiki);
-router.get("/wiki/:page", _getWikiPage);
+router.options("/wiki/:page", corsEnabler);
+router.get("/wiki/:page", corsEnabler, _getWikiPage);
 router.get("/wiki/:page/history", _getHistory);
 router.get("/wiki/:page/:version", _getWikiPage);
 router.get("/wiki/:page/compare/:revisions", _getCompare);

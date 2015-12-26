@@ -1,3 +1,18 @@
+Version 1.6.0, December 28th, 2015
+==================================
+
+- Ability to work behind a proxy directory #124 ()
+- Enables CORS for /wiki pages (poor man read only API to pages) ()
+- Started the Github wiki with some "recipes" for common tasks and configurations
+- Better documentation for the configuration options
+- More tests
+- Adds a linter configuration (eslint) and fixes a lot of style issues
+- Fixes a TOC bug ()
+- Fixes a crash on a certain git configuration
+- Adds the CONTRIBUTING file
+
+Requires `npm install`
+
 Version 1.5.3, December 14th, 2015
 =================================
 

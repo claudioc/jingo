@@ -11,15 +11,15 @@ block content
 
     if (auth.google.enabled)
       p
-        +relHref('/auth/google', 'Google login').btn-auth.btn-auth-google
+        +anchor('/auth/google', 'Google login').btn-auth.btn-auth-google
 
     if (auth.github.enabled)
       p
-        +relHref('/auth/github', 'Github login').btn-auth.btn-auth-github
+        +anchor('/auth/github', 'Github login').btn-auth.btn-auth-github
 
     if (auth.google.enabled || auth.github.enabled)
       p
-        +relHref("/", 'Cancel')
+        +anchor("/", 'Cancel')
 
     if (auth.alone.enabled || auth.local.enabled)
 
@@ -44,4 +44,4 @@ block content
           .col-sm-offset-2.col-sm-3
             button.btn-primary.btn(type="submit") Login
             |&nbsp;or&nbsp;
-            +relHref("/", 'Cancel')
+            +anchor("/", 'Cancel')
