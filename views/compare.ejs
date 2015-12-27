@@ -1,0 +1,25 @@
+<% layout('layout') -%>
+<div id="content" class="compare">
+  <h2>Compare two revisions of:&nbsp;
+    <b class="page-param"><%= page.title %></b>
+  </h2>
+  <ul class="nav nav-pills">
+<% if (revs[0]) { -%>
+    <li><a href="<%= page.urlForShow() %>/<%= revs[0] %>"><%= revs[0] %></a></li>
+<% }; -%>
+    <li><a href="<%= page.urlForShow() %>/<%= revs[1] %>"><%= revs[1] %></a></li>
+    <li><a href="<%= page.urlForShow() %>">Current</a></li>
+    <li><a href="<%= page.urlForHistory() %>">History</a></li>
+  </ul>
+  <table class="compare table table-bordered table-hover table-condensed">
+<%
+  lines.forEach(function(line){ -%>
+    <tr>
+      <td class="ln"><%= line.ldln %></td>
+      <td class="ln"><%= line.rdln %></td>
+      <td class="<%= line.className %>"><%= line.text %></td>
+    </tr>
+<%
+  }); -%>
+  </table>
+</div>

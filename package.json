@@ -35,6 +35,7 @@
     "express-validator": "^2.7.0",
     "gravatar": "^1.1.0",
     "jade": "*",
+    "ejs-mate": "*",
     "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
     "markdown-toc": "^0.11.7",

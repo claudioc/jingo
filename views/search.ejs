@@ -1,0 +1,24 @@
+<% layout('layout') -%>
+
+<div id="content">
+<%
+  var warning = locals.warning;
+  if (typeof(warning) != 'undefined'){ %>
+    <div class="alert alert-block alert-warning">
+      <%- warning %>
+    </div>
+<%
+  } -%>
+  <h2>Search results for&nbsp;<b class="page-param"><%= term %></b></h2>
+  <dl class="search-results">
+<%
+  matches.forEach(function(match){ -%>
+    <dt>
+      <a href="/wiki/<%= match.pageName %>?hl=<%= encodeURIComponent(term) %>" id="<%= match.pageName %>"></a>
+      <span class="nl"><%= match.line %></span>
+    </dt>
+    <dd><%= match.text %></dd>
+<%
+  }) -%>
+  </dl>
+</div>

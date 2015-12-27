@@ -1,0 +1,57 @@
+<% layout('layout'); -%>
+<div id="content">
+  <h2>Choose your authentication method</h2>
+<%
+if (auth.google.enabled){ -%>
+  <p><a href="/auth/google" class="btn-auth btn-auth-google">Google login</a></p>
+<%
+}
+
+if (auth.github.enabled){ -%>
+  <p><a href="/auth/github" class="btn-auth btn-auth-github">Github login</a></p>
+<%
+}
+
+if (auth.google.enabled || auth.github.enabled){ -%>
+  <p><a href="/">Cancel</a></p>
+<%
+}
+
+var errors = locals.errors;
+if (typeof(errors) != 'undefined' && Object.keys(errors).length > 0){ %>
+  <div class="alert bg-danger">
+    <ul>
+<%  errors.forEach(function(v){ -%>
+      <li><b><%= v.msg || v %></b></li>
+<%  }) -%>
+    </ul>
+  </div>
+<%
+} 
+
+if (auth.alone.enabled){ -%>
+  <p>
+    <h4>Authenticate locally</h4>
+  </p>
+  <form action="/login" method="post" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-3">
+        <input type="text" autofocus name="username" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-3">
+        <input type="password" name="password" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-3">
+        <button type="submit" class="btn-primary btn">Login</button>&nbsp;or&nbsp;<a href="/">cancel</a>
+      </div>
+    </div>
+  </form>
+<%
+} -%>
+</div>

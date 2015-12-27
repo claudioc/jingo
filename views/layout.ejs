@@ -1,0 +1,102 @@
+<% /*# TODO trouver comment require mixins/form.jade */ -%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="jingo 1.2.10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title%></title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/ionicons.min.css">
+    <link rel="stylesheet" href="/css/shCoreDefault.css">
+<%- block('styles').toString() -%>
+<%  
+  if (hasCustomStyle()){ -%>
+    <style>
+<%-   _style %>
+    </style>
+<%
+  } -%>
+  </head>
+  <body>
+<%  var term_ph = (typeof term == "undefined" ? "" : term) -%>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand"><%= appTitle %></a>
+          <form action="/search" class="navbar-form navbar-left">
+            <div class="input-group input-group-sm search">
+              <input type="text" value="<%= term_ph %>" data-i-search-input="true" name="term" placeholder="Search the wiki" class="form-control">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div class="navbar-collapse collapse">
+          <p class="user navbar-right">
+<%        if (isAnonymous()) { -%> 
+            You're not&nbsp;
+            <a id='login' href="/login?destination" title='Access login page'>logged in</a>
+<%        } 
+          else { -%>
+            <b>&nbsp;<%= user.displayName %>&nbsp;</b>
+            <a class="logout" href='/logout' title='Become anonymous'>
+              <i class="icon ion-power"></i>
+            </a>
+<%        } -%>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tools">
+<%-   block('tools').toString() -%>
+    </div>
+
+    <div class="container">
+      <div class="row">
+<%    if (hasSidebar()) { -%> 
+        <div class="col-md-2 with-sidebar">
+          <div class="content">
+<%-         _sidebar -%>
+          </div>
+        </div>
+<%    } 
+      else { -%>
+        <div class="col-md-2"></div>
+<%    } -%>
+        <div id="main" class="hide-tools col-md-8">
+<%-       body -%>
+        </div>
+      </div>
+<%  if (hasFooter()) { -%> 
+      <div class="row">
+        <div class="col-md-2">
+          <div class="col-md-8 with-footer">
+            <div class="content">
+<%-           footer %>
+            </div>
+          </div>
+        </div>
+      </div>
+<%  } -%>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>window.jQuery || document.write("<script src='/vendor/jquery.min.js'></" + "script>");</script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>Jingo.init();</script>
+<%-   block('scripts').toString() %>
+<%
+  if (hasCustomScript()) { -%> 
+    <script>
+<%-   _script %>
+    </script>
+<%
+  } -%>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<% layout('layout') -%>
+
+<div id="content" class="show">
+  <h1>Document list – Most recent updates shown first</h1>
+  <ul class="doc-list">
+<%
+  items.forEach(function(item){ -%>
+    <li>
+      <h4><a href="<%= item.page.urlForShow() %>"><%= item.page.title %></a></h4>
+      <div class="content clearfix">
+        <div class="meta">Last update by&nbsp;
+    <%  if (item.page.metadata.email){ -%>
+          <img src="<%= gravatar().url(item.page.metadata.email, {s:16}) %>">
+    <%  }; %>
+          <b>&nbsp;<%= item.page.metadata.author %>,&nbsp;</b>
+          <b title="<%= item.page.metadata.date %>" class="date"><%= item.page.metadata.relDate %></b>&nbsp;&ndash;&nbsp;<%= item.page.metadata.hash %>
+        </div>
+        <ul class="page-actions">
+    <%  if (!isAnonymous()) { -%>
+          <li><a href="<%= item.page.urlForEdit() %>" title="Edit this page" class="btn btn-default"><i class="icon ion-compose"></i></a></li>
+    <%  }; %>
+          <li><a href="<%= item.page.urlForHistory() %>" title="Page history" class="btn btn-default"><i class="icon ion-clock"></i></a></li>
+    <%  if (item.hashes) { -%>
+          <li><a href="<%= item.page.urlForCompare() + '/' + item.hashes %>" title="Quick diff" class="btn btn-default"><i class="icon ion-shuffle"></i></a></li>
+    <%  }; %>
+        </ul>
+        <div class="message">&rarr; <%= item.page.lastCommitMessage %></div>
+      </div>
+    </li>
+<%
+  }); %>
+  </ul>
+  <ul class="paginator">
+<%
+  pageNumbers.forEach(function(pageNumber){ -%>
+    <li class="<%= pageNumber == pageCurrent ? 'current' : '' %>">
+      <a href="?page=<%= pageNumber %>"><%= pageNumber %></a>
+    </li>
+<%
+  }); %>
+  </ul>
+</div>
