@@ -268,7 +268,7 @@ hr {
 }
 
 .alert {
-  box-shadow: 0 0 5px silver;
+  border: 1px solid #E8E2BF;
   border-radius: 0;
 }
 

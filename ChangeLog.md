@@ -9,6 +9,7 @@ Version 1.6.0, December 28th, 2015
 - Adds the CONTRIBUTING file
 - Adds more tests
 - Fixes a TOC bug (@creynold)
+- Fixes #118
 - Fixes a crash on a certain git configuration
 
 Requires `npm install`

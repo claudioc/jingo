@@ -84,7 +84,7 @@ function _getWikiPage(req, res) {
     if (!page.error) {
 
       res.locals.canEdit = true;
-      if (page.revision != "HEAD") {
+      if (page.revision !== "HEAD" && page.revision != page.hashes[0]) {
         res.locals.warning = "You're not reading the latest revision of this page, which is " + "<a href='" + page.urlForShow() + "'>here</a>.";
         res.locals.canEdit = false;
       }
