@@ -4,6 +4,7 @@ var router = require("express").Router(),
   passportLocal = require("passport-local"),
   passportGoogle = require("passport-google-oauth"),
   passportGithub = require("passport-github").Strategy,
+  passportCloudron = require("passport-cloudron"),
   tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
@@ -29,6 +30,12 @@ router.get("/oauth2callback", passport.authenticate("google", {
 
 router.get("/auth/github", passport.authenticate("github"));
 router.get("/auth/github/callback", passport.authenticate("github", {
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login"
+}));
+
+router.get("/auth/cloudron", passport.authenticate("cloudron"));
+router.get("/auth/cloudron/callback", passport.authenticate("cloudron", {
   successRedirect: proxyPath + "/auth/done",
   failureRedirect: proxyPath + "/login"
 }));
@@ -62,6 +69,19 @@ if (auth.github.enabled) {
   },
     function (accessToken, refreshToken, profile, done) {
       usedAuthentication("github");
+      done(null, profile);
+    }
+  ));
+}
+
+if (auth.cloudron.enabled) {
+  var redirectURL = process.env.APP_ORIGIN + "/auth/cloudron/callback";
+
+  passport.use(new passportCloudron({
+    callbackURL: redirectURL
+  },
+    function (accessToken, refreshToken, profile, done) {
+      usedAuthentication("cloudron");
       done(null, profile);
     }
   ));
