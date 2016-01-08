@@ -17,6 +17,10 @@ block content
       p
         +anchor('/auth/github', 'Github login').btn-auth.btn-auth-github
 
+    if (auth.cloudron.enabled)
+      p
+        a.btn.btn-primary(href="/auth/cloudron") Cloudron Login
+
     if (auth.google.enabled || auth.github.enabled)
       p
         +anchor("/", 'Cancel')
