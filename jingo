@@ -17,7 +17,7 @@ var program = require("commander"),
 
 global.Git = require("./lib/gitmech");
 
-program.version("1.6.0")
+program.version("1.6.1")
        .option("-c, --config <path>", "Specify the config file")
        .option("-#, --hash-string <string>", "Create an hash for a string")
        .option("-l, --local", "Listen on localhost only")
@@ -63,7 +63,7 @@ Git.setup(config.get("application").git,
 
             if (os.platform() == "darwin" &&
                 !config.get("application").skipGitCheck &&
-                config.get("pages").title.fromFilename && 
+                config.get("pages").title.fromFilename &&
                 !semver.satisfies(version, ">=1.8.5")) {
               console.log("Your current setup uses the filename of the wiki page as the page title.");
               console.log("Unfortunately this version of git (" + version + ".x) on OSX doesn't handle");

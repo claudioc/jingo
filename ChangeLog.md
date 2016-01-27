@@ -1,3 +1,9 @@
+Version 1.6.1, January 27th, 2016
+==================================
+
+- Fixes #132 (crash on empty repos)
+- Renames an img so to not have problems with AdBlock
+
 Version 1.6.0, December 28th, 2015
 ==================================
 

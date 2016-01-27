@@ -601,7 +601,7 @@ li {
 }
 
 a.btn-auth {
-  background-image: url(../img/social-logins.png);
+  background-image: url(../img/login-providers.png);
   background-repeat: no-repeat;
   display: block;
   height: 5rem;
