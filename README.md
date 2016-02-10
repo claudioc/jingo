@@ -70,7 +70,7 @@ For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. Fo
 Installation
 ------------
 
-`npm install jingo` or download/clone the whole thing and run `npm install`.
+`npm install -g jingo` or download/clone the whole thing and run `npm install`.
 
 Note: if you already have Jingo installed, please also run `npm prune` (some modules can be stale and need to be removed).
 
