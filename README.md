@@ -135,7 +135,7 @@ The _local_ method uses an array of `username`, `passwordHash` and optionally an
 
 You can enable all the authentications options at the same time. The `local` is disabled by default.
 
-The _authorization_ section of the config file has two keys: `anonRead` and `validMatches`. If the `anonRead` is true, then anyone who can access the wiki can read anything.
+The _authorization_ section of the config file has three keys: `anonRead`, `validMatches` and `emptyEmailMatches`. If the `anonRead` is true, then anyone who can access the wiki can read anything. `emptyEmailMatch` defaults to false but will usually need to be set to `true` for GitHub authentication.
 
 If anonRead is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
 
@@ -360,9 +360,9 @@ Configuration options reference
 
   This is a regular expression which will be used against the user email account to be able to access the wiki. By default all emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
 
-#### authorization.emptyEmailMatches (boolean: true)
+#### authorization.emptyEmailMatches (boolean: false)
 
-  If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway. The `true` default is set for legacy reasons
+  If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway. Note that GitHub authentication usually requires this to be `true` (unless all wiki users have public email addresses on their GitHub accounts).
 
 #### pages.index (string: "Home")
 
