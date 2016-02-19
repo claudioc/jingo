@@ -135,9 +135,11 @@ The _local_ method uses an array of `username`, `passwordHash` and optionally an
 
 You can enable all the authentications options at the same time. The `local` is disabled by default.
 
-The _authorization_ section of the config file has three keys: `anonRead`, `validMatches` and `emptyEmailMatches`. If the `anonRead` is true, then anyone who can access the wiki can read anything. `emptyEmailMatch` defaults to false but will usually need to be set to `true` for GitHub authentication.
+The _authorization_ section of the config file has three keys: `anonRead`, `validMatches` and `emptyEmailMatches`. 
 
-If anonRead is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
+If `anonRead` is true, then anyone who can access the wiki can read anything. If `anonRead` is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
+
+`emptyEmailMatches` allows access when remote authentication providers do not provide an email address as part of user data. It defaults to `false`, but will usually need to be set to `true` for GitHub authentication (GitHub only returns email addresses that have been made public on users' GitHub accounts).
 
 The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
 
