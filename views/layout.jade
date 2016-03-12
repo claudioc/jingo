@@ -50,17 +50,22 @@ include mixins/links
           if hasSidebar()
             .col-md-2.with-sidebar
               .content !{_sidebar}
-          else
-            .col-md-2
 
-          #main.hide-tools.col-md-8
-            block content
+            #main.hide-tools.col-md-10
+              block content
+          else
+            #main.hide-tools.col-md-12
+              block content
 
         if hasFooter()
           .row
-            .col-md-2
-            .col-md-8.with-footer
-              .content !{_footer}
+            if hasSidebar()
+              .col-md-2
+              .col-md-10.with-footer
+                .content !{_footer}
+            else
+              .col-md-12.with-footer
+                .content !{_footer}
 
       script(src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
       script.
