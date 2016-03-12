@@ -40,7 +40,7 @@ mixin tools(action, pageName)
 
 mixin saveAndCancel(saveText)
   .well
-    input(type='submit',value=saveText || 'Save').btn.btn-primary
+    input(type='submit',value=saveText || 'Save',title='Save (Ctrl/Cmd+s)').btn.btn-primary
     |&nbsp;
     +anchor("/", "Cancel").btn
 
@@ -83,6 +83,9 @@ mixin featuresJavaScripts()
         extraKeys: {
           "Ctrl-Enter": function(cm) {
             Jingo.toggleFullscreen();
+          },
+          "Ctrl-S": function(cm) {
+            Jingo.save();
           }
         }
       });
