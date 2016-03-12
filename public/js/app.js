@@ -108,7 +108,7 @@
         return false;
       });
 
-      if (/^\/pages\/.*\/edit/.test(window.location.pathname) || 
+      if (/^\/pages\/.*\/edit/.test(window.location.pathname) ||
           /^\/pages\/new/.test(window.location.pathname)) {
         $("#editor").closest("form").on("submit", function () {
           if (Jingo.cmInstance) {
@@ -122,7 +122,7 @@
           if (content = window.sessionStorage.getItem("jingo-page")) {
             $("#editor").val(content);
           }
-        } 
+        }
         else {
           window.sessionStorage.removeItem("jingo-page");
         }
@@ -181,6 +181,10 @@
       $.post(proxyPath + "/misc/preview", {data: $("#editor").val()}, function (data) {
         $("#preview .modal-body").html(data).get(0).scrollTop = 0;
       });
+    },
+
+    save: function () {
+      $('form.edit').submit();
     },
 
     toggleFullscreen: function () {
