@@ -58,6 +58,9 @@ if (auth.github.enabled) {
   passport.use(new passportGithub({
     clientID: auth.github.clientId,
     clientSecret: auth.github.clientSecret,
+    authorizationURL: auth.github.authorizationURL,
+    tokenURL: auth.github.tokenURL,
+    userProfileURL: auth.github.userProfileURL,
     callbackURL: redirectURL
   },
     function (accessToken, refreshToken, profile, done) {
