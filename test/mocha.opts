@@ -2,3 +2,4 @@
 --require test/support/setup
 --check-leaks
 --recursive
+--globals strNew

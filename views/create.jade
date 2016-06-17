@@ -10,7 +10,7 @@ block content
     mixin errors()
     h1 Create a new page
 
-    form(action='/pages', method='post', class='edit')
+    form(action='#{proxyPath}/pages', method='post', class='edit')
 
       input(type="hidden", name="pageName", value="#{coalesce(pageName, '')}")
 

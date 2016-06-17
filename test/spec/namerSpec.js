@@ -55,6 +55,7 @@ describe("namer", function() {
       expect(namer.wikify("_Sidebar")).to.equal("_Sidebar");
       expect(namer.wikify("nell'aria")).to.equal("nellaria");
       expect(namer.wikify("Caffé")).to.equal("Caffe");
+      expect(namer.wikify("àéîöū")).to.equal("aeiou");
       expect(namer.wikify("Caffé corretto!")).to.equal("Caffe-corretto");
       expect(namer.wikify("Per favore: nessun, dico; E un punto...")).to.equal("Per-favore-nessun-dico-E-un-punto");
       expect(namer.wikify("prova.md")).to.equal("provamd");

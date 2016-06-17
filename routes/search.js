@@ -1,21 +1,24 @@
 var router = require("express").Router(),
-    path = require("path")
-    models = require("../lib/models");
+  path = require("path"),
+  corsEnabler = require("../lib/cors-enabler"),
+  models = require("../lib/models");
 
 models.use(Git);
 
-router.get("/search", _getSearch);
+router.options("/search", corsEnabler);
+router.get("/search", corsEnabler, _getSearch);
 
 function _getSearch(req, res) {
 
   var items = [],
-      record;
+    record;
 
   res.locals.matches = [];
 
   if (req.query.term) {
     res.locals.term = req.query.term.trim();
-  } else {
+  }
+  else {
     res.locals.term = "";
   }
 
@@ -28,25 +31,27 @@ function _getSearch(req, res) {
 
     res.locals.warning = "Search string is too short.";
     renderResults();
-  } else {
+  }
+  else {
 
     try {
       new RegExp(res.locals.term);
-    } catch(e) {
+    }
+    catch (e) {
       res.locals.warning = "The format of the search string is invalid.";
       renderResults();
       return;
     }
 
-    models.pages.findStringAsync(res.locals.term).then(function(items) {
+    models.pages.findStringAsync(res.locals.term).then(function (items) {
 
-      items.forEach(function(item) {
+      items.forEach(function (item) {
         if (item.trim() !== "") {
           record = item.split(":");
           res.locals.matches.push({
             pageName: path.basename(record[0].split(".")[0]),
             line: record[1] ? ":" + record[1] : "",
-            text: record.slice(2).join('')
+            text: record.slice(2).join("")
           });
         }
       });

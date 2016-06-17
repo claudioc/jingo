@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/form
+include mixins/links
 
 block content
 
@@ -10,15 +11,15 @@ block content
 
     if (auth.google.enabled)
       p
-        a.btn-auth.btn-auth-google(href="/auth/google") Google login
+        +anchor('/auth/google', 'Google login').btn-auth.btn-auth-google
 
     if (auth.github.enabled)
       p
-        a.btn-auth.btn-auth-github(href="/auth/github") Github login
+        +anchor('/auth/github', 'Github login').btn-auth.btn-auth-github
 
     if (auth.google.enabled || auth.github.enabled)
       p
-        a(href="/") Cancel
+        +anchor("/", 'Cancel')
 
     if (auth.alone.enabled || auth.local.enabled)
 
@@ -27,7 +28,7 @@ block content
 
       mixin errors()
 
-      form.form-horizontal(action='/login', method='post')
+      form.form-horizontal(action='#{proxyPath}/login', method='post')
 
         .form-group
           label.col-sm-2.control-label Username
@@ -43,4 +44,4 @@ block content
           .col-sm-offset-2.col-sm-3
             button.btn-primary.btn(type="submit") Login
             |&nbsp;or&nbsp;
-            a(href="/") cancel
+            +anchor("/", 'Cancel')

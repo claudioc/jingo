@@ -12,7 +12,7 @@ block content
     p
       button(id="rev-compare", data-pageName="#{page.name}").btn.btn-primary Compare revisions
 
-    table.history.table.table-striped.table-bordered.table-hover.table-condensed
+    table.history.table.table-striped.table-hover
       each item in items
         tr
           td
@@ -25,4 +25,13 @@ block content
           td #{item.relDate}
           td #{item.subject}
           td
-            a(href="#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef || 'CURRENT'}
+            if item.hashRef
+              a(href="#{page.urlForShow()}/#{item.hashRef}") #{item.hashRef}
+            else
+              |[
+              a(href="#{page.urlForShow()}/#{item.hashRef}") CURRENT
+              |]
+          td.revert
+            if item.hashRef
+              a(href="#{page.urlForRevert()}/#{item.fullhash}", title="Revert to this version").confirm-revert
+                i.icon.ion-arrow-graph-up-left

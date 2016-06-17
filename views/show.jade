@@ -7,13 +7,17 @@ block tools
 
 block content
 
-  #content.show
-    mixin notice()
-    mixin warning()
-    !=content
+  if !isAjax
+    #content.show
+      mixin notice()
+      mixin warning()
+      !=content
+  else
+    .jingo-content.jingo-show
+      !=content
 
-  p.footer Updated by&nbsp;
-    if page.metadata.email
+  p(class="#{isAjax ? 'jingo-footer' : 'footer'}") Updated by&nbsp;
+    if page.metadata.email && page.metadata.email != 'jingouser'
       img(src=gravatar().url("#{page.metadata.email}", {s:16}))
     b  #{page.metadata.author}
     |,&nbsp;

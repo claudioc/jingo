@@ -13,6 +13,12 @@ describe ("Tools", function() {
     expect(Tools.isAuthorized(null)).to.equal(false);
   });
 
+  it ("should authorize with 'jingouser'", function() {
+    expect(Tools.isAuthorized("jingouser")).to.equal(false);
+    expect(Tools.isAuthorized("jingouser",'',true)).to.equal(true);
+    expect(Tools.isAuthorized("jingouser",'',false)).to.equal(false);
+  });
+
   it ("should authorize with empty pattern", function() {
     expect(Tools.isAuthorized("claudio.cicali@gmail.com")).to.equal(true);
     expect(Tools.isAuthorized("claudio.cicali@gmail.com", null)).to.equal(true);
