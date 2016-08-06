@@ -54,6 +54,7 @@ Features
 - Page layout accepts custom sidebar and footer
 - Gravatar support
 - Can include IFRAMEs in the document (es: embed a Google Drive document)
+- Generate Table of Contents for pages
 - Can use custom CSS and JavaScript scripts
 - White list for authorization on page reading and writing
 - Detects unwritten pages (which will appear in red)
