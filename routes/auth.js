@@ -7,6 +7,7 @@ var router = require("express").Router(),
   tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
+var secret = app.locals.config.get('application').secret;
 var passport = app.locals.passport;
 var proxyPath = app.locals.config.getProxyPath();
 
@@ -78,7 +79,7 @@ if (auth.alone.enabled) {
         email: auth.alone.email || ""
       };
 
-      if (username.toLowerCase() != auth.alone.username.toLowerCase() || tools.hashify(password) != auth.alone.passwordHash) {
+      if (username.toLowerCase() != auth.alone.username.toLowerCase() || tools.hashify(password, secret) != auth.alone.passwordHash) {
         return done(null, false, { message: "Incorrect username or password" });
       }
 
@@ -96,7 +97,7 @@ if (auth.local.enabled) {
     function (username, password, done) {
 
       var wantedUsername = username.toLowerCase();
-      var wantedPasswordHash = tools.hashify(password);
+      var wantedPasswordHash = tools.hashify(password, secret);
 
       var foundUser = _.find(auth.local.accounts, function (account) {
         return account.username.toLowerCase() === wantedUsername &&

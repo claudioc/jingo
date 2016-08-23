@@ -3,7 +3,7 @@ var Tools = require("../../lib/tools");
 describe ("Tools", function() {
 
   it ("should hashify a string with sha1", function() {
-    expect(Tools.hashify("tornado")).to.equal("474446ad24ee5490f8e879012ee2a855a7c7bf56");
+    expect(Tools.hashify("tornado", "foo")).to.equal("07b2be9d932cae36d2987ae66f999ade2ae07b8cedcd5c07d518bcd446d07fea");
   });
 
   it ("should not authorize empty email", function() {
