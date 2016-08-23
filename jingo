@@ -29,11 +29,6 @@ if (program.sampleConfig) {
   process.exit(0);
 }
 
-if (program.hashString) {
-  console.log(tools.hashify(program.hashString));
-  process.exit(0);
-}
-
 if (!program.config || !fs.existsSync(program.config)) {
   program.help();
   process.exit(-1);
@@ -47,6 +42,11 @@ if (!config.load(program.config)) {
 if (!config.validate()) {
   console.log("Error: " + config.getError());
   process.exit(-1);
+}
+
+if (program.hashString) {
+  console.log(tools.hashify(program.hashString, config.get("application").secret));
+  process.exit(0);
 }
 
 var refspec = config.get("application").remote.split(/\s+/);
