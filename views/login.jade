@@ -17,7 +17,11 @@ block content
       p
         +anchor('/auth/github', 'Github login').btn-auth.btn-auth-github
 
-    if (auth.google.enabled || auth.github.enabled)
+    if (auth.openstreetmap.enabled)
+      p
+        +anchor('/auth/openstreetmap', 'OpenSteetMap login').btn-default 
+
+    if (auth.google.enabled || auth.github.enabled || auth.openstreetmap.enabled)
       p
         +anchor("/", 'Cancel')
 

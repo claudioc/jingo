@@ -4,6 +4,7 @@ var router = require("express").Router(),
   passportLocal = require("passport-local"),
   passportGoogle = require("passport-google-oauth"),
   passportGithub = require("passport-github").Strategy,
+  passportOpenStreetMap = require("passport-openstreetmap").Strategy,
   tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
@@ -32,6 +33,13 @@ router.get("/auth/github/callback", passport.authenticate("github", {
   successRedirect: proxyPath + "/auth/done",
   failureRedirect: proxyPath + "/login"
 }));
+
+router.get("/auth/openstreetmap",passport.authenticate("openstreetmap"));
+router.get("/auth/openstreetmap/callback", passport.authenticate("openstreetmap", {
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login"
+}));
+
 
 if (auth.google.enabled) {
   var redirectURL = auth.google.redirectURL || app.locals.baseUrl + "/oauth2callback";
@@ -63,6 +71,24 @@ if (auth.github.enabled) {
     function (accessToken, refreshToken, profile, done) {
       usedAuthentication("github");
       done(null, profile);
+    }
+  ));
+}
+if (auth.openstreetmap.enabled) {
+  var redirectURL = auth.openstreetmap.redirectURL || app.locals.baseUrl + "/auth/openstreetmap/callback";
+
+ 
+  passport.use(new passportOpenStreetMap({
+    consumerKey: auth.openstreetmap.clientId,
+    consumerSecret: auth.openstreetmap.clientSecret,
+    callbackURL: redirectURL
+  },
+    function (accessToken, refreshToken, profile, done) {
+      process.nextTick(function(){
+        profile.email=profile.displayName+"@osm.osm";
+        usedAuthentication("openstreetmap");
+        done(null, profile);
+      });
     }
   ));
 }
