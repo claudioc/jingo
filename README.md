@@ -143,6 +143,7 @@ For OpenStreetMap, follow these instructions (you need to be logged in in OpenSt
 * Press the `Register` button
 * In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+* If you are using OpenSteetMap OAuth2 please disable _authorization.emptyEmailMatches_ as OpenStreetMap is NOT publishing User EMail adresses.
 
 The _local_ method uses an array of `username`, `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
