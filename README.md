@@ -107,9 +107,9 @@ If you want your wiki server to only listen to your `localhost`, set the configu
 Authentication and Authorization
 --------------------------------
 
-You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "local").
+You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_, _OpenStreetMap logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "local").
 
-The _Google Login_ and the _GitHub login_ uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google or GitHub and put those informations in the configuration file.
+The _Google Login_ and the _GitHub login_ (as the _OpenStreetMap login_) uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google or GitHub and put those informations in the configuration file.
 
 For Google, follow these instructions (you need to be logged in in Google):
 
@@ -128,6 +128,19 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
 * Enter <your installation URL>/auth/github/callback as the `Authorization callback URL`
 * Press the `Register application` button
+* In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
+* Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+
+For OpenStreetMap, follow these instructions (you need to be logged in in OpenSteetMap):
+
+* Go to the Settings of your User Account
+* Open OAuth Settings
+* Scoll until the end of the screen and open Register Application
+* Enter whatever `Application name` you want
+* Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
+* Enter <your installation URL>/auth/opensteetmap/callback as the `Authorization callback URL`
+* You need only to allow the reading of user data
+* Press the `Register` button
 * In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
@@ -274,7 +287,20 @@ Configuration options reference
 
   Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
-#### authentication.google.redirectUrl (string: /auth/github/callback)
+#### authentication.github.redirectUrl (string: /auth/github/callback)
+
+  Specifies a custom redirect URL for OAuth2 authentication instead of the default
+
+#### authentication.openstreetmap.enabled (boolean: false)
+
+  Enable or disable authentication via OpenSteetMap logins
+
+#### authentication.openstreetmap.clientId
+#### authentication.openstreetmap.clientSecret
+
+  Values required for OpenSteetMap OAuth2 authentication. Refer to a previous section of this document on how to set them up.
+
+#### authentication.openstreetmap.redirectUrl (string: /auth/openstreetmap/callback)
 
   Specifies a custom redirect URL for OAuth2 authentication instead of the default
 
