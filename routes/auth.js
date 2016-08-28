@@ -18,7 +18,7 @@ router.post("/login", passport.authenticate("local", {
   failureRedirect: proxyPath + "/login",
   failureFlash: true 
 }));
-router.get("/auth/done", _getAuthDone);
+router.get("/auth/done", _getAuthDoneSQL);
 
 router.get("/auth/google", passport.authenticate("google", {
   scope: ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile" ] }
@@ -180,6 +180,25 @@ function _getLogout(req, res) {
   res.redirect(proxyPath + "/");
 }
 
+function _getAuthDoneSQL(req,res,next) {
+  if (!res.locals.user) {
+    res.redirect(proxyPath + "/");
+    return;
+  }
+  tools.isValidUser(req.user,app.locals.config.get("application").pgConnection,function(err,validated){
+    if (err) return next(err);
+    if (validated) {
+      var dst = req.session.destination || proxyPath + "/";
+      delete req.session.destination;
+      res.redirect(dst);
+    } else {
+      req.logout();
+      req.session = null;
+      res.statusCode = 403;
+      res.end("<h1>Forbidden</h1>");
+    }
+  });
+}
 function _getAuthDone(req, res) {
 
   if (!res.locals.user) {
