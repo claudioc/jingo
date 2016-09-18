@@ -4,6 +4,7 @@ var router = require("express").Router(),
   passportLocal = require("passport-local"),
   passportGoogle = require("passport-google-oauth"),
   passportGithub = require("passport-github").Strategy,
+  passportLDAP = require("passport-ldapauth"),
   tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
@@ -15,7 +16,7 @@ router.get("/logout", _getLogout);
 router.post("/login", passport.authenticate("local", {
   successRedirect: proxyPath + "/auth/done",
   failureRedirect: proxyPath + "/login",
-  failureFlash: true 
+  failureFlash: true
 }));
 router.get("/auth/done", _getAuthDone);
 
@@ -31,6 +32,12 @@ router.get("/auth/github", passport.authenticate("github"));
 router.get("/auth/github/callback", passport.authenticate("github", {
   successRedirect: proxyPath + "/auth/done",
   failureRedirect: proxyPath + "/login"
+}));
+
+router.post("/auth/ldap", passport.authenticate("ldapauth", {
+  successRedirect: proxyPath + "/auth/done",
+  failureRedirect: proxyPath + "/login",
+  failureFlash: true
 }));
 
 if (auth.google.enabled) {
@@ -62,6 +69,23 @@ if (auth.github.enabled) {
   },
     function (accessToken, refreshToken, profile, done) {
       usedAuthentication("github");
+      done(null, profile);
+    }
+  ));
+}
+
+if (auth.ldap.enabled) {
+  passport.use(new passportLDAP({
+      server: {
+        url: auth.ldap.url,
+        bindDn: auth.ldap.bindDn,
+        bindCredentials: auth.ldap.bindCredentials,
+        searchBase: auth.ldap.searchBase,
+        searchFilter: auth.ldap.searchFilter
+      }
+  },
+    function (profile, done) {
+      usedAuthentication("ldap");
       done(null, profile);
     }
   ));
@@ -138,6 +162,14 @@ passport.deserializeUser(function (user, done) {
 
   if (!user.displayName && user.username) {
     user.displayName = user.username;
+  }
+
+  // for ldap auth
+  if (!user.displayName && user.uid) {
+    user.displayName = user.uid;
+  }
+  if (!user.email && user.mail) {
+    user.email = user.mail;
   }
 
   if (!user.email) {

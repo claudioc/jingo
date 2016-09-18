@@ -79,7 +79,7 @@ Jingo needs a config file and to create a sample config file, just run `jingo -s
 
 This document contains also [the reference](#configuration-options-reference) for all the possible options.
 
-If you define a `remote` to push to, then Jingo will automatically issue a push to that remote every `pushInterval` seconds. To declare a `remote` for Jingo to use, you'll need to identify the name of your local remote. The following example shows how a local remote is typically defined: 
+If you define a `remote` to push to, then Jingo will automatically issue a push to that remote every `pushInterval` seconds. To declare a `remote` for Jingo to use, you'll need to identify the name of your local remote. The following example shows how a local remote is typically defined:
 
 `git remote add origin https://github.com/joeuser/jingorepo.git'`
 
@@ -108,7 +108,7 @@ If you want your wiki server to only listen to your `localhost`, set the configu
 Authentication and Authorization
 --------------------------------
 
-You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_ or a simple, locally verified username/password credentials match (called "local").
+You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_, _ldap logins_ or a simple, locally verified username/password credentials match (called "local").
 
 The _Google Login_ and the _GitHub login_ uses OAuth 2 and that means that on a fresh installation you need to get a `client id` and a `client secret` from Google or GitHub and put those informations in the configuration file.
 
@@ -132,11 +132,13 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
+The _ldap_ method uses `url` as the ldap server url, and optionally a `bindDn` and `bindCredentials` if needed. The `searchBase` and `searchFilter` are required for searching in the tree.
+
 The _local_ method uses an array of `username`, `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
 You can enable all the authentications options at the same time. The `local` is disabled by default.
 
-The _authorization_ section of the config file has three keys: `anonRead`, `validMatches` and `emptyEmailMatches`. 
+The _authorization_ section of the config file has three keys: `anonRead`, `validMatches` and `emptyEmailMatches`.
 
 If `anonRead` is true, then anyone who can access the wiki can read anything. If `anonRead` is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
 
@@ -246,7 +248,7 @@ Configuration options reference
   Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines)
 
 ####application.proxyPath (string: "")
-  
+
   If you want jingo to work "behind" another website (for example in a /wiki directory of an already existing intranet), you need to configure it to be aware of that situation so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
 
   Please note that jingo won't work correctly if this option is activated.
@@ -280,6 +282,16 @@ Configuration options reference
 #### authentication.google.redirectUrl (string: /auth/github/callback)
 
   Specifies a custom redirect URL for OAuth2 authentication instead of the default
+
+#### authentication.ldap.enabled (boolean: false)
+
+  Enable or disable authentication via LDAP logins
+
+#### authentication.ldap.url
+#### authentication.ldap.bindDn
+#### authentication.ldap.bindCredentials
+#### authentication.ldap.searchBase
+#### authentication.ldap.searchFilter
 
 #### authentication.local.enabled (boolean: false)
 

@@ -21,6 +21,31 @@ block content
       p
         +anchor("/", 'Cancel')
 
+    if (auth.ldap.enabled)
+
+      p
+        h4 Authenticate ldap
+
+      mixin errors()
+
+      form.form-horizontal(action='#{proxyPath}/auth/ldap', method='post')
+
+        .form-group
+          label.col-sm-2.control-label Username
+          .col-sm-3
+            input.form-control(type='text', autofocus, name='username')
+
+        .form-group
+          label.col-sm-2.control-label Password
+          .col-sm-3
+            input.form-control(type='password', name='password')
+
+        .form-group
+          .col-sm-offset-2.col-sm-3
+            button.btn-primary.btn(type="submit") Login
+            |&nbsp;or&nbsp;
+            +anchor("/", 'Cancel')
+
     if (auth.alone.enabled || auth.local.enabled)
 
       p
