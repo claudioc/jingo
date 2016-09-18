@@ -1,3 +1,9 @@
+Version 1.7.0, September 18th, 2016
+==================================
+
+- Fixes #164 (ProxyPath not used on /login)
+- Adds LDAP authentication support (@everpcpc). Requires manual installation of `passport-ldapauth`
+
 Version 1.6.1, January 27th, 2016
 ==================================
 

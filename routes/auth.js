@@ -4,10 +4,16 @@ var router = require("express").Router(),
   passportLocal = require("passport-local"),
   passportGoogle = require("passport-google-oauth"),
   passportGithub = require("passport-github").Strategy,
-  passportLDAP = require("passport-ldapauth"),
   tools = require("../lib/tools");
 
 var auth = app.locals.config.get("authentication");
+
+// Additional LDAP support only if needed
+var passportLDAP;
+if (auth.ldap.enabled) {
+  passportLDAP = require("passport-ldapauth");
+}
+
 var passport = app.locals.passport;
 var proxyPath = app.locals.config.getProxyPath();
 
@@ -34,11 +40,13 @@ router.get("/auth/github/callback", passport.authenticate("github", {
   failureRedirect: proxyPath + "/login"
 }));
 
-router.post("/auth/ldap", passport.authenticate("ldapauth", {
-  successRedirect: proxyPath + "/auth/done",
-  failureRedirect: proxyPath + "/login",
-  failureFlash: true
-}));
+if (auth.ldap.enabled) {
+  router.post("/auth/ldap", passport.authenticate("ldapauth", {
+    successRedirect: proxyPath + "/auth/done",
+    failureRedirect: proxyPath + "/login",
+    failureFlash: true
+  }));
+}
 
 if (auth.google.enabled) {
   var redirectURL = auth.google.redirectURL || app.locals.baseUrl + "/oauth2callback";
@@ -165,11 +173,13 @@ passport.deserializeUser(function (user, done) {
   }
 
   // for ldap auth
-  if (!user.displayName && user.uid) {
-    user.displayName = user.uid;
-  }
-  if (!user.email && user.mail) {
-    user.email = user.mail;
+  if (auth.ldap.enabled) {
+    if (!user.displayName && user.uid) {
+      user.displayName = user.uid;
+    }
+    if (!user.email && user.mail) {
+      user.email = user.mail;
+    }
   }
 
   if (!user.email) {

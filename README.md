@@ -133,6 +133,7 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
 The _ldap_ method uses `url` as the ldap server url, and optionally a `bindDn` and `bindCredentials` if needed. The `searchBase` and `searchFilter` are required for searching in the tree.
+Since we want to install the (binary) support to LDAP only when needed, please _manually_ `npm install passport-ldapauth` to use the LDAP support.
 
 The _local_ method uses an array of `username`, `passwordHash` and optionally an `email`. The password is hashed using a _non salted_ SHA-1 algorithm, which makes this method not the safest in the world but at least you don't have a clear text password in the config file. To generate the hash, use the `--hash-string` program option: once you get the hash, copy it in the config file.
 
@@ -286,6 +287,7 @@ Configuration options reference
 #### authentication.ldap.enabled (boolean: false)
 
   Enable or disable authentication via LDAP logins
+  Requires manual installation of `passport-ldapauth` module via npm
 
 #### authentication.ldap.url
 #### authentication.ldap.bindDn
