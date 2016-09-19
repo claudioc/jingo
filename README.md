@@ -131,6 +131,7 @@ For GitHub, follow these instructions (you need to be logged in in GitHub):
 * Press the `Register application` button
 * In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
 * Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+* Change `authorizationURL` `tokenURL` `userProfileURL` in the config file to your own url if you want to use github enterprise, or leave them empty for the default values: `authorizationURL: https://github.com/login/oauth/authorize` `authorizationURL: https://github.com/login/oauth/access_token` `userProfileURL: https://api.github.com/user`
 
 The _ldap_ method uses `url` as the ldap server url, and optionally a `bindDn` and `bindCredentials` if needed. The `searchBase` and `searchFilter` are required for searching in the tree.
 Since we want to install the (binary) support to LDAP only when needed, please _manually_ `npm install passport-ldapauth` to use the LDAP support.
