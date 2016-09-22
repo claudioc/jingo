@@ -13,36 +13,36 @@ mixin tools(action, pageName)
     ul
       if !isAnonymous()
         li
-          +relHref("/pages/new")(title="Create new page").btn.btn-sm.btn-default
+          +anchor("/pages/new")(title="Create new page").btn.btn-sm.btn-default
             i.icon.ion-plus-round
       if !isAnonymous() && canEdit
         li
-          +relHref("/pages/" + pageName + "/edit")(title="Edit this page").btn.btn-sm.btn-default
+          +anchor("/pages/" + pageName + "/edit")(title="Edit this page").btn.btn-sm.btn-default
             i.icon.ion-compose
 
       li
-        +relHref("/wiki/" + pageName + "/history")(title="Page history").btn.btn-sm.btn-default
+        +anchor("/wiki/" + pageName + "/history")(title="Page history").btn.btn-sm.btn-default
           i.icon.ion-clock
       li
-        +relHref("/wiki")(title="All pages").btn.btn-sm.btn-default
+        +anchor("/wiki")(title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
       if canSearch()
         li
-          +relHref("/search")(title="Search through the pages").btn.btn-sm.btn-default
+          +anchor("/search")(title="Search through the pages").btn.btn-sm.btn-default
             i.icon.ion-search
 
   if action == 'history'
     ul
       li
-        +relHref("/wiki")(title="All pages").btn.btn-sm.btn-default
+        +anchor("/wiki")(title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid
 
 mixin saveAndCancel(saveText)
   .well
-    input(type='submit',value=saveText || 'Save').btn.btn-primary
+    input(type='submit',value=saveText || 'Save',title='Save (Ctrl/Cmd+s)').btn.btn-primary
     |&nbsp;
-    +relHref("/", "Cancel").btn
+    +anchor("/", "Cancel").btn
 
 mixin errors(err)
   -var errors = locals.errors;
@@ -83,6 +83,9 @@ mixin featuresJavaScripts()
         extraKeys: {
           "Ctrl-Enter": function(cm) {
             Jingo.toggleFullscreen();
+          },
+          "Ctrl-S": function(cm) {
+            Jingo.save();
           }
         }
       });

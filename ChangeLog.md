@@ -1,3 +1,31 @@
+Version 1.7.0, September 18th, 2016
+==================================
+
+- Fixes #164 (ProxyPath not used on /login)
+- Adds LDAP authentication support (@everpcpc). Requires manual installation of `passport-ldapauth`
+
+Version 1.6.1, January 27th, 2016
+==================================
+
+- Fixes #132 (crash on empty repos)
+- Renames an img so to not have problems with AdBlock
+
+Version 1.6.0, December 28th, 2015
+==================================
+
+- Ability to work behind a proxy directory #124 (@creynold, @claudioc)
+- Enables CORS for /wiki pages (poor man read only API to pages) (@kaiserfro, @claudioc)
+- Started the Github wiki with some "recipes" for common tasks and configurations
+- Better documentation for the configuration options
+- Adds a linter configuration (eslint) and fixes a lot of style issues
+- Adds the CONTRIBUTING file
+- Adds more tests
+- Fixes a TOC bug (@creynold)
+- Fixes #118
+- Fixes a crash on a certain git configuration
+
+Requires `npm install`
+
 Version 1.5.3, December 14th, 2015
 =================================
 
