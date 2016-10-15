@@ -62,8 +62,8 @@
     "start-dev": "nodemon ./jingo -c config.yaml"
   },
   "engines": {
-    "node": "0.8.x",
-    "npm": "1.1.x"
+    "node": ">=0.8",
+    "npm": ">=1.1"
   },
   "license": "MIT"
 }
