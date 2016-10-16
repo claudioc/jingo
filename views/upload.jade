@@ -1,0 +1,15 @@
+form(id="wiki_upload", action="/uploadFile", method="post", enctype="multipart/form-data")
+  p
+    input.form-control(type="file", name="wiki_file", id="wiki_file")
+  p Filename in Repository
+  p
+    input.form-control(type="text", value="", name="rep_file_name", id="rep_file_name")
+  p Commit Message
+  p
+    input.form-control(type="text", value="File Attachment Upload", name="file_message")
+  p
+    input(type="submit", name="wiki_upload_submit", id="wiki_upload_submit", value="Upload").btn.btn-default
+div(id="upload_status")
+  p Ready for upload.
+script(src="/vendor/jquery.form.min.js")
+script(src="/js/upload.js")
