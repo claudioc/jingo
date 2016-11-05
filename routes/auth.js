@@ -89,7 +89,8 @@ if (auth.ldap.enabled) {
         bindDn: auth.ldap.bindDn,
         bindCredentials: auth.ldap.bindCredentials,
         searchBase: auth.ldap.searchBase,
-        searchFilter: auth.ldap.searchFilter
+        searchFilter: auth.ldap.searchFilter,
+        searchAttributes: auth.ldap.searchAttributes
       }
   },
     function (profile, done) {
