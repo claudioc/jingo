@@ -14,11 +14,13 @@ Keep in mind that Jingo is used by quite a lot of people and we must be super-su
 
 A big PR, even if would add a lot of value to Jingo, would have problems to be merged. I cannot trust you 100% on the regression tests that you may (or many not) have ran, and I want to try my best to always deliver a Jingo which won't break things to people upgrading it. Unfortunately I don't have a set of integration tests to test for regressions (only units tests) and all the tests I need to run I do them manually, which translates in more time to spend on the project.
 
-## npm install -g eslint
+## Jingo uses standardjs for formatting (npm install -g standard)
 
-Use `eslint` to validate the code format for Jingo.
+Before committing your work, run `standard` in the root directory. If you see no errors, you're good to push :)
 
-If you use Sublime Text, take a look at [SublimeLinter-eslint](https://github.com/roadhump/SublimeLinter-eslint). You need to install Sublime-linter first.
+## Test
+
+Run `npm test` to ensure that your code hasn't break anything
 
 ## Running
 

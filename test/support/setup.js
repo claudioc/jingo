@@ -1,13 +1,13 @@
-global.sinon = require('sinon');
-global.chai = require('chai');
-global.expect = chai.expect;
+global.sinon = require('sinon')
+global.chai = require('chai')
+global.expect = chai.expect
 
 global.Git = {
 
-  _content: "",
+  _content: '',
 
   absPath: function (file) {
-    return file;
+    return file
   },
 
   rm: sinon.stub().callsArgOn(3, this),
@@ -17,8 +17,8 @@ global.Git = {
   add: sinon.stub().callsArgOn(3, this),
 
   show: function (a, b, cb) {
-    cb.call(this, null, this._content);
+    cb.call(this, null, this._content)
   }
 
-};
+}
 

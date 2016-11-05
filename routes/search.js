@@ -1,70 +1,64 @@
-var router = require("express").Router(),
-  path = require("path"),
-  corsEnabler = require("../lib/cors-enabler"),
-  models = require("../lib/models");
+/* global Git */
 
-models.use(Git);
+var router = require('express').Router()
+var path = require('path')
+var corsEnabler = require('../lib/cors-enabler')
+var models = require('../lib/models')
 
-router.options("/search", corsEnabler);
-router.get("/search", corsEnabler, _getSearch);
+models.use(Git)
 
-function _getSearch(req, res) {
+router.options('/search', corsEnabler)
+router.get('/search', corsEnabler, _getSearch)
 
-  var items = [],
-    record;
+function _getSearch (req, res) {
+  var record
 
-  res.locals.matches = [];
+  res.locals.matches = []
 
   if (req.query.term) {
-    res.locals.term = req.query.term.trim();
-  }
-  else {
-    res.locals.term = "";
+    res.locals.term = req.query.term.trim()
+  } else {
+    res.locals.term = ''
   }
 
-  if (res.locals.term.length == 0) {
-    renderResults();
-    return;
+  if (res.locals.term.length === 0) {
+    renderResults()
+    return
   }
 
   if (res.locals.term.length < 2) {
-
-    res.locals.warning = "Search string is too short.";
-    renderResults();
-  }
-  else {
-
+    res.locals.warning = 'Search string is too short.'
+    renderResults()
+  } else {
     try {
-      new RegExp(res.locals.term);
-    }
-    catch (e) {
-      res.locals.warning = "The format of the search string is invalid.";
-      renderResults();
-      return;
+      new RegExp(res.locals.term) // eslint-disable-line no-new
+    } catch (e) {
+      res.locals.warning = 'The format of the search string is invalid.'
+      renderResults()
+      return
     }
 
     models.pages.findStringAsync(res.locals.term).then(function (items) {
-
       items.forEach(function (item) {
-        if (item.trim() !== "") {
-          record = item.split(":");
+        if (item.trim() !== '') {
+          record = item.split(':')
           res.locals.matches.push({
-            pageName: path.basename(record[0].split(".")[0]),
-            line: record[1] ? ":" + record[1] : "",
-            text: record.slice(2).join("")
-          });
+            pageName: path.basename(record[0].split('.')[0]),
+            line: record[1] ? ':' + record[1] : '',
+            text: record.slice(2).join('')
+          })
         }
-      });
+      })
 
-      renderResults();
-    });
+      renderResults()
+    })
   }
 
-  function renderResults() {
-    res.render("search", {
-      title: "Search results"
-    });
+  function renderResults () {
+    res.render('search', {
+      title: 'Search results'
+    })
   }
 }
 
-module.exports = router;
+module.exports = router

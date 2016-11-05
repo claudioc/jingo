@@ -1,3 +1,10 @@
+Version 1.7.1, November 5th, 2016
+==================================
+
+- Merges #179
+- Refines README
+- Adopts Standardjs as the formatting standard for the project
+
 Version 1.7.0, September 18th, 2016
 ==================================
 

@@ -1,6 +1,6 @@
 {
   "name": "jingo",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "A nodejs based wiki engine",
   "author": "Claudio Cicali <claudio.cicali@gmail.com>",
   "keywords": [
@@ -11,6 +11,18 @@
     "cms",
     "markdown"
   ],
+  "standard": {
+    "ignore": [
+      "/public/vendor/"
+    ],
+    "globals": [
+      "expect",
+      "describe",
+      "Git",
+      "sinon",
+      "chai"
+    ]
+  },
   "main": "jingo",
   "bin": {
     "jingo": "./jingo"
