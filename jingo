@@ -4,7 +4,7 @@
  * Jingo, wiki engine
  * http://github.com/claudioc/jingo
  *
- * Copyright 2015 Claudio Cicali <claudio.cicali@gmail.com>
+ * Copyright 2016 Claudio Cicali <claudio.cicali@gmail.com>
  * Released under the MIT license
  */
 var program = require('commander')
@@ -14,10 +14,11 @@ var http = require('http')
 var fs = require('fs')
 var os = require('os')
 var semver = require('semver')
+var pkg = require('./package')
 
 global.Git = require('./lib/gitmech')
 
-program.version('1.7.1')
+program.version(pkg.version)
        .option('-c, --config <path>', 'Specify the config file')
        .option('-#, --hash-string <string>', 'Create an hash for a string')
        .option('-l, --local', 'Listen on localhost only')

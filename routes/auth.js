@@ -131,7 +131,7 @@ if (auth.local.enabled) {
 
       var foundUser = _.find(auth.local.accounts, function (account) {
         return account.username.toLowerCase() === wantedUsername &&
-            account.passwordHash === wantedPasswordHash
+            account.passwordHash.toLowerCase() === wantedPasswordHash.toLowerCase()
       })
 
       if (!foundUser) {

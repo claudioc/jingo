@@ -1,3 +1,10 @@
+Version 1.7.2, December 4th, 2016
+==================================
+
+- Closes #183 (accessible document list)
+- Closes #182 (case insensitive test on SHA-1 passwords)
+- Reads Jingo version from packages.json (no manual edit for version bump)
+
 Version 1.7.1, November 5th, 2016
 ==================================
 
