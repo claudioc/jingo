@@ -75,7 +75,10 @@ if (auth.github.enabled) {
   passport.use(new passportGithub({ // eslint-disable-line new-cap
     clientID: auth.github.clientId,
     clientSecret: auth.github.clientSecret,
-    callbackURL: redirectURL
+    callbackURL: redirectURL,
+    authorizationURL: auth.github.authorizationURL,
+    tokenURL: auth.github.tokenURL,
+    userProfileURL: auth.github.userProfileURL
   },
     function (accessToken, refreshToken, profile, done) {
       usedAuthentication('github')
