@@ -1,3 +1,8 @@
+Version 1.7.3, January 8th, 2017
+==================================
+
+- Small set of fixed: merges #189, #190 and #191
+
 Version 1.7.2, December 4th, 2016
 ==================================
 
