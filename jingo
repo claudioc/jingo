@@ -15,6 +15,7 @@ var fs = require('fs')
 var os = require('os')
 var semver = require('semver')
 var pkg = require('./package')
+var fileExists = require('./lib/file_exists')
 
 global.Git = require('./lib/gitmech')
 
@@ -35,7 +36,7 @@ if (program.hashString) {
   process.exit(0)
 }
 
-if (!program.config || !fs.existsSync(program.config)) {
+if (!program.config || !fileExists.sync(program.config)) {
   program.help()
   process.exit(-1)
 }

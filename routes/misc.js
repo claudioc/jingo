@@ -1,12 +1,9 @@
 /* global Git */
 var router = require('express').Router()
 var renderer = require('../lib/renderer')
-var fs = require('fs')
 var models = require('../lib/models')
 var Promiser = require('bluebird')
-// using fs.access instead of the deprecated fs.exists:
-// https://nodejs.org/api/fs.html#fs_fs_exists_path_callback
-var exists = Promiser.promisify(fs.access)
+var fileExists = require('../lib/file_exists')
 
 models.use(Git)
 
@@ -34,12 +31,10 @@ function _getExistence (req, res) {
 
   Promiser.all(req.query.data.map(function (pageName) {
     var page = new models.Page(pageName)
-    return exists(page.pathname)
-    .catch(function (err) {
-      if (err.code === 'ENOENT') {
+    return fileExists.async(page.pathname)
+    .then(function (exists) {
+      if (!exists) {
         result.push(pageName)
-      } else {
-        console.error(err)
       }
     })
   }))
