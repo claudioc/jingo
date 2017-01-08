@@ -43,8 +43,8 @@ function _getSearch (req, res) {
         if (item.trim() !== '') {
           record = item.split(':')
           res.locals.matches.push({
-            pageName: path.basename(record[0].split('.')[0]),
-            line: record[1] ? ':' + record[1] : '',
+            pageName: path.basename(record[0].replace(/\.md$/, '')),
+            line: record[1] ? ', L' + record[1] : '',
             text: record.slice(2).join('')
           })
         }
