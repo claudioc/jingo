@@ -1,0 +1,15 @@
+include links
+
+mixin diagramsStylesheets()
+	+asset("/vendor/mermaid/mermaid.dark.css")(type="text/css")
+
+mixin diagramsJavaScripts()
+	script(src="//cdn.rawgit.com/knsv/mermaid/0.5.8/dist/mermaidAPI.min.js")
+	script.
+		window.mermaidAPI || document.write("<sc" + "ript src='#{proxyPath}/vendor/mermaid/mermaidAPI.min.js'></scr" + "ipt>");
+	script.
+		window.mermaidAPI.initialize({startOnLoad:false, htmlLabels: true});
+
+mixin diagramsPaint()
+	script.
+		Jingo.paintDiagrams();

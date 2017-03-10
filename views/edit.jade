@@ -1,8 +1,10 @@
 extends layout
 
 include mixins/form
+include mixins/diagrams
 
 block styles
+  mixin diagramsStylesheets()
   mixin featuresStylesheets()
 
 block tools
@@ -37,3 +39,4 @@ block content
 
 block scripts
   mixin featuresJavaScripts()
+  mixin diagramsJavaScripts()
