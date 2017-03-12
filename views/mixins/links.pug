@@ -1,0 +1,13 @@
+mixin anchor(url, name)
+  a(href="#{proxyPath}" + url)&attributes(attributes)= name
+    block
+
+mixin asset(url)
+  -
+    var link = proxyPath + url
+    var match = /^.*?\.([a-zA-Z]+)$/.exec(url)
+    var ext = match.length > 1 ? match[1] : ''
+  if ext === 'css'
+    link(rel="stylesheet", href=link)
+  else if ext === 'js'
+    script(src=link)

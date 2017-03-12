@@ -1,0 +1,72 @@
+
+.cheatsheet-content
+
+  .mod
+    .col
+      h3 Format Text
+      p Headers
+      pre # This is an &lt;h1&gt; tag
+        |## This is an &lt;h2&gt; tag
+        |###### This is an &lt;h6&gt; tag
+      p Text styles
+      pre *This text will be italic*
+        |_This will also be italic_
+        |**This text will be bold**
+        |__This will also be bold__
+        |*You **can** combine them*
+
+    .col
+      h3 Lists
+      p Unordered
+      pre
+        |* Item 1
+        |* Item 2
+        |* Item 2a
+        |* Item 2b
+      p Ordered
+      pre
+        |1. Item 1
+        |2. Item 2
+        |3. Item 3
+        |   * Item 3a
+        |   * Item 3b
+    .col
+      h3 Miscellaneous
+      p Images
+      pre
+        |![GitHub Logo](/images/logo.png)
+        |Format: ![Alt Text](url)
+      p Links
+      pre |http://github.com - automatic!
+        |[GitHub](http://github.com)
+      p Blockquotes
+      pre
+        |As Kanye West said:
+        |&gt; We're living the future so
+        |&gt; the present is our past.
+
+  hr
+
+  h3 Code Examples in Markdown
+  .col
+    p Syntax highlighting with <a href="http://github.github.com/github-flavored-markdown/" title="GitHub Flavored Markdown" target="_blank">GFM</a></p>
+    pre
+      |```javascript
+      |function fancyAlert(arg) {
+      |  if(arg) {
+      |    $.facebox({div:'#foo'})
+      |  }
+      |}
+      |```
+  .col
+    p Or, indent your code 4 spaces
+    pre Here is a Python code example
+      |without syntax highlighting:
+      |def foo:
+      |if not bar:
+      |  return true
+  .col
+    p Inline code for comments
+    pre I think you should use an
+      |`&lt;addr&gt;` element here instead.
+
