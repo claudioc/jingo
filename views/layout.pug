@@ -36,7 +36,7 @@ include mixins/links
               else
                 p.user
                   if user.email && user.email != 'jingouser'
-                    img(src=gravatar().url("#{user.email}", {s:24}))
+                    img(src=gravatar().url(user.email, {s:24}))
                   b &nbsp;#{user.displayName}&nbsp;
                   +anchor('/logout')(title='Become anonymous')
                     i.icon.ion-power

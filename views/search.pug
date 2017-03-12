@@ -11,9 +11,9 @@ block content
       +warning()
 
       if canSearch()
-        form(action="#{proxyPath}/search").search-form
+        form(action=`${proxyPath}/search`).search-form
           .input-group.input-group-sm
-            input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
+            input.form-control(type="text", value=term_ph, data-i-search-input="true", name="term", placeholder="Search the wiki")
             span.input-group-btn
               button.btn.btn-primary(type="submit") Search
 

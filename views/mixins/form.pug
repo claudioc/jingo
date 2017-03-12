@@ -54,30 +54,28 @@ mixin errors(err)
             b= v.msg || v
 
 mixin featuresStylesheets()
-  if hasFeature('codemirror')
-    +asset("/css/codemirror-ext.css")(type="text/css")
-    +asset("/vendor/codemirror/codemirror.css")(type="text/css")
-    +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
+  +asset("/css/codemirror-ext.css")(type="text/css")
+  +asset("/vendor/codemirror/codemirror.css")(type="text/css")
+  +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
 
 mixin featuresJavaScripts()
-  if hasFeature('codemirror')
-    +asset("/vendor/codemirror/codemirror.min.js")
-    script.
-      Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
-        lineNumbers: true,
-        mode: 'gfm',
-        matchBrackets: true,
-        lineWrapping: true,
-        extraKeys: {
-          "Ctrl-Enter": function(cm) {
-            Jingo.toggleFullscreen();
-          },
-          "Ctrl-S": function(cm) {
-            Jingo.save();
-          }
+  +asset("/vendor/codemirror/codemirror.min.js")
+  script.
+    Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
+      lineNumbers: true,
+      mode: 'gfm',
+      matchBrackets: true,
+      lineWrapping: true,
+      extraKeys: {
+        "Ctrl-Enter": function(cm) {
+          Jingo.toggleFullscreen();
+        },
+        "Ctrl-S": function(cm) {
+          Jingo.save();
         }
-      });
-      Jingo.toolbar();
+      }
+    });
+    Jingo.toolbar();
 
 mixin warning()
   -var warning = locals.warning;
@@ -93,7 +91,7 @@ mixin dialogBox(h)
   .modal-dialog
     .modal-content
       .modal-header
-        button(data-dismiss="modal",aria-hidden="true").close &times;
+        button(data-dismiss="modal", aria-hidden="true").close &times;
         h3 #{h}
       .modal-body
       .modal-footer
