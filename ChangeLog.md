@@ -5,6 +5,7 @@ Version 1.8.0, March 11th, 2017
 - Removed support for Markitup
 - Upgrade of jQuery to 2.x
 - Upgrades of various modules
+- Removes the need of installing mocha globally (for testing)
 
 Version 1.7.3, January 8th, 2017
 ==================================
