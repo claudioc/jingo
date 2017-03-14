@@ -157,13 +157,14 @@
     },
 
     paintDiagrams: function() {
+      var errClass = 'with-error'
       if (window.mermaidAPI) {
         var mermaidOrigErrHandler = mermaidAPI.parseError
         var graphElem = null
 
         mermaidAPI.parseError = function(err, hash) {
           if (graphElem && err) {
-            graphElem.addClass('with-error').attr('title', err.toString())
+            graphElem.addClass(errClass).attr('title', 'Invalid Mermaid syntax! ' + err.toString())
           }
         }
 
@@ -174,6 +175,10 @@
             mermaidAPI.render('mermaidGraph' + index, graphDefinition, function(graphHtml) {
               graphElem.replaceWith('<div class="graph mermaid">' + graphHtml + '</div>')
             })
+          } else {
+            if (!graphElem.hasClass(errClass)) {
+              graphElem.addClass(errClass).attr('title', 'Invalid Mermaid syntax!')
+            }
           }
         })
 
@@ -186,7 +191,7 @@
       $.post(proxyPath + '/misc/preview', {data: $('#editor').val()}, function (data) {
         $('#preview .modal-body').html(data).get(0).scrollTop = 0
         markMissingPagesAsAbsent('#preview .modal-body')
-        paintDiagrams()
+        Jingo.paintDiagrams()
       })
     },
 

@@ -49,7 +49,7 @@
 
   h3 Code Examples in Markdown
   .col
-    p Syntax highlighting with <a href="http://github.github.com/github-flavored-markdown/" title="GitHub Flavored Markdown" target="_blank">GFM</a></p>
+    p Syntax highlighting with <a href="http://github.github.com/github-flavored-markdown/" title="GitHub Flavored Markdown" target="_blank">GFM</a>
     pre
       |```javascript
       |function fancyAlert(arg) {
@@ -70,3 +70,38 @@
     pre I think you should use an
       |`&lt;addr&gt;` element here instead.
 
+  hr
+
+  h3 Mermaid diagrams in Markdown
+  .col
+    p Flowcharts, more info <a href="http://knsv.github.io/mermaid/#flowcharts-basic-syntax5" title="Flowcharts - Basic Syntax" target="_blank">here</a>
+    pre
+      |```mermaid
+      |graph TD;
+      |   A--&gt;B;
+      |   A--&gt;C;
+      |   B--&gt;D;
+      |   C--&gt;D;
+      |```
+  .col
+    p Sequence diagrams, more info <a href="http://knsv.github.io/mermaid/#sequence-diagrams6" title="Sequence diagrams" target="_blank">here</a>
+    pre
+      |```mermaid
+      |sequenceDiagram
+      |   Alice-&gt;&gt;John: Hello John, how are you?
+      |   John--&gt;&gt;Alice: Great!
+      |```
+  .col
+    p Gant diagrams, more info <a href="http://knsv.github.io/mermaid/#gant-diagrams7" title="Gant diagrams" target="_blank">here</a>
+    pre
+      |```mermaid
+      |gantt
+      |   title A Gantt Diagram
+      |   
+      |   section Section
+      |   A task           :a1, 2014-01-01, 30d
+      |   Another task     :after a1  , 20d
+      |   section Another
+      |   Task in sec      :2014-01-12  , 12d
+      |   another task     : 24d
+      |```
