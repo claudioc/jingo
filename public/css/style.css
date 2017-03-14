@@ -305,11 +305,11 @@ code {
 
 code.md-code {
   background-color: transparent;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   padding: 0;
   display: block;
-  margin-bottom: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /*margin-bottom: 20px;*/
+  /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
   border-width: 0;
 }
 
