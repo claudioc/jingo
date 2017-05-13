@@ -2,10 +2,11 @@ Version 1.8.0, March 11th, 2017
 ==================================
 
 - Upgrade from Jade to Pug 2 (needed for copyright reasons)
-- Removed support for Markitup
-- Upgrade of jQuery to 2.x
-- Upgrades of various modules
+- Removes support for Markitup
+- Upgrade to jQuery 2.x
+- Upgrades of various npm modules
 - Removes the need of installing mocha globally (for testing)
+- Removes obsolete script directory
 
 Version 1.7.3, January 8th, 2017
 ==================================
