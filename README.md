@@ -65,7 +65,7 @@ Features
 - Pages can be embedded into another site
 - Authentication via Google, Github, LDAP and local name/password
 
-For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
+For code syntax highlighting, Jingo uses the `highlight.js` module. For the list of supported languages, please refer to [this page](https://highlightjs.org/static/demo/).
 
 ![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss3.png)
 
