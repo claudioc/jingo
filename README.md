@@ -7,7 +7,7 @@ JINGO
 
 A **git based** _wiki engine_ written for **node.js**, with a decent design, a search capability and a good typography.
 
-![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss1.png)
+![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024412/f0cb9206-37d0-11e7-9748-8101fc4e662f.png)
 
 <!-- toc -->
 
@@ -37,7 +37,7 @@ Think of jingo as "the github wiki, without github but with more features". "Jin
 
 There is a demo server running at http://jingo.cica.li:6067/wiki/home
 
-![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss2.png)
+![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024413/f53612c6-37d0-11e7-8dd2-01c9ed993cc6.png)
 
 Features
 --------
@@ -67,7 +67,7 @@ Features
 
 For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. For the list of supported languages, please refer to [this page](https://github.com/thlorenz/node-syntaxhighlighter/tree/master/lib/scripts).
 
-![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss3.png)
+![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024414/f8470cb8-37d0-11e7-9c96-5193aca12591.png)
 
 Installation
 ------------
@@ -104,7 +104,7 @@ If your documents reside in subdirectory of your repository, you need to specify
 
 If you want your wiki server to only listen to your `localhost`, set the configuration key `localOnly` to true.
 
-![Screenshot](https://dl.dropboxusercontent.com/u/152161/jingo/ss4.png)
+![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024415/fc211aea-37d0-11e7-9ae2-77ce32cedb07.png)
 
 Authentication and Authorization
 --------------------------------
