@@ -1,0 +1,13 @@
+include links
+
+mixin diagramsStylesheets()
+	+asset("/vendor/mermaid/mermaid.css")(type="text/css")
+
+mixin diagramsJavaScripts()
+	+asset("/vendor/mermaid/mermaidAPI.min.js")
+	script.
+		window.mermaidAPI.initialize({startOnLoad:false, htmlLabels: true, logLevel: 3});
+
+mixin diagramsPaint()
+	script.
+		Jingo.paintDiagrams();

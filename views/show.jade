@@ -1,6 +1,14 @@
 extends layout
 
 include mixins/form
+include mixins/diagrams
+
+block styles
+  mixin diagramsStylesheets()
+
+block scripts
+  mixin diagramsJavaScripts()
+  mixin diagramsPaint()
 
 block tools
   mixin tools('show', page.wikiname)

@@ -628,6 +628,10 @@ a.btn-auth:hover {
   opacity: .9;
 }
 
+.with-error {
+  border: 1px solid red !important;
+}
+
 @media (min-width: 768px) {
   body {
     padding-top: 60px;

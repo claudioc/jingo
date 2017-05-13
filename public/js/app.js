@@ -156,11 +156,42 @@
       }
     },
 
+    paintDiagrams: function() {
+      var errClass = 'with-error'
+      if (window.mermaidAPI) {
+        var mermaidOrigErrHandler = mermaidAPI.parseError
+        var graphElem = null
+
+        mermaidAPI.parseError = function(err, hash) {
+          if (graphElem && err) {
+            graphElem.addClass(errClass).attr('title', 'Invalid Mermaid syntax! ' + err.toString())
+          }
+        }
+
+        $('.lang-mermaid').each(function(index) {
+          graphElem = $(this)
+          var graphDefinition = graphElem.text()
+          if (mermaidAPI.parse(graphDefinition)) {
+            mermaidAPI.render('mermaidGraph' + index, graphDefinition, function(graphHtml) {
+              graphElem.replaceWith('<div class="graph mermaid">' + graphHtml + '</div>')
+            })
+          } else {
+            if (!graphElem.hasClass(errClass)) {
+              graphElem.addClass(errClass).attr('title', 'Invalid Mermaid syntax!')
+            }
+          }
+        })
+
+        mermaidAPI.parseError = mermaidOrigErrHandler
+      }
+    },
+
     preview: function () {
       $('#preview').modal({keyboard: true, show: true, backdrop: false})
       $.post(proxyPath + '/misc/preview', {data: $('#editor').val()}, function (data) {
         $('#preview .modal-body').html(data).get(0).scrollTop = 0
         markMissingPagesAsAbsent('#preview .modal-body')
+        Jingo.paintDiagrams()
       })
     },
 
