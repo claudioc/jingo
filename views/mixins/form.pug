@@ -5,7 +5,7 @@ mixin tools(action, pageName)
     ul
       if pageName != 'home'
         li
-          form(action="#{proxyPath}/pages/#{pageName}", method="post", style="display:inline")
+          form(action=`${proxyPath}/pages/${pageName}`, method="post", style="display:inline")
             input(type="hidden", name="_method", value="delete")
             input(type="submit", value="Delete this page").confirm-delete-page.btn.btn-default
 
@@ -54,42 +54,28 @@ mixin errors(err)
             b= v.msg || v
 
 mixin featuresStylesheets()
-  if hasFeature('markitup')
-    +asset("/vendor/widearea/widearea.min.css")(type="text/css")
-    +asset("/vendor/markitup/skins/simple/style.css")(type="text/css")
-    +asset("/vendor/markitup/sets/markdown/style.css")(type="text/css")
-  if hasFeature('codemirror')
-    +asset("/css/codemirror-ext.css")(type="text/css")
-    +asset("/vendor/codemirror/codemirror.css")(type="text/css")
-    +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
+  +asset("/css/codemirror-ext.css")(type="text/css")
+  +asset("/vendor/codemirror/codemirror.css")(type="text/css")
+  +asset("/vendor/codemirror/fullscreen.css")(type="text/css")
 
 mixin featuresJavaScripts()
-  if hasFeature('markitup')
-    +asset("/vendor/jquery-migrate-1.1.0.min.js")
-    +asset("/vendor/markitup/jquery.markitup.js")
-    +asset("/vendor/markitup/sets/markdown/set.js")
-    +asset("/vendor/widearea/widearea.min.js")
-    script.
-     $('#editor').markItUp(markdownSettings);
-     wideArea();
-  if hasFeature('codemirror')
-    +asset("/vendor/codemirror/codemirror.min.js")
-    script.
-      Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
-        lineNumbers: true,
-        mode: 'gfm',
-        matchBrackets: true,
-        lineWrapping: true,
-        extraKeys: {
-          "Ctrl-Enter": function(cm) {
-            Jingo.toggleFullscreen();
-          },
-          "Ctrl-S": function(cm) {
-            Jingo.save();
-          }
+  +asset("/vendor/codemirror/codemirror.min.js")
+  script.
+    Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
+      lineNumbers: true,
+      mode: 'gfm',
+      matchBrackets: true,
+      lineWrapping: true,
+      extraKeys: {
+        "Ctrl-Enter": function(cm) {
+          Jingo.toggleFullscreen();
+        },
+        "Ctrl-S": function(cm) {
+          Jingo.save();
         }
-      });
-      Jingo.toolbar();
+      }
+    });
+    Jingo.toolbar();
 
 mixin warning()
   -var warning = locals.warning;
@@ -105,7 +91,7 @@ mixin dialogBox(h)
   .modal-dialog
     .modal-content
       .modal-header
-        button(data-dismiss="modal",aria-hidden="true").close &times;
+        button(data-dismiss="modal", aria-hidden="true").close &times;
         h3 #{h}
       .modal-body
       .modal-footer

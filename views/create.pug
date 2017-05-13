@@ -1,0 +1,32 @@
+extends layout
+
+include mixins/form
+
+block styles
+  +featuresStylesheets()
+
+block content
+  #content
+    +errors()
+    h1 Create a new page
+
+    form(action=`${proxyPath}/pages`, method='post', class='edit')
+
+      input(type="hidden", name="pageName", value=coalesce(pageName, ''))
+
+      .form-group
+        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value=coalesce(formData.pageTitle, pageTitle))#pageTitle
+
+      .form-group
+        textarea.form-control(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+
+      +saveAndCancel()
+
+  #preview(tabindex="-1",role="dialog",aria-hidden="true").modal
+    +dialogBox("Page preview")
+
+  #syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
+    +dialogBox("Markdown cheatsheet")
+
+block scripts
+  +featuresJavaScripts()

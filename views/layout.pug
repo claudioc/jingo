@@ -5,11 +5,11 @@ include mixins/links
   html
     head
       meta(charset="utf-8")
-      meta(name="generator", content="jingo #{jingoVersion}")
+      meta(name="generator", content="jingo " + jingoVersion)
       meta(name="viewport", content="width=device-width, initial-scale=1")
       title= title
       +asset("/vendor/bootstrap/css/bootstrap.min.css")
-      link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
+      link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
       +asset("/css/style.css")
       +asset("/css/ionicons.min.css")
       +asset("/css/shCoreDefault.css")
@@ -24,9 +24,9 @@ include mixins/links
           .navbar-header
             +anchor("/", appTitle).navbar-brand
             if canSearch()
-              form(action="#{proxyPath}/search").navbar-form.search.navbar-left
+              form(action=`${proxyPath}/search`).navbar-form.search.navbar-left
                 .input-group.input-group-sm.search
-                  input.form-control(type="text", value="#{term_ph}", data-i-search-input="true",name="term",placeholder="Search the wiki")
+                  input.form-control(type="text", value=term_ph, data-i-search-input="true",name="term",placeholder="Search the wiki")
                   span.input-group-btn
                     button.btn.btn-primary(type="submit") Search
             .navbar-right
@@ -36,7 +36,7 @@ include mixins/links
               else
                 p.user
                   if user.email && user.email != 'jingouser'
-                    img(src=gravatar().url("#{user.email}", {s:24}))
+                    img(src=gravatar().url(user.email, {s:24}))
                   b &nbsp;#{user.displayName}&nbsp;
                   +anchor('/logout')(title='Become anonymous')
                     i.icon.ion-power
@@ -62,7 +62,7 @@ include mixins/links
             .col-md-8.with-footer
               .content !{_footer}
 
-      script(src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")
       script.
         window.jQuery || document.write("<sc" + "ript src='#{proxyPath}/vendor/jquery.min.js'></scr" + "ipt>");
       +asset("/vendor/bootstrap/js/bootstrap.min.js")

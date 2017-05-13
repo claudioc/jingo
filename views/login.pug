@@ -4,7 +4,6 @@ include mixins/form
 include mixins/links
 
 block content
-
   #content
 
     h2 Choose your authentication method
@@ -22,14 +21,12 @@ block content
         +anchor("/", 'Cancel')
 
     if (auth.ldap.enabled)
-
       p
         h4 Authenticate ldap
 
-      mixin errors()
+      +errors()
 
       form.form-horizontal(action='#{proxyPath}/auth/ldap', method='post')
-
         .form-group
           label.col-sm-2.control-label Username
           .col-sm-3
@@ -47,14 +44,12 @@ block content
             +anchor("/", 'Cancel')
 
     if (auth.alone.enabled || auth.local.enabled)
-
       p
         h4 Authenticate locally
 
-      mixin errors()
+      +errors()
 
-      form.form-horizontal(action='#{proxyPath}/login', method='post')
-
+      form.form-horizontal(action=`${proxyPath}/login`, method='post')
         .form-group
           label.col-sm-2.control-label Username
           .col-sm-3
