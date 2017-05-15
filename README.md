@@ -385,6 +385,12 @@ Configuration options reference
 
   If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway. Note that GitHub authentication usually requires this to be `true` (unless all wiki users have public email addresses on their GitHub accounts).
 
+#### authorization.moderatorsFile (string: "")
+
+  Absolute path for your moderators YAML file. If used, this file must contain a list of `usernames` and `emails` for users who have write access to the wiki. A user who has a match in either the `usernames` or `emails` list will have right access.
+
+  If this field is left blank, all logged in users will have write access to the wiki.
+
 #### pages.index (string: "Home")
 
   Defines the page name for the index of the wiki

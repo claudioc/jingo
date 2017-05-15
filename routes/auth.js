@@ -184,6 +184,19 @@ passport.deserializeUser(function (user, done) {
     user.email = 'jingouser'
   }
 
+  // Check moderator status
+  user.moderator = false
+  var moderators = app.locals.config.get('authorization').moderators
+  if (moderators){
+    if (moderators.usernames.indexOf(user.displayName) > -1 ||
+        moderators.emails.indexOf(user.email) > -1){
+      user.moderator = true
+    }
+  } else {
+    // If no moderators file supplied everyone is a 'moderator'
+    user.moderator = true
+  }
+
   user.asGitAuthor = user.displayName + ' <' + user.email + '>'
   done(undefined, user)
 })
