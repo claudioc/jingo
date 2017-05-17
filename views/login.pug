@@ -26,7 +26,7 @@ block content
 
       +errors()
 
-      form.form-horizontal(action='#{proxyPath}/auth/ldap', method='post')
+      form.form-horizontal(action=`${proxyPath}/auth/ldap`, method='post')
         .form-group
           label.col-sm-2.control-label Username
           .col-sm-3
