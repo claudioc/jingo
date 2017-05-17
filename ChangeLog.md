@@ -1,3 +1,11 @@
+Version 1.8.1, May 17th, 2017
+==================================
+
+This is just a small fix release
+- Fix #211 (pug migration regression bug)
+- Merge #209 (pug migration regression bug)
+- Adds @ScreamingHawk to contributors
+
 Version 1.8.0, March 11th, 2017
 ==================================
 
