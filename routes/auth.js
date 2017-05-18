@@ -200,6 +200,9 @@ passport.deserializeUser(function (user, done) {
     if (moderators.usernames.indexOf(user.displayName) > -1 ||
         moderators.emails.indexOf(user.email) > -1){
       user.moderator = true
+    } else if (moderators.ldap && auth.ldap.enabled &&
+        user[moderators.ldap.attribute] == moderators.ldap.value){
+      user.moderator = true;
     }
   } else {
     // If no moderators file supplied everyone is a 'moderator'
