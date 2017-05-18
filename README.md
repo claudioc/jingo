@@ -397,7 +397,24 @@ Configuration options reference
 
 #### authorization.moderatorsFile (string: "")
 
-  Absolute path for your moderators YAML file. If used, this file must contain a list of `usernames` and `emails` for users who have write access to the wiki. A user who has a match in either the `usernames` or `emails` list will have right access.
+  Absolute path for your moderators YAML file. If used, this file must contain a list of `usernames` and `emails` for users who have write access to the wiki. A user who has a match in either the `usernames` or `emails` list will have right access. The moderators file may also include an attribute and value for managing moderators via LDAP roles.
+
+  Example moderators YAML file:
+
+  ```
+---
+# A list of moderators usernames and emails
+usernames:
+  - 'admin1'
+  - 'admin2'
+emails:
+  - 'admin@email.com'
+  - 'anotheradmin@email.com'
+# LDAP moderator role
+ldap:
+  attribute: 'businessCategory'
+  value: 'A'
+  ```
 
   If this field is left blank, all logged in users will have write access to the wiki.
 
