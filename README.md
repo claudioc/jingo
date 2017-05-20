@@ -207,6 +207,14 @@ Configuration options reference
 
   This will be showed on the upper left corner of all the pages, in the main toolbar
 
+#### application.logo (string: "")
+
+  Supply the full URL to an image to be shown as the logo of your wiki. It will appear on the left of the page title in the navigation bar. Just set the `application.title` to an empty string to only show the Logo image. Please note that Jingo does not resize the image in any way (you can do it yourself using a custom CSS of course)
+
+#### application.favicon (string: "")
+
+  Supply the full URL to an image to be shown as the favicon of your wiki. Please note that Jingo will try to get the mime type of the image from its extension (this can easily fail for a lot of reasons)
+
 #### application.repository (string: "")
 
   Absolute path for your documents repository (mandatory).
@@ -337,13 +345,15 @@ Configuration options reference
 
 #### features.markitup (boolean: false)
 
-  Whether to enable Markitup or not
+  DEPRECATED: markitup support has been removed as of version 1.8.0
 
 #### features.codemirror (boolean: true)
 
   Whether to enable Codemirror or not.
 
-  Please note that you cannot enable both editors at the same time.
+#### features.gravatar (boolean: true)
+
+  Whether to enable gravatar support or not
 
 #### server.hostname
 

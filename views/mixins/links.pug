@@ -1,5 +1,5 @@
-mixin anchor(url, name)
-  a(href=`${proxyPath}${url}`)&attributes(attributes)= name
+mixin anchor(url, text)
+  a(href=`${proxyPath}${url}`)&attributes(attributes) !{text}
     block
 
 mixin asset(url)
