@@ -3,8 +3,10 @@ include mixins/links
 - if (!isAjax)
   doctype html
   html
-    head
+    head(profile=hasFavicon() ? "http://www.w3.org/2005/10/profile" : "")
       meta(charset="utf-8")
+      if hasFavicon()
+        link(rel="icon", type=faviconMimeType, href=faviconUrl)
       meta(name="generator", content="jingo " + jingoVersion)
       meta(name="viewport", content="width=device-width, initial-scale=1")
       title= title
@@ -22,7 +24,7 @@ include mixins/links
       .navbar.navbar-inverse.navbar-fixed-top
         .container-fluid
           .navbar-header
-            +anchor("/", appTitle).navbar-brand
+            +anchor("/", appBrand).navbar-brand
             if canSearch()
               form(action=`${proxyPath}/search`).navbar-form.search.navbar-left
                 .input-group.input-group-sm.search
@@ -35,7 +37,7 @@ include mixins/links
                   +anchor('/login?destination', 'logged in')#login(title='Access login page')
               else
                 p.user
-                  if user.email && user.email != 'jingouser'
+                  if hasGravatar()
                     img(src=gravatar().url(user.email, {s:24}))
                   b &nbsp;#{user.displayName}&nbsp;
                   +anchor('/logout')(title='Become anonymous')
@@ -62,9 +64,7 @@ include mixins/links
             .col-md-8.with-footer
               .content !{_footer}
 
-      script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js")
-      script.
-        window.jQuery || document.write("<sc" + "ript src='#{proxyPath}/vendor/jquery.min.js'></scr" + "ipt>");
+      script(src=proxyPath + "/vendor/jquery.min.js")
       +asset("/vendor/bootstrap/js/bootstrap.min.js")
       +asset("/js/app.js")
       script.

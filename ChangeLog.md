@@ -1,3 +1,12 @@
+Version 1.8.2, May 20th, 2017
+==================================
+
+- Closes #152 (You can now disable Gravatar)
+- Closes #129 (Adds logo support)
+- Fixes #216 ()
+- Always uses local jQuery and not Google's
+- Adds favicon support
+
 Version 1.8.1, May 17th, 2017
 ==================================
 
