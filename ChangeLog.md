@@ -1,3 +1,8 @@
+Version 1.8.3, May 28th, 2017
+==================================
+
+- Updates to LDAP authentication (#212 by @ScreamingHawk)
+
 Version 1.8.2, May 20th, 2017
 ==================================
 
