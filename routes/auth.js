@@ -85,15 +85,24 @@ if (auth.github.enabled) {
 }
 
 if (auth.ldap.enabled) {
-  passport.use(new passportLDAP({ // eslint-disable-line new-cap
-    server: {
-      url: auth.ldap.url,
-      bindDn: auth.ldap.bindDn,
-      bindCredentials: auth.ldap.bindCredentials,
-      searchBase: auth.ldap.searchBase,
-      searchFilter: auth.ldap.searchFilter,
-      searchAttributes: auth.ldap.searchAttributes
-    }
+  passport.use(new passportLDAP(function(req, callback) {
+    process.nextTick(function() {
+      var bindDn = auth.ldap.bindDn.replace(/{{username}}/g, req.body.username)
+      var bindCredentials = auth.ldap.bindCredentials.replace(/{{password}}/g, req.body.password)
+
+      var opts = {
+          server: {
+            url: auth.ldap.url,
+            bindDn: bindDn,
+            bindCredentials: bindCredentials,
+            searchBase: auth.ldap.searchBase,
+            searchFilter: auth.ldap.searchFilter,
+            searchAttributes: auth.ldap.searchAttributes
+          }
+      }
+
+      callback(null, opts);
+    })
   },
     function (profile, done) {
       usedAuthentication('ldap')
