@@ -17,7 +17,7 @@ block content
       !=content
   - var klass = isAjax ? 'jingo-footer' : 'footer'
   p(class=klass) Updated by&nbsp;
-    if page.metadata.email && page.metadata.email != 'jingouser'
+    if hasGravatar()
       img(src=gravatar().url(page.metadata.email, {s:16}))
     b #{page.metadata.author}
     |,&nbsp;
