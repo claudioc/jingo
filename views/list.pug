@@ -11,7 +11,7 @@ block content
           div.content.clearfix
             .meta
               |Last update by&nbsp;
-              if item.page.metadata.email && item.page.metadata.email != 'jingouser'
+              if hasGravatar()
                 img(src=gravatar().url(item.page.metadata.email, {s:16}))
               b &nbsp;#{item.page.metadata.author},&nbsp;
               b.date(title=item.page.metadata.date) #{item.page.metadata.relDate}

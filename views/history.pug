@@ -18,7 +18,7 @@ block content
           td
             input(type="checkbox", value=item.hashRef)
           td
-            if item.email
+            if config.get('features').gravatar && item.email
               img(src=gravatar().url(item.email, {s:16}))
               |&nbsp;
             |#{item.author}
