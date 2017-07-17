@@ -18,7 +18,6 @@ Table of contents
   * [Features](#features)
   * [Installation](#installation)
   * [Authentication and Authorization](#authentication-and-authorization)
-  * [Common problems](#common-problems)
   * [Known limitations](#known-limitations)
   * [Customization](#customization)
   * [Editing](#editing)
