@@ -120,7 +120,7 @@ if (auth.alone.enabled) {
         email: auth.alone.email || ''
       }
 
-      if (username.toLowerCase() !== auth.alone.username.toLowerCase() || tools.hashify(password) !== auth.alone.passwordHash) {
+      if (username.toLowerCase().trim() !== auth.alone.username.toLowerCase() || tools.hashify(password) !== auth.alone.passwordHash) {
         return done(null, false, { message: 'Incorrect username or password' })
       }
 
@@ -135,7 +135,7 @@ if (auth.local.enabled) {
   passport.use(new passportLocal.Strategy(
 
     function (username, password, done) {
-      var wantedUsername = username.toLowerCase()
+      var wantedUsername = username.toLowerCase().trim()
       var wantedPasswordHash = tools.hashify(password)
 
       var foundUser = _.find(auth.local.accounts, function (account) {
