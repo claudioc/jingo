@@ -124,30 +124,28 @@ if (auth.cas.enabled){
         if (err) {
           return next(err);
         }
-        req.session.messages = '';
-        return res.redirect(proxyPath + '/');
+        var dst = req.session.destination || proxyPath + '/'
+        return res.redirect(dst);
       });
     })(req, res, next);
   });
 
-  var cfg = require('../lib/cfg');
-    cfg.getData(function(){
-      passport.use(new(require('passport-cas').Strategy)({
+  passport.use(new(require('passport-cas').Strategy)({
         version: 'CAS3.0',
         serviceURL: '/cas_login',
-        ssoBaseURL: cfg.get('usr.host') + cfg.get('usr.cas'),
-        serverBaseURL: cfg.get('wiki.host'),
+        ssoBaseURL: auth.cas.ssoBaseURL,
+        serverBaseURL: auth.cas.serverBaseURL,
         validateURL: '/serviceValidate' // for CAS 2.0
       }, function(profile, done) {
-        console.log('cas验证完成', profile.user);
+        console.log('cas login', profile.user);
         usedAuthentication('cas');
         return done(null, {
           displayName: profile.attributes && (profile.attributes.displayName || profile.user),
-          email: profile.attributes && (profile.attributes.email || profile.user+'@saas-plat.com')
+          email: profile.attributes && (profile.attributes.email || profile.user)
         }); 
       })
-    );
-  });  
+  );
+
 }
 
 if (auth.alone.enabled) {
@@ -272,6 +270,10 @@ function _getLogin (req, res) {
   }
 
   res.locals.errors = req.flash()
+
+  if (auth.cas.enabled){
+    return res.redirect('cas_login');
+  }
 
   res.render('login', {
     title: app.locals.config.get('application').title,
