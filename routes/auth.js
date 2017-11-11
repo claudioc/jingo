@@ -111,6 +111,45 @@ if (auth.ldap.enabled) {
   ))
 }
 
+if (auth.cas.enabled){
+  router.get('/cas_login', function(req, res, next) {
+    passport.authenticate('cas', function (err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect(proxyPath + '/');
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        req.session.messages = '';
+        return res.redirect(proxyPath + '/');
+      });
+    })(req, res, next);
+  });
+
+  var cfg = require('../lib/cfg');
+    cfg.getData(function(){
+      passport.use(new(require('passport-cas').Strategy)({
+        version: 'CAS3.0',
+        serviceURL: '/cas_login',
+        ssoBaseURL: cfg.get('usr.host') + cfg.get('usr.cas'),
+        serverBaseURL: cfg.get('wiki.host'),
+        validateURL: '/serviceValidate' // for CAS 2.0
+      }, function(profile, done) {
+        console.log('cas验证完成', profile.user);
+        usedAuthentication('cas');
+        return done(null, {
+          displayName: profile.attributes && (profile.attributes.displayName || profile.user),
+          email: profile.attributes && (profile.attributes.email || profile.user+'@saas-plat.com')
+        }); 
+      })
+    );
+  });  
+}
+
 if (auth.alone.enabled) {
   passport.use(new passportLocal.Strategy(
 
