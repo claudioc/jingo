@@ -72,19 +72,19 @@ include mixins/links
       .container
         
         .row
+          #main.hide-tools.col-md-9
+            block content
+
           if hasSidebar()
-            .col-md-2.with-sidebar
+            .col-md-3.with-sidebar
               .content !{_sidebar}
           else
-            .col-md-2
-
-          #main.hide-tools.col-md-8
-            block content
+            .col-md-3          
 
         if hasFooter()
           .row
-            .col-md-2
-            .col-md-8.with-footer
+            .col-md-3
+            .col-md-9.with-footer
               .content !{_footer}
 
       script(src=proxyPath + "/vendor/jquery.min.js")
