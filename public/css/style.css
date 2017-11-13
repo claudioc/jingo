@@ -27,6 +27,16 @@ a.logout i {
   padding-right: 0;
 }
 
+.navbar  a[href^="https://"],
+.navbar  a[href^="http://"] {
+  background: none;
+  padding-right: 0;
+}
+
+.navbar  li{
+  margin-bottom: 0;
+}
+
 p.user {
   color: white;
   padding: 8px 0 0;
@@ -247,9 +257,6 @@ hr {
 
 /* Overrides Bootstrap */
 
-.navbar-right {
-  float: right;
-}
 
 .navbar-form {
   padding: 0;
@@ -258,16 +265,10 @@ hr {
 
 .navbar-form.search {
   display: none;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
-.navbar-header {
-  width: 100%;
-}
-
-.navbar-brand {
-  overflow: hidden;
-  max-width: 60%;
-}
 
 .navbar-inverse {
   background-color: rgba(0,0,0);
@@ -539,6 +540,10 @@ input#pageTitle {
   margin-bottom: 20px;
 }
 
+.search-xs input{
+  border: 0;
+}
+
 .with-sidebar {
   background-color: rgba(255,255,255,0.5);
   padding: 10px;
@@ -565,6 +570,10 @@ form.edit {
 
 li {
   margin-bottom: 5px;
+}
+
+.navbar-header li {
+  margin-bottom: 0px;
 }
 
 .jumbotron p.discrete {
