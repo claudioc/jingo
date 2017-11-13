@@ -112,22 +112,24 @@ if (auth.ldap.enabled) {
 }
 
 if (auth.cas.enabled){
+  require('ssl-certs');
   router.get('/cas_login', function(req, res, next) {
     passport.authenticate('cas', function (err, user, info) {
       if (err) {
+        console.error(err);
         return next(err);
       }
       if (!user) {
-        return next(err);
+        return next(new Error('cas login failed'));
       }
       req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
-       return next(null);
+       return res.redirect(proxyPath + '/auth/done');
       });
     })(req, res, next);
-  }, _getAuthDone);
+  });
 
   passport.use(new(require('passport-cas').Strategy)({
         version: 'CAS3.0',
@@ -140,7 +142,7 @@ if (auth.cas.enabled){
         usedAuthentication('cas');
         return done(null, {
           displayName: profile.attributes && (profile.attributes.displayName || profile.user),
-          email: profile.attributes && (profile.attributes.email || profile.user)
+          email: profile.attributes && (profile.attributes.email || profile.user+'@saas-plat.com')
         }); 
       })
   );
