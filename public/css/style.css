@@ -257,6 +257,9 @@ hr {
 
 /* Overrides Bootstrap */
 
+.navbar-brand{
+  display: none;
+}
 
 .navbar-form {
   padding: 0;
@@ -271,7 +274,12 @@ hr {
 
 
 .navbar-inverse {
-  background-color: rgba(0,0,0);
+  background-color: #24292e;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: bold;
 }
 
 .alert {
