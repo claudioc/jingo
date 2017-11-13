@@ -118,17 +118,16 @@ if (auth.cas.enabled){
         return next(err);
       }
       if (!user) {
-        return res.redirect(proxyPath + '/');
+        return next(err);
       }
       req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
-        var dst = req.session.destination || proxyPath + '/'
-        return res.redirect(dst);
+       return next(null);
       });
     })(req, res, next);
-  });
+  }, _getAuthDone);
 
   passport.use(new(require('passport-cas').Strategy)({
         version: 'CAS3.0',
