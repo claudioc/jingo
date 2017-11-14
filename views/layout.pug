@@ -22,46 +22,69 @@ include mixins/links
     body
       -var term_ph = (typeof term == "undefined" ? "" : term)
       .navbar.navbar-inverse.navbar-fixed-top
-        .container-fluid
+        .container-fluid          
           .navbar-header
             +anchor("/", appBrand).navbar-brand
-            if canSearch()
-              form(action=`${proxyPath}/search`).navbar-form.search.navbar-left
-                .input-group.input-group-sm.search
-                  input.form-control(type="text", value=term_ph, data-i-search-input="true",name="term",placeholder="Search the wiki")
-                  span.input-group-btn
-                    button.btn.btn-primary(type="submit") Search
-            .navbar-right
-              if isAnonymous()
-                p.user You're not&nbsp;
-                  +anchor('/login?destination', 'logged in')#login(title='Access login page')
-              else
-                p.user
-                  if hasGravatar()
-                    img(src=gravatar().url(user.email, {s:24}))
-                  b &nbsp;#{user.displayName}&nbsp;
-                  +anchor('/logout')(title='Become anonymous')
-                    i.icon.ion-power
+            button(type="button",data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false").navbar-toggle.collapsed
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+          .collapse.navbar-collapse(id="navbar-collapse-1")
+              if topMenus.length>0
+                ul.nav.navbar-nav
+                  each m in topMenus
+                    li
+                      +anchor(m.url, m.text)
+              if canSearch()
+                form(action=`${proxyPath}/search`).navbar-form.search.navbar-left
+                  .input-group.input-group-sm.search
+                    input.form-control(type="text", value=term_ph, data-i-search-input="true",name="term",placeholder="Search the wiki")
+                    span.input-group-btn
+                      button.btn.btn-primary(type="submit") Search
+              ul.nav.navbar-nav.navbar-right
+                li.dropdown                
+                  if isAnonymous()
+                    +anchor('/login?destination', 'logged in')#login(title='Access login page')
+                  else
+                    a(href="#",class="dropdown-toggle user",data-toggle="dropdown",role="button",aria-haspopup="true",aria-expanded="false")
+                      if hasGravatar()
+                        img(src=gravatar().url(user.email, {s:24}))
+                      span #{user.displayName}
+                      span.caret
+                  ul.dropdown-menu
+                    each am in accountMenus
+                      li
+                        +anchor(am.url, am.text)  
+                    li
+                      a(href="/logout",title='Become anonymous') 
+                        i.icon.ion-power 
+                        span Logout
+
 
       .tools
         block tools
 
-      .container
+      if canSearch()
+        form(action=`${proxyPath}/search`).visible-xs-block.search-xs
+          input.form-control(type="text", value=term_ph, data-i-search-input="true",name="term",placeholder="Search the wiki")
 
+      .container
+        
         .row
+          #main.hide-tools.col-md-9
+            block content
+
           if hasSidebar()
-            .col-md-2.with-sidebar
+            .col-md-3.with-sidebar
               .content !{_sidebar}
           else
-            .col-md-2
-
-          #main.hide-tools.col-md-8
-            block content
+            .col-md-3          
 
         if hasFooter()
           .row
-            .col-md-2
-            .col-md-8.with-footer
+            .col-md-3
+            .col-md-9.with-footer
               .content !{_footer}
 
       script(src=proxyPath + "/vendor/jquery.min.js")

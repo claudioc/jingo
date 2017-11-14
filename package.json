@@ -55,13 +55,15 @@
     "morgan": "^1.5.0",
     "node-syntaxhighlighter": "*",
     "passport": "^0.2.0",
+    "passport-cas": "^0.1.1",
     "passport-github": "^0.1.5",
     "passport-google-oauth": "^0.1.5",
     "passport-local": "^1.0.0",
+    "pug": "^2.0.0-beta11",
     "semver": "^5.3.0",
     "serve-favicon": "^2.1.7",
-    "transliteration": "^0.2.1",
-    "pug": "^2.0.0-beta11"
+    "ssl-certs": "^1.0.0",
+    "transliteration": "^0.2.1"
   },
   "devDependencies": {
     "chai": "*",

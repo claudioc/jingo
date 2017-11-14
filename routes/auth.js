@@ -111,6 +111,44 @@ if (auth.ldap.enabled) {
   ))
 }
 
+if (auth.cas.enabled){
+  require('ssl-certs');
+  router.get('/cas_login', function(req, res, next) {
+    passport.authenticate('cas', function (err, user, info) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (!user) {
+        return next(new Error('cas login failed'));
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+       return res.redirect(proxyPath + '/auth/done');
+      });
+    })(req, res, next);
+  });
+
+  passport.use(new(require('passport-cas').Strategy)({
+        version: 'CAS3.0',
+        serviceURL: '/cas_login',
+        ssoBaseURL: auth.cas.ssoBaseURL,
+        serverBaseURL: auth.cas.serverBaseURL,
+        validateURL: '/serviceValidate' // for CAS 2.0
+      }, function(profile, done) {
+        console.log('cas login', profile.user);
+        usedAuthentication('cas');
+        return done(null, {
+          displayName: profile.attributes && (profile.attributes.displayName || profile.user),
+          email: profile.attributes && (profile.attributes.email || profile.user+'@saas-plat.com')
+        }); 
+      })
+  );
+
+}
+
 if (auth.alone.enabled) {
   passport.use(new passportLocal.Strategy(
 
@@ -233,6 +271,10 @@ function _getLogin (req, res) {
   }
 
   res.locals.errors = req.flash()
+
+  if (auth.cas.enabled){
+    return res.redirect('cas_login');
+  }
 
   res.render('login', {
     title: app.locals.config.get('application').title,
