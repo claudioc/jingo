@@ -211,6 +211,7 @@ function _getAuthDone (req, res) {
 
   if (!auth.alone.used &&
       !auth.local.used &&
+      !auth.ldap.used &&
       !tools.isAuthorized(res.locals.user.email,
                           app.locals.config.get('authorization').validMatches,
                           app.locals.config.get('authorization').emptyEmailMatches)) {
