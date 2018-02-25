@@ -61,16 +61,16 @@ mixin featuresStylesheets()
 mixin featuresJavaScripts()
   +asset("/vendor/codemirror/codemirror.min.js")
   script.
-    Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    Jingo.cmInstance = CodeMirror.fromTextArea(document.getElementById('js--editor'), {
       lineNumbers: true,
       mode: 'gfm',
       matchBrackets: true,
       lineWrapping: true,
       extraKeys: {
-        "Ctrl-Enter": function(cm) {
+        'Ctrl-Enter': function(cm) {
           Jingo.toggleFullscreen();
         },
-        "Ctrl-S": function(cm) {
+        'Ctrl-S': function(cm) {
           Jingo.save();
         }
       }

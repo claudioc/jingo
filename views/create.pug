@@ -6,7 +6,7 @@ block styles
   +featuresStylesheets()
 
 block content
-  #content
+  #js--content
     +errors()
     h1 Create a new page
 
@@ -15,17 +15,17 @@ block content
       input(type="hidden", name="pageName", value=coalesce(pageName, ''))
 
       .form-group
-        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value=coalesce(formData.pageTitle, pageTitle))#pageTitle
+        input.form-control(required, type='text', placeholder='Enter the page title', name='pageTitle', value=coalesce(formData.pageTitle, pageTitle))#js--pageTitle
 
       .form-group
-        textarea.form-control(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+        textarea.form-control(name="content", rows=25)#js--editor #{coalesce(formData.content, '')}
 
       +saveAndCancel()
 
-  #preview(tabindex="-1",role="dialog",aria-hidden="true").modal
+  #js--preview(tabindex="-1",role="dialog",aria-hidden="true").modal
     +dialogBox("Page preview")
 
-  #syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
+  #js--syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
     +dialogBox("Markdown cheatsheet")
 
 block scripts
