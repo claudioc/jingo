@@ -52,7 +52,7 @@
         }
       }
 
-      $('#login').attr('href', function () {
+      $('#js--login').attr('href', function () {
         return $(this).attr('href').replace('destination', 'destination=' + encodeURIComponent(window.location.pathname))
       })
 
@@ -87,20 +87,20 @@
 
       var $hCol1 = $('.history td:first-child')
 
-      if ($('#content').hasClass('edit')) {
-        $('#editor').focus()
+      if ($('js--content').hasClass('edit')) {
+        $('#js--editor').focus()
       } else {
-        $('#pageTitle').focus()
+        $('#js--pageTitle').focus()
       }
 
-      $('#rev-compare').attr('disabled', true)
+      $('#js--rev-compare').attr('disabled', true)
 
       toggleCompareCheckboxes()
       $hCol1.find('input').on('click', function () {
         toggleCompareCheckboxes()
       })
 
-      $('#rev-compare').on('click', function () {
+      $('#js--rev-compare').on('click', function () {
         if ($hCol1.find(':checked').length < 2) {
           return false
         }
@@ -110,17 +110,17 @@
 
       if (/^\/pages\/.*\/edit/.test(window.location.pathname) ||
           /^\/pages\/new/.test(window.location.pathname)) {
-        $('#editor').closest('form').on('submit', function () {
+        $('#js--editor').closest('form').on('submit', function () {
           if (Jingo.cmInstance) {
             Jingo.cmInstance.save()
           }
-          window.sessionStorage.setItem('jingo-page', $('#editor').val())
+          window.sessionStorage.setItem('jingo-page', $('#js--editor').val())
         })
         if (window.location.search === '?e=1') {
           // Edit page in error: restore the body
           var content = window.sessionStorage.getItem('jingo-page')
           if (content) {
-            $('#editor').val(content)
+            $('#js--editor').val(content)
           }
         } else {
           window.sessionStorage.removeItem('jingo-page')
@@ -128,18 +128,18 @@
       }
 
       if (/^\/wiki\//.test(window.location.pathname)) {
-        markMissingPagesAsAbsent('#content')
+        markMissingPagesAsAbsent('#js--content')
       }
 
       function toggleCompareCheckboxes () {
-        $('#rev-compare').attr('disabled', true)
+        $('#js--rev-compare').attr('disabled', true)
 
         if ($hCol1.find(':checkbox').length === 1) {
           $hCol1.find(':checkbox').hide()
           return
         }
         if ($hCol1.find(':checked').length === 2) {
-          $('#rev-compare').attr('disabled', false)
+          $('#js--rev-compare').attr('disabled', false)
           $hCol1.find(':not(:checked)')
                 .hide()
           $hCol1.parent('tr')
@@ -157,10 +157,10 @@
     },
 
     preview: function () {
-      $('#preview').modal({keyboard: true, show: true, backdrop: false})
-      $.post(proxyPath + '/misc/preview', {data: $('#editor').val()}, function (data) {
-        $('#preview .modal-body').html(data).get(0).scrollTop = 0
-        markMissingPagesAsAbsent('#preview .modal-body')
+      $('#js--preview').modal({keyboard: true, show: true, backdrop: false})
+      $.post(proxyPath + '/misc/preview', {data: $('#js--editor').val()}, function (data) {
+        $('#js--preview .modal-body').html(data).get(0).scrollTop = 0
+        markMissingPagesAsAbsent('#js--preview .modal-body')
       })
     },
 
@@ -200,9 +200,9 @@
     },
 
     markdownSyntax: function () {
-      $('#syntax-reference').modal({keyboard: true, show: true, backdrop: false})
+      $('#js--syntax-reference').modal({keyboard: true, show: true, backdrop: false})
       if (!cheatsheetShown) {
-        $('#syntax-reference .modal-body').load(proxyPath + '/misc/syntax-reference')
+        $('#js--syntax-reference .modal-body').load(proxyPath + '/misc/syntax-reference')
         cheatsheetShown = true
       }
     }

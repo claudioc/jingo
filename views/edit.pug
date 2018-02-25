@@ -10,7 +10,7 @@ block tools
 
 block content
 
-  #content.edit
+  #js--content.edit
     +errors()
     +warning()
     h1 Edit page
@@ -18,21 +18,21 @@ block content
     form(action=page.urlForEditPut(), method='post', class='edit')
 
       .form-group
-        input.form-control(rquired, type='text', placeholder='Enter the page title', name='pageTitle', value=coalesce(formData.pageTitle, ''))#pageTitle
+        input.form-control(rquired, type='text', placeholder='Enter the page title', name='pageTitle', value=coalesce(formData.pageTitle, ''))#js--pageTitle
         input(type="hidden", name="_method", value="put")
 
       .form-group
-        textarea.form-control(name="content", rows=25)#editor #{coalesce(formData.content, '')}
+        textarea.form-control(name="content", rows=25)#js--editor #{coalesce(formData.content, '')}
 
       .form-group
         input.form-control(type='text', name='message', placeholder='Write a small message here explaining this change (optional)')#message.span8
 
       +saveAndCancel()
 
-  #preview(tabindex="-1",role="dialog",aria-hidden="true").modal
+  #js--preview(tabindex="-1",role="dialog",aria-hidden="true").modal
     +dialogBox("Page preview")
 
-  #syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
+  #js--syntax-reference(tabindex="-1",role="dialog",aria-hidden="true").modal
     +dialogBox("Markdown cheatsheet")
 
 block scripts
