@@ -40,27 +40,27 @@ p.user {
   z-index: 2;
 }
 
-#content {
+#js--content {
   padding: 20px 5px;
   padding-bottom: 5px;
   overflow: hidden;
 }
 
-#content img {
+#js--content img {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-#content.show li {
+#js--content.show li {
   line-height: 1.92;
 }
 
-#content.show ul >li:first-child {
+#js--content.show ul >li:first-child {
   margin-top: 4px;
 }
 
-.modal-body #content {
+.modal-body #js--content {
   box-shadow: none;
   padding: 10px;
   overflow: hidden;
@@ -160,24 +160,24 @@ hr {
   margin: 10px 0;
 }
 
-#content > table {
+#js--content > table {
   display: block;
   width: 100%;
   overflow: auto;
   margin-bottom: 16px;
 }
 
-#content > table td,
-#content > table th {
+#js--content > table td,
+#js--content > table th {
   padding: 6px 13px;
   border: 1px solid #ddd;
 }
 
-#content > table thead {
+#js--content > table thead {
   background-color: #eee;
 }
 
-#content .history img {
+#js--content .history img {
   display: inline;
 }
 
@@ -500,7 +500,7 @@ ul.doc-list > li .message {
   z-index: 10;
 }
 
-input#pageTitle {
+input#js--pageTitle {
   font-weight: bold;
   font-size: 130%;
 }
@@ -626,7 +626,7 @@ a.btn-auth:hover {
     margin-right: auto;
   }
 
-  #content {
+  #js--content {
     padding: 40px 25px;
   }
 

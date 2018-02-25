@@ -34,7 +34,7 @@ include mixins/links
             .navbar-right
               if isAnonymous()
                 p.user You're not&nbsp;
-                  +anchor('/login?destination', 'logged in')#login(title='Access login page')
+                  +anchor('/login?destination', 'logged in')#js--login(title='Access login page')
               else
                 p.user
                   if hasGravatar()
