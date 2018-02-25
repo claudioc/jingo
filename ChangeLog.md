@@ -1,3 +1,9 @@
+Version 1.8.4, Feb 25th, 2018
+==================================
+
+- Closes #234 (Conflicts created by auto-generated HTML ids)
+- Updates ecstatic module to newer and safer version
+
 Version 1.8.3, May 28th, 2017
 ==================================
 
