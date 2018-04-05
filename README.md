@@ -145,7 +145,7 @@ The _authorization_ section of the config file has three keys: `anonRead`, `vali
 
 If `anonRead` is true, then anyone who can access the wiki can read anything. If `anonRead` is false you need to authenticate also for reading and then the email of the user _must_ match at least one of the regular expressions provided via validMatches, which is a comma separated list. There is no "anonWrite", though. To edit a page the user must be authenticated.
 
-`emptyEmailMatches` allows access when remote authentication providers do not provide an email address as part of user data. It defaults to `false`, but will usually need to be set to `true` for GitHub authentication (GitHub only returns email addresses that have been made public on users' GitHub accounts).
+`emptyEmailMatches` allows access when remote authentication providers do not provide an email address as part of user data. It defaults to `false`, but will usually need to be set to `true` for GitHub authentication (GitHub only returns email addresses that have been made public on users' GitHub accounts). It must be set to `true` for Mastodon authentication.
 
 The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
 
@@ -290,7 +290,24 @@ Configuration options reference
 
   Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
-#### authentication.google.redirectUrl (string: /auth/github/callback)
+#### authentication.github.redirectUrl (string: /auth/github/callback)
+
+  Specifies a custom redirect URL for OAuth2 authentication instead of the default
+
+#### authentication.mastodon.enabled (boolean: false)
+
+  Enable or disable authentication via Mastodon logins
+
+#### authentication.mastodon.clientId
+#### authentication.mastodon.clientSecret
+
+  Values required for Mastodon OAuth2 authentication. Refer to a previous section of this document on how to set them up.
+
+#### authentication.mastodon.domain
+
+  Instance of Mastodon used to authenticate logins
+
+#### authentication.mastodon.redirectUrl (string: /auth/mastodon/callback)
 
   Specifies a custom redirect URL for OAuth2 authentication instead of the default
 

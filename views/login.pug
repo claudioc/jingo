@@ -16,7 +16,11 @@ block content
       p
         +anchor('/auth/github', 'Github login').btn-auth.btn-auth-github
 
-    if (auth.google.enabled || auth.github.enabled)
+    if (auth.mastodon.enabled)
+      p
+        +anchor('/auth/mastodon', 'Mastodon login').btn-default
+
+    if (auth.google.enabled || auth.github.enabled || auth.mastodon.enabled)
       p
         +anchor("/", 'Cancel')
 
