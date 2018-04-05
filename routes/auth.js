@@ -4,6 +4,7 @@ var _ = require('lodash')
 var passportLocal = require('passport-local')
 var passportGoogle = require('passport-google-oauth')
 var passportGithub = require('passport-github').Strategy
+var passportMastodon = require('passport-mastodon').Strategy
 var tools = require('../lib/tools')
 
 var auth = app.locals.config.get('authentication')
@@ -16,7 +17,6 @@ if (auth.ldap.enabled) {
 
 var passport = app.locals.passport
 var proxyPath = app.locals.config.getProxyPath()
-var redirectURL
 
 router.get('/login', _getLogin)
 router.get('/logout', _getLogout)
@@ -27,31 +27,17 @@ router.post('/login', passport.authenticate('local', {
 }))
 router.get('/auth/done', _getAuthDone)
 
-router.get('/auth/google', passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
-}))
-
-router.get('/oauth2callback', passport.authenticate('google', {
-  successRedirect: proxyPath + '/auth/done',
-  failureRedirect: proxyPath + '/login'
-}))
-
-router.get('/auth/github', passport.authenticate('github'))
-router.get('/auth/github/callback', passport.authenticate('github', {
-  successRedirect: proxyPath + '/auth/done',
-  failureRedirect: proxyPath + '/login'
-}))
-
-if (auth.ldap.enabled) {
-  router.post('/auth/ldap', passport.authenticate('ldapauth', {
-    successRedirect: proxyPath + '/auth/done',
-    failureRedirect: proxyPath + '/login',
-    failureFlash: true
-  }))
-}
-
 if (auth.google.enabled) {
-  redirectURL = auth.google.redirectURL || app.locals.baseUrl + '/oauth2callback'
+  router.get('/auth/google', passport.authenticate('google', {
+    scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
+  }))
+
+  router.get('/oauth2callback', passport.authenticate('google', {
+    successRedirect: proxyPath + '/auth/done',
+    failureRedirect: proxyPath + '/login'
+  }))
+
+  var redirectURL = auth.google.redirectURL || app.locals.baseUrl + '/oauth2callback'
   passport.use(new passportGoogle.OAuth2Strategy({
     clientID: auth.google.clientId,
     clientSecret: auth.google.clientSecret,
@@ -68,7 +54,13 @@ if (auth.google.enabled) {
 }
 
 if (auth.github.enabled) {
-  redirectURL = auth.github.redirectURL || app.locals.baseUrl + '/auth/github/callback'
+  router.get('/auth/github', passport.authenticate('github'))
+  router.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect: proxyPath + '/auth/done',
+    failureRedirect: proxyPath + '/login'
+  }))
+
+  var redirectURL = auth.github.redirectURL || app.locals.baseUrl + '/auth/github/callback'
 
   // Register a new Application with Github https://github.com/settings/applications/new
   // Authorization callback URL /auth/github/callback
@@ -84,7 +76,37 @@ if (auth.github.enabled) {
   ))
 }
 
+if (auth.mastodon.enabled) {
+  router.get('/auth/mastodon', passport.authenticate('mastodon'))
+  router.get('/auth/mastodon/callback', passport.authenticate('mastodon', {
+    successRedirect: proxyPath + '/auth/done',
+    failureRedirect: proxyPath + '/login'
+  }))
+
+  var redirectURL = auth.mastodon.redirectURL || app.locals.baseUrl + '/auth/mastodon/callback'
+  // Register a new Application with Mastodon
+  // https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
+  // Authorization callback URL /auth/mastodon/callback
+  passport.use(new passportMastodon({ // eslint-disable-line new-cap
+    clientID: auth.mastodon.clientId,
+    clientSecret: auth.mastodon.clientSecret,
+    domain: auth.mastodon.domain,
+    callbackURL: redirectURL
+  },
+    function (accessToken, refreshToken, profile, done) {
+      usedAuthentication('mastodon')
+      done(null, profile)
+    }
+  ))
+}
+
 if (auth.ldap.enabled) {
+  router.post('/auth/ldap', passport.authenticate('ldapauth', {
+    successRedirect: proxyPath + '/auth/done',
+    failureRedirect: proxyPath + '/login',
+    failureFlash: true
+  }))
+
   passport.use(new passportLDAP(function(req, callback) {
     process.nextTick(function() {
       var bindDn = auth.ldap.bindDn.replace(/{{username}}/g, req.body.username)
