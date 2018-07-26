@@ -5,3 +5,5 @@ data/*
 .idea
 __pycache__/
 Dockerfile
+.dockerignore
+package-lock.json
