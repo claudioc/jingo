@@ -49,11 +49,11 @@ include mixins/links
       .container
 
         //- MOD customization of column width
-        -var sidebar_class = 'col-md-' + sidebarColumn + ' with-sidebar'
+        -var sidebar_class = 'col-md-' + sidebarWidth + ' with-sidebar'
         -var sidebar_mobile_class = sidebar_class + ' hidden-sm hidden-xs'
-        -var main_class = 'col-md-' + mainColumn + ' hide-tools'
-        -var footer_sidebar = 'col-md-' + footerSidebarColumn
-        -var footer_class = 'col-md-' + footerColumn + ' with-footer'
+        -var main_class = 'col-md-' + mainWidth + ' hide-tools'
+        -var footer_sidebar = 'col-md-' + footerSidebarWidth
+        -var footer_class = 'col-md-' + footerWidth + ' with-footer'
         
         .row
           if hasSidebar()
