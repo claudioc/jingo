@@ -69,7 +69,15 @@ function _getWiki (req, res) {
 }
 
 function _getWikiPage (req, res) {
-  var page = new models.Page(req.params.page, req.params.version)
+
+  // MOD check if page is listed as a redirect
+  var page_redirect = ''
+  var redirect_map = app.locals.config.get('redirects')
+  var page_name = req.params.page
+  if (redirect_map && redirect_map[page_name.toLowerCase()]){
+    page_name = redirect_map[page_name.toLowerCase()]
+  }
+  var page = new models.Page(page_name, req.params.version)
 
   page.fetch().then(function () {
     if (!page.error) {
@@ -82,11 +90,29 @@ function _getWikiPage (req, res) {
       res.locals.notice = req.session.notice
       delete req.session.notice
 
-      res.render('show', {
-        page: page,
-        title: app.locals.config.get('application').title + ' – ' + page.title,
-        content: renderer.render('# ' + page.title + '\n' + page.content)
-      })
+      // MOD redact, render and redirect content
+      var page_content = page.content
+      // TODO var page_content = renderer.redact(page.content, res)
+      
+      if (page_content) {
+          var rendered_content = renderer.render('# ' + page.title + '\n' + page_content)
+          if (page_name != req.params.page){
+            rendered_content = renderer.redirect(rendered_content, req.params.page, page_name)
+          }
+          
+          res.render('show', {
+            page: page,
+            title: app.locals.config.get('application').title + ' – ' + page.title,
+            content: rendered_content // MOD add rendered content
+          })
+      } else {
+        // MOD remove existence of page if all content is redacted
+        res.locals.title = '404 - Not found'
+        res.statusCode = 404
+        res.render('404.jade')
+        return
+      }
+      
     } else {
       if (req.user) {
         // Try sorting out redirect loops with case insentive fs

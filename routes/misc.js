@@ -3,6 +3,7 @@ var router = require('express').Router()
 var renderer = require('../lib/renderer')
 var fs = require('fs')
 var models = require('../lib/models')
+var app = require('../lib/app').getInstance() // MOD required to retrieve app configuration
 
 models.use(Git)
 
@@ -29,10 +30,16 @@ function _getExistence (req, res) {
   var result = []
   var page
   var n = req.query.data.length
-
+  const redirect_map = app.locals.config.get('redirects') // MOD import redirects
+  
   req.query.data.forEach(function (pageName, idx) {
     (function (name, index) {
-      page = new models.Page(name)
+      // MOD remap redirect key to its associated page
+      page_name = name
+      if (redirect_map && redirect_map[page_name.toLowerCase()]){
+        page_name = redirect_map[page_name.toLowerCase()]
+      }
+      page = new models.Page(page_name)
       if (!fs.existsSync(page.pathname)) {
         result.push(name)
       }
