@@ -25,7 +25,8 @@ function _getHistory (req, res) {
     return page.fetchHistory()
   }).then(function (history) {
     // FIXME better manage an error here
-    if (!page.error) {
+    // MOD add test to hide history page for anonymous users
+    if (!page.error && (req.locals.user || !app.locals.config.get('redaction').enabled)) {
       res.render('history', {
         items: history,
         title: 'History of ' + page.name,
@@ -47,10 +48,15 @@ function _getWiki (req, res) {
 
   pages.fetch(pagen).then(function () {
     pages.models.forEach(function (page) {
-      if (!page.error) {
+      
+      // MOD test to see if content is redacted
+      const page_content = renderer.redact(page.content, res, app.locals.config)
+      if (!page.error && page_content) {
+        const rendered_content = renderer.render(page_content) // MOD render content
         items.push({
           page: page,
-          hashes: page.hashes.length === 2 ? page.hashes.join('..') : ''
+          hashes: page.hashes.length === 2 ? page.hashes.join('..') : '',
+          summary: rendered_content.match(/<p>[\s\S]*?<\/p>/m) // MOD add first paragraph summary to item
         })
       }
     })
@@ -71,7 +77,6 @@ function _getWiki (req, res) {
 function _getWikiPage (req, res) {
 
   // MOD check if page is listed as a redirect
-  var page_redirect = ''
   var redirect_map = app.locals.config.get('redirects')
   var page_name = req.params.page
   if (redirect_map && redirect_map[page_name.toLowerCase()]){
@@ -91,8 +96,7 @@ function _getWikiPage (req, res) {
       delete req.session.notice
 
       // MOD redact, render and redirect content
-      var page_content = page.content
-      // TODO var page_content = renderer.redact(page.content, res)
+      var page_content = renderer.redact(page.content, res, app.locals.config)
       
       if (page_content) {
           var rendered_content = renderer.render('# ' + page.title + '\n' + page_content)
@@ -146,7 +150,7 @@ function _getCompare (req, res) {
   page.fetch().then(function () {
     return page.fetchRevisionsDiff(revisions)
   }).then(function (diff) {
-    if (!page.error) {
+    if (!page.error && (req.locals.user || !app.locals.config.get('redaction').enabled)) {
       var lines = []
       diff.split('\n').slice(4).forEach(function (line) {
         if (line.slice(0, 1) !== '\\') {

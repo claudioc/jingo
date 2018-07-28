@@ -16,9 +16,14 @@ function _getSyntaxReference (req, res) {
 }
 
 function _postPreview (req, res) {
+  
+  // MOD redact content prior to rendering
+  var page_content = req.body.data
+  page_content = renderer.redact(page_content, res, app.locals.config) 
   res.render('preview', {
-    content: renderer.render(req.body.data)
+    content: renderer.render(page_content)
   })
+  
 }
 
 function _getExistence (req, res) {
