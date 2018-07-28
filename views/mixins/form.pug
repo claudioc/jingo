@@ -19,10 +19,11 @@ mixin tools(action, pageName)
         li
           +anchor("/pages/" + pageName + "/edit")(title="Edit this page").btn.btn-sm.btn-default
             i.icon.ion-compose
-
-      li
-        +anchor("/wiki/" + pageName + "/history")(title="Page history").btn.btn-sm.btn-default
-          i.icon.ion-clock
+      //- MOD add history option only if content is not redacted
+      if !redactContent
+        li
+          +anchor("/wiki/" + pageName + "/history")(title="Page history").btn.btn-sm.btn-default
+            i.icon.ion-clock
       li
         +anchor("/wiki")(title="All pages").btn.btn-sm.btn-default
           i.icon.ion-grid

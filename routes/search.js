@@ -47,24 +47,23 @@ function _getSearch (req, res) {
 
     models.pages.findStringAsync(res.locals.term).then(function (items) {
     
-      // MOD run search results through redaction if enabled
+      // MOD run search results through redaction if enabled (slows response)
       if (app.locals.config.get('redaction').enabled){
       
           var promise_list = []
-          var term_regex, page_name, search_page, redacted_content
           
           items.forEach(function (item) {
             if (item.trim() !== '') {
-              record = item.split(':')
               // MOD retrieve page content and retest for search term after redaction
-              page_name = path.basename(record[0].replace(/\.md$/, ''))
-              search_page = new models.Page(page_name)
+              const record = item.split(':')
+              const page_name = path.basename(record[0].replace(/\.md$/, ''))
+              const search_page = new models.Page(page_name)
               promise_list.push(search_page.fetch().then(function () {
-                  redacted_content = renderer.redact(search_page.content, res, app.locals.config)
-                  term_regex = new RegExp(escapeRegExp(res.locals.term), 'm')
+                  const redacted_content = renderer.redact(search_page.content, res, app.locals.config)
+                  const term_regex = new RegExp(escapeRegExp(res.locals.term), 'i')
                   if (term_regex.exec(redacted_content)){
                     res.locals.matches.push({
-                        pageName: path.basename(record[0].replace(/\.md$/, '')),
+                        pageName: page_name,
                         line: record[1] ? ', L' + record[1] : '',
                         text: record.slice(2).join('')
                     })
