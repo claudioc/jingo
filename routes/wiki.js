@@ -79,9 +79,16 @@ function _getWikiPage (req, res) {
   // MOD check if page is listed as a redirect
   var redirect_map = app.locals.config.get('redirects')
   var page_name = req.params.page
-  if (redirect_map && redirect_map[page_name.toLowerCase()]){
-    page_name = redirect_map[page_name.toLowerCase()]
+  if (redirect_map){
+    var redirect_name = page_name.toLowerCase()
+    if (app.locals.config.get('features').caseSensitive){
+      redirect_name = page_name
+    }
+    if (redirect_map[redirect_name]){
+      page_name = redirect_map[redirect_name]
+    }
   }
+
   var page = new models.Page(page_name, req.params.version)
 
   page.fetch().then(function () {
@@ -113,7 +120,7 @@ function _getWikiPage (req, res) {
         // MOD remove existence of page if all content is redacted
         res.locals.title = '404 - Not found'
         res.statusCode = 404
-        res.render('404.jade')
+        res.render('404.pug')
         return
       }
       

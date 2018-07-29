@@ -12,11 +12,6 @@ models.use(Git)
 router.options('/search', corsEnabler)
 router.get('/search', corsEnabler, _getSearch)
 
-// MOD function for properly rendering content as a regular expression
-function escapeRegExp(str) {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
-
 function _getSearch (req, res) {
   var record
 
@@ -51,6 +46,7 @@ function _getSearch (req, res) {
       if (app.locals.config.get('redaction').enabled){
       
           var promise_list = []
+          var term_regex
           
           items.forEach(function (item) {
             if (item.trim() !== '') {
@@ -60,8 +56,12 @@ function _getSearch (req, res) {
               const search_page = new models.Page(page_name)
               promise_list.push(search_page.fetch().then(function () {
                   const redacted_content = renderer.redact(search_page.content, res, app.locals.config)
-                  const term_regex = new RegExp(escapeRegExp(res.locals.term), 'i')
-                  if (term_regex.exec(redacted_content)){
+                  if (app.locals.config.get('features').caseSensitive){
+                    term_regex = new RegExp(res.locals.term)                
+                  } else {
+                    term_regex = new RegExp(res.locals.term, 'i')
+                  }
+                  if (term_regex && term_regex.exec(redacted_content)){
                     res.locals.matches.push({
                         pageName: page_name,
                         line: record[1] ? ', L' + record[1] : '',
