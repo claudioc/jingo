@@ -56,11 +56,7 @@ function _getSearch (req, res) {
               const search_page = new models.Page(page_name)
               promise_list.push(search_page.fetch().then(function () {
                   const redacted_content = renderer.redact(search_page.content, res, app.locals.config)
-                  if (app.locals.config.get('features').caseSensitive){
-                    term_regex = new RegExp(res.locals.term)                
-                  } else {
-                    term_regex = new RegExp(res.locals.term, 'i')
-                  }
+                  term_regex = new RegExp(res.locals.term, 'i')
                   if (term_regex && term_regex.exec(redacted_content)){
                     res.locals.matches.push({
                         pageName: page_name,

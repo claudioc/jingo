@@ -81,7 +81,7 @@ function _getWikiPage (req, res) {
   var page_name = req.params.page
   if (redirect_map){
     var redirect_name = page_name.toLowerCase()
-    if (app.locals.config.get('features').caseSensitive){
+    if (app.locals.config.get('features').caseSensitiveRedirects){
       redirect_name = page_name
     }
     if (redirect_map[redirect_name]){
