@@ -62,7 +62,25 @@ Additional Configuration Options
 
 #### redaction.enabled (boolean: true)
 
-  When redaction is enabled, it is possible to remove certain content from the view generated for anonymous users. Redaction also removes the commit records and history pages from all content rendered for anonymous users. A number of different techniques are provided for redacting content (see below) using regular expression syntax. When redaction is enabled, all pages and searches will look for content which matches the regular expressions provided and remove it from anonymous views. A multi-line search is the default option for all regular expression patterns. If any part of a redaction regular expression is grouped, then the first group will be included for authenticated users. Without a grouping, the entire match is included for authenticated users. In addition, a number of the techniques use a combination of start and end pattern matching in order to redact the content in between. Whatever content appears between the regular expression and the next match for the pattern specified in endRedaction will be redacted from anonymous users. Regular expression occurs before pages go through HTML rendering and so will match the markdown as it appears for each entry.
+  When redaction is enabled, it is possible to remove certain content from the view generated for anonymous users. Redaction also removes the commit records and history pages from all content rendered for anonymous users. A number of different techniques are provided for redacting content (see below) using regular expression syntax. When redaction is enabled, all pages and searches will look for content which matches the regular expressions provided and remove it from anonymous views. A global, multi-line search is the default option for all regular expression patterns, so if matching new lines is important, they must be included in the regular expression. If any part of a redaction regular expression is grouped, then all parts that are not inside a grouping will be redacted for both anonymous and authenticated users. Regular expression occurs before pages go through HTML rendering and so will match the markdown as it appears for each entry.
+  
+#### redaction.hiddenPage (string: "^<!(--\s?Hidden[\s\S]*?--)>")
+
+  If any part of the document matches the regexp in hidden page, then the entire page will be removed from view from anonymous users and will return a 404 page error. In addition, the page will not show up in any search or list function. This is the only redaction expression that is not global, as it only requires one match to trigger.
+
+#### redaction.privateComment (string: "<!(--\s?Private[\s\S]*?--)>([\s\S]*?)<!(--\s?End\s?--)>")
+
+  Any sections of the document which match a privateComment regexp will be redacted from the document. Content inside the redaction will not show up in any search result. If no grouping is found in the regexp, then the entire regexp will be returned for the authenticated user. Otherwise, only the content inside groupings will be returned to the authenticated user.
+
+#### redaction.earliestDate (string: "<!(--\s?\d{4}\.\d{2}\.\d{2}[\s\S]*?--)>([\s\S]*?)<!(--\s?End\s?--)>")
+
+  Any section of the document which matches an earliestDate regexp will be tested to see if it should be redacted from anonymous users. This technique will construct a date from the first (4 to 10)integers it finds inside the matched content using the following order: YYYYMMDDHH and then see if that date exists beyond the current date. If the date it finds is in the future, it will redact the content from anonymous users. So, for example, an excerpt such as <!-- 2099.09.09 -->Future stuff<!-- End --> will be treated as content not to be revealed until on or after 20990909. If the date is in the past, it will reveal the content it finds in either the first group (if there is only one group in the regexp) or the second group (if there are two or more groupings). This technique requires at least one grouping to be specified in the regexp or it will have no effect.
+
+#### redaction.sequentialSections[0].expression (string: "<!(--\s?chapter-\d+[\s\S]*?--)>([\s\S]*?)<!(--\s?End\s?--)>")
+  
+  Any section of the document which matches an expression in the list of sequentialSections will be tested to see if it should be redacted from anonymous users. This technique will look for the first group of integers it finds inside each match and compare that integer to the one provided in the associated latestValue. If the integer it finds is greater than the latestValue, the section will be redacted from anonymous users. So, for example, an excerpt such as <!-- chapter-1000 -->A late chapter<!-- End --> would be redacted if the current chapter (latestValue) is 9. Like the earliestDate technique, if the latestValue is equal to or greater than the integer found, it will reveal the content it finds in either the first group (if there is only one group in the regexp) or the second group (if there are two or more groupings). This technique requires at least one grouping to be specified in the regexp or it will have no effect.
+
+#### redaction.sequentialSection
 
 
 
