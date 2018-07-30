@@ -60,7 +60,7 @@ Additional Configuration Options
   
   With this layout field, you can disable the sidebar content (from appearing on top of the page) when viewed from mobile devices.  
 
-#### redaction.enabled (boolean: true)
+#### redaction.enabled (boolean: false)
 
   When redaction is enabled, it is possible to remove certain content from the view generated for anonymous users. Redaction also removes the commit records and history pages from all content rendered for anonymous users. A number of different techniques are provided for redacting content (see below) using regular expression syntax. When redaction is enabled, all pages and searches will look for content which matches the regular expressions provided and remove it from anonymous views. A global, multi-line search is the default option for all regular expression patterns, so if matching new lines is important, they must be included in the regular expression. If any part of a redaction regular expression is grouped, then all parts that are not inside a grouping will be redacted for both anonymous and authenticated users. Regular expression occurs before pages go through HTML rendering and so will match the markdown as it appears for each entry.
   
