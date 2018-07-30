@@ -76,16 +76,16 @@ function _getWiki (req, res) {
 
 function _getWikiPage (req, res) {
 
-  // MOD check if page is listed as a redirect
-  var redirect_map = app.locals.config.get('redirects')
+  // MOD check if page is listed as an alias
+  var alias_map = app.locals.config.get('aliases')
   var page_name = req.params.page
-  if (redirect_map){
-    var redirect_name = page_name.toLowerCase()
-    if (app.locals.config.get('features').caseSensitiveRedirects){
-      redirect_name = page_name
+  if (alias_map){
+    var alias_name = page_name.toLowerCase()
+    if (app.locals.config.get('features').caseSensitiveAliases){
+      alias_name = page_name
     }
-    if (redirect_map[redirect_name]){
-      page_name = redirect_map[redirect_name]
+    if (alias_map[alias_name]){
+      page_name = alias_map[alias_name]
     }
   }
 
@@ -102,9 +102,10 @@ function _getWikiPage (req, res) {
       res.locals.notice = req.session.notice
       delete req.session.notice
 
-      // MOD redact, render and redirect content
+      // MOD redact content
       var page_content = renderer.redact(page.content, res, app.locals.config)
       
+      // MOD add redirection and render content
       if (page_content) {
           var rendered_content = renderer.render('# ' + page.title + '\n' + page_content)
           if (page_name != req.params.page){

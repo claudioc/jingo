@@ -35,20 +35,20 @@ function _getExistence (req, res) {
   var result = []
   var page
   var n = req.query.data.length
-  const redirect_map = app.locals.config.get('redirects') // MOD import redirects
+  const alias_map = app.locals.config.get('aliases') // MOD import aliases
   var page_name
   
   req.query.data.forEach(function (pageName, idx) {
     (function (name, index) {
-      // MOD remap redirect key to its associated page before retrieving page model
+      // MOD remap alias key to its associated page before retrieving page model
       page_name = name
-      if (redirect_map){
-        var redirect_name = page_name.toLowerCase()
-        if (app.locals.config.get('features').caseSensitiveRedirects){
-          redirect_name = page_name
+      if (alias_map){
+        var alias_name = page_name.toLowerCase()
+        if (app.locals.config.get('features').caseSensitiveAliases){
+          alias_name = page_name
         }
-        if (redirect_map[redirect_name]){
-          page_name = redirect_map[redirect_name]
+        if (alias_map[alias_name]){
+          page_name = alias_map[alias_name]
         }
       }
       page = new models.Page(page_name)
