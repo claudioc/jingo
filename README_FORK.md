@@ -80,7 +80,9 @@ Additional Configuration Options
   
   Any section of the document which matches an expression in the list of sequentialSections will be tested to see if it should be redacted from anonymous users. This technique will look for the first group of integers it finds inside each match and compare that integer to the one provided in the associated latestValue. If the integer it finds is greater than the latestValue, the section will be redacted from anonymous users. So, for example, an excerpt such as <!-- chapter-1000 -->A late chapter<!-- End --> would be redacted if the current chapter (latestValue) is 9. Like the earliestDate technique, if the latestValue is equal to or greater than the integer found, it will reveal the content it finds in either the first group (if there is only one group in the regexp) or the second group (if there are two or more groupings). This technique requires at least one grouping to be specified in the regexp or it will have no effect.
 
-#### redaction.sequentialSection
+#### redaction.sequentialSections[0].latestValue (integer: 0)
+
+  This field is included in order to evaluate the highest value in an associated sequentialSections expression which is public. Any value that is found to be higher than the latestValue will be redacted from anonymous users.
 
 
 
