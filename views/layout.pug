@@ -58,6 +58,8 @@ include mixins/links
         -var main_class = 'col-md-' + mainWidth + ' hide-tools'
         -var footer_sidebar = 'col-md-' + footerSidebarWidth
         -var footer_class = 'col-md-' + footerWidth + ' with-footer'
+        -var sidebar_class_none = 'col-md-' + sidebarWidth
+        -var sidebar_mobile_class_none = sidebar_class_none + ' hidden-sm hidden-xs'
         
         .row
           if hasSidebar()
@@ -69,9 +71,9 @@ include mixins/links
                 .content !{_sidebar}
           else
             if sidebarMobile
-              div(id='sidebar' class=sidebar_class)
+              div(id='sidebar' class=sidebar_class_none)
             else
-              div(id='sidebar' class=sidebar_mobile_class)
+              div(id='sidebar' class=sidebar_mobile_class_none)
 
           div(id='main' class=main_class)
             block content
