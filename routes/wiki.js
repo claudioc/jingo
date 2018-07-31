@@ -48,15 +48,14 @@ function _getWiki (req, res) {
 
   pages.fetch(pagen).then(function () {
     pages.models.forEach(function (page) {
-      
       // MOD test to see if content is redacted
-      const page_content = renderer.redact(page.content, res, app.locals.config)
-      if (!page.error && page_content) {
-        const rendered_content = renderer.render(page_content) // MOD render content
+      const pageContent = renderer.redact(page.content, res, app.locals.config)
+      if (!page.error && pageContent) {
+        const renderedContent = renderer.render(pageContent) // MOD render content
         items.push({
           page: page,
           hashes: page.hashes.length === 2 ? page.hashes.join('..') : '',
-          summary: rendered_content.match(/<p>[\s\S]*?<\/p>/m) // MOD add first paragraph summary to item
+          summary: renderedContent.match(/<p>[\s\S]*?<\/p>/m) // MOD add first paragraph summary to item
         })
       }
     })
@@ -75,21 +74,20 @@ function _getWiki (req, res) {
 }
 
 function _getWikiPage (req, res) {
-
   // MOD check if page is listed as an alias
-  var alias_map = app.locals.config.get('aliases')
-  var page_name = req.params.page
-  if (alias_map){
-    var alias_name = page_name.toLowerCase()
-    if (app.locals.config.get('features').caseSensitiveAliases){
-      alias_name = page_name
+  var aliasMap = app.locals.config.get('aliases')
+  var nameOfPage = req.params.page
+  if (aliasMap) {
+    var aliasName = nameOfPage.toLowerCase()
+    if (app.locals.config.get('features').caseSensitiveAliases) {
+      aliasName = nameOfPage
     }
-    if (alias_map[alias_name]){
-      page_name = alias_map[alias_name]
+    if (aliasMap[aliasName]) {
+      nameOfPage = aliasMap[aliasName]
     }
   }
 
-  var page = new models.Page(page_name, req.params.version)
+  var page = new models.Page(nameOfPage, req.params.version)
 
   page.fetch().then(function () {
     if (!page.error) {
@@ -103,28 +101,26 @@ function _getWikiPage (req, res) {
       delete req.session.notice
 
       // MOD redact content
-      var page_content = renderer.redact(page.content, res, app.locals.config)
-      
+      var pageContent = renderer.redact(page.content, res, app.locals.config)
+
       // MOD add redirection and render content
-      if (page_content) {
-          var rendered_content = renderer.render('# ' + page.title + '\n' + page_content)
-          if (page_name != req.params.page){
-            rendered_content = renderer.redirect(rendered_content, req.params.page, page_name)
-          }
-          
-          res.render('show', {
-            page: page,
-            title: app.locals.config.get('application').title + ' – ' + page.title,
-            content: rendered_content // MOD add rendered content
-          })
+      if (pageContent) {
+        var renderedContent = renderer.render('# ' + page.title + '\n' + pageContent)
+        if (nameOfPage !== req.params.page) {
+          renderedContent = renderer.redirect(renderedContent, req.params.page, nameOfPage)
+        }
+
+        res.render('show', {
+          page: page,
+          title: app.locals.config.get('application').title + ' – ' + page.title,
+          content: renderedContent // MOD add rendered content
+        })
       } else {
         // MOD remove existence of page if all content is redacted
         res.locals.title = '404 - Not found'
         res.statusCode = 404
         res.render('404.pug')
-        return
       }
-      
     } else {
       if (req.user) {
         // Try sorting out redirect loops with case insentive fs
@@ -143,7 +139,6 @@ function _getWikiPage (req, res) {
           res.locals.title = '404 - Not found'
           res.statusCode = 404
           res.render('404.pug')
-          return
         }
       }
     }
@@ -182,7 +177,6 @@ function _getCompare (req, res) {
       res.locals.title = '404 - Not found'
       res.statusCode = 404
       res.render('404.pug')
-      return
     }
   })
 

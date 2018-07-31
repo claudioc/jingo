@@ -60,8 +60,8 @@ describe('Config', function () {
     
     expect(def.redaction.enabled).to.be.false
     expect(def.redaction.hiddenPage).to.equal('^<!(--\\s?Hidden[\\s\\S]*?--)>')
-    expect(def.redaction.privateComment).to.equal('<!--\\s?Private([\\s\\S]*?)-->')
-    expect(def.redaction.earliestDate).to.equal('<!(--\\s\\d{4}\\.\\d{2}\\.\\d{2}[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>') 
+    expect(def.redaction.privateContent).to.equal('<!--\\s?Private([\\s\\S]*?)-->')
+    expect(def.redaction.futureContent).to.equal('<!(--\\s\\d{4}\\.\\d{2}\\.\\d{2}[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>') 
   })
 
   it('should get the config as a whole', function () {

@@ -41,55 +41,49 @@ function _getSearch (req, res) {
     }
 
     models.pages.findStringAsync(res.locals.term).then(function (items) {
-    
       // MOD run search results through redaction if enabled (slows response)
-      if (app.locals.config.get('redaction').enabled){
-      
-          var promise_list = []
-          var term_regex
-          
-          items.forEach(function (item) {
-            if (item.trim() !== '') {
-              // MOD retrieve page content and retest for search term after redaction
-              const record = item.split(':')
-              const page_name = path.basename(record[0].replace(/\.md$/, ''))
-              const search_page = new models.Page(page_name)
-              promise_list.push(search_page.fetch().then(function () {
-                  const redacted_content = renderer.redact(search_page.content, res, app.locals.config)
-                  term_regex = new RegExp(res.locals.term, 'i')
-                  if (term_regex && term_regex.exec(redacted_content)){
-                    res.locals.matches.push({
-                        pageName: page_name,
-                        line: record[1] ? ', L' + record[1] : '',
-                        text: record.slice(2).join('')
-                    })
-                  }
-              }))
-            }
-          })
-    
-          // MOD wait for all page fetches to return
-          Promise.all(promise_list).then(function(){
-            renderResults()
-          })
-          
-      } else {
-      
-          items.forEach(function (item) {
-            if (item.trim() !== '') {
-              record = item.split(':')
-              res.locals.matches.push({
-                pageName: path.basename(record[0].replace(/\.md$/, '')),
-                line: record[1] ? ', L' + record[1] : '',
-                text: record.slice(2).join('')
-              })
-            }
-          })
-    
+      if (app.locals.config.get('redaction').enabled) {
+        var promiseArray = []
+        var termRegex
+
+        items.forEach(function (item) {
+          if (item.trim() !== '') {
+            // MOD retrieve page content and retest for search term after redaction
+            const record = item.split(':')
+            const nameOfPage = path.basename(record[0].replace(/\.md$/, ''))
+            const searchPage = new models.Page(nameOfPage)
+            promiseArray.push(searchPage.fetch().then(function () {
+              const redactedContent = renderer.redact(searchPage.content, res, app.locals.config)
+              termRegex = new RegExp(res.locals.term, 'i')
+              if (termRegex && termRegex.exec(redactedContent)) {
+                res.locals.matches.push({
+                  pageName: nameOfPage,
+                  line: record[1] ? ', L' + record[1] : '',
+                  text: record.slice(2).join('')
+                })
+              }
+            }))
+          }
+        })
+
+        // MOD wait for all page fetches to return
+        Promise.all(promiseArray).then(function () {
           renderResults()
-  
+        })
+      } else {
+        items.forEach(function (item) {
+          if (item.trim() !== '') {
+            record = item.split(':')
+            res.locals.matches.push({
+              pageName: path.basename(record[0].replace(/\.md$/, '')),
+              line: record[1] ? ', L' + record[1] : '',
+              text: record.slice(2).join('')
+            })
+          }
+        })
+
+        renderResults()
       }
-      
     })
   }
 

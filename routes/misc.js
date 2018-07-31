@@ -16,14 +16,12 @@ function _getSyntaxReference (req, res) {
 }
 
 function _postPreview (req, res) {
-  
   // MOD redact content prior to rendering
-  var page_content = req.body.data
-  page_content = renderer.redact(page_content, res, app.locals.config) 
+  var pageContent = req.body.data
+  pageContent = renderer.redact(pageContent, res, app.locals.config)
   res.render('preview', {
-    content: renderer.render(page_content)
+    content: renderer.render(pageContent)
   })
-  
 }
 
 function _getExistence (req, res) {
@@ -35,23 +33,23 @@ function _getExistence (req, res) {
   var result = []
   var page
   var n = req.query.data.length
-  const alias_map = app.locals.config.get('aliases') // MOD import aliases
-  var page_name
-  
+  const aliasMap = app.locals.config.get('aliases') // MOD import aliases
+  var nameOfPage
+
   req.query.data.forEach(function (pageName, idx) {
     (function (name, index) {
       // MOD remap alias key to its associated page before retrieving page model
-      page_name = name
-      if (alias_map){
-        var alias_name = page_name.toLowerCase()
-        if (app.locals.config.get('features').caseSensitiveAliases){
-          alias_name = page_name
+      nameOfPage = name
+      if (aliasMap) {
+        var aliasName = nameOfPage.toLowerCase()
+        if (app.locals.config.get('features').caseSensitiveAliases) {
+          aliasName = nameOfPage
         }
-        if (alias_map[alias_name]){
-          page_name = alias_map[alias_name]
+        if (aliasMap[aliasName]) {
+          nameOfPage = aliasMap[aliasName]
         }
       }
-      page = new models.Page(page_name)
+      page = new models.Page(nameOfPage)
       if (!fs.existsSync(page.pathname)) {
         result.push(name)
       }

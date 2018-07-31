@@ -10,11 +10,11 @@ var config = {
   redaction: {
     enabled: true,
     hiddenPage: '^<!(--\\s?Hidden[\\s\\S]*?--)>',
-    privateComment: '<!--\\s?Private([\\s\\S]*?)-->',
-    earliestDate: '<!(--\\s\\d{4}\\.\\d{2}\\.\\d{2}[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>',
-    sequentialSections: [{
+    privateContent: '<!--\\s?Private([\\s\\S]*?)-->',
+    futureContent: '<!(--\\s\\d{4}\\.\\d{2}\\.\\d{2}[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>',
+    sectionContent: [{
       expression: '<!(--\\schapter-\\d+[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>',
-      latestValue: 0
+      current: 0
     }]
   }
 }
