@@ -11,7 +11,11 @@ include mixins/links
       meta(name="viewport", content="width=device-width, initial-scale=1")
       title= title
       +asset("/vendor/bootstrap/css/bootstrap.min.css")
-      link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
+      //- MOD serve fonts from local files
+      if serveLocal
+        +asset("/css/google-fonts.css")
+      else
+        link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed")
       +asset("/css/style.css")
       +asset("/css/ionicons.min.css")
       +asset("/css/shCoreDefault.css")
@@ -48,20 +52,34 @@ include mixins/links
 
       .container
 
+        //- MOD customization of column width
+        -var sidebar_class = 'col-md-' + sidebarWidth + ' with-sidebar'
+        -var sidebar_mobile_class = sidebar_class + ' hidden-sm hidden-xs'
+        -var main_class = 'col-md-' + mainWidth + ' hide-tools'
+        -var footer_sidebar = 'col-md-' + footerSidebarWidth
+        -var footer_class = 'col-md-' + footerWidth + ' with-footer'
+        
         .row
           if hasSidebar()
-            .col-md-2.with-sidebar
-              .content !{_sidebar}
+            if sidebarMobile
+              div(id='sidebar' class=sidebar_class)
+                .content !{_sidebar}
+            else
+              div(id='sidebar' class=sidebar_mobile_class)
+                .content !{_sidebar}
           else
-            .col-md-2
+            if sidebarMobile
+              div(id='sidebar' class=sidebar_class)
+            else
+              div(id='sidebar' class=sidebar_mobile_class)
 
-          #main.hide-tools.col-md-8
+          div(id='main' class=main_class)
             block content
 
         if hasFooter()
           .row
-            .col-md-2
-            .col-md-8.with-footer
+            div(class=footer_sidebar)
+            div(id='footer' class=footer_class)
               .content !{_footer}
 
       script(src=proxyPath + "/vendor/jquery.min.js")

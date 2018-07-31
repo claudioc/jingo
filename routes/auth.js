@@ -60,10 +60,10 @@ if (auth.google.enabled) {
     callbackURL: redirectURL
   },
 
-    function (accessToken, refreshToken, profile, done) {
-      usedAuthentication('google')
-      done(null, profile)
-    }
+  function (accessToken, refreshToken, profile, done) {
+    usedAuthentication('google')
+    done(null, profile)
+  }
   ))
 }
 
@@ -77,37 +77,37 @@ if (auth.github.enabled) {
     clientSecret: auth.github.clientSecret,
     callbackURL: redirectURL
   },
-    function (accessToken, refreshToken, profile, done) {
-      usedAuthentication('github')
-      done(null, profile)
-    }
+  function (accessToken, refreshToken, profile, done) {
+    usedAuthentication('github')
+    done(null, profile)
+  }
   ))
 }
 
 if (auth.ldap.enabled) {
-  passport.use(new passportLDAP(function(req, callback) {
-    process.nextTick(function() {
+  passport.use(new passportLDAP(function (req, callback) {
+    process.nextTick(function () {
       var bindDn = auth.ldap.bindDn.replace(/{{username}}/g, req.body.username)
       var bindCredentials = auth.ldap.bindCredentials.replace(/{{password}}/g, req.body.password)
 
       var opts = {
-          server: {
-            url: auth.ldap.url,
-            bindDn: bindDn,
-            bindCredentials: bindCredentials,
-            searchBase: auth.ldap.searchBase,
-            searchFilter: auth.ldap.searchFilter,
-            searchAttributes: auth.ldap.searchAttributes
-          }
+        server: {
+          url: auth.ldap.url,
+          bindDn: bindDn,
+          bindCredentials: bindCredentials,
+          searchBase: auth.ldap.searchBase,
+          searchFilter: auth.ldap.searchFilter,
+          searchAttributes: auth.ldap.searchAttributes
+        }
       }
 
-      callback(null, opts);
+      callback(null, opts)
     })
   },
-    function (profile, done) {
-      usedAuthentication('ldap')
-      done(null, profile)
-    }
+  function (profile, done) {
+    usedAuthentication('ldap')
+    done(null, profile)
+  }
   ))
 }
 
@@ -213,8 +213,8 @@ function _getAuthDone (req, res) {
       !auth.local.used &&
       !auth.ldap.used &&
       !tools.isAuthorized(res.locals.user.email,
-                          app.locals.config.get('authorization').validMatches,
-                          app.locals.config.get('authorization').emptyEmailMatches)) {
+      app.locals.config.get('authorization').validMatches,
+      app.locals.config.get('authorization').emptyEmailMatches)) {
     req.logout()
     req.session = null
     res.statusCode = 403

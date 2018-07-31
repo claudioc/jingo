@@ -3,7 +3,7 @@
 
 var yaml = require('js-yaml')
 
-var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations']
+var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations', 'aliases', 'layout', 'redaction']
 var Config = require('../../lib/config')
 
 describe('Config', function () {
@@ -22,6 +22,8 @@ describe('Config', function () {
     expect(def.application.title).to.equal('Jingo')
     expect(def.application.repository).to.equal('')
     expect(def.application.docSubdir).to.equal('')
+    expect(def.application.mediaSubdir).to.equal('')
+    expect(def.application.serveLocal).to.be.false
     expect(def.application.remote).to.equal('')
     expect(def.application.pushInterval).to.equal(30)
     expect(def.application.secret).to.equal('change me')
@@ -35,6 +37,8 @@ describe('Config', function () {
 
     expect(def.features.codemirror).to.be.true
     expect(def.features.markitup).to.be.false
+    expect(def.features.pageSummaries).to.be.true
+    expect(def.features.caseSensitiveAliases).to.be.false
 
     expect(def.server.hostname).to.equal('localhost')
     expect(def.server.port).to.equal(6067)
@@ -48,6 +52,16 @@ describe('Config', function () {
     expect(def.authentication.google.enabled).to.be.true
     expect(def.authentication.local.enabled).to.be.false
     expect(def.authentication.github.enabled).to.be.false
+    
+    expect(def.layout.sidebarWidth).to.equal(2)
+    expect(def.layout.mainWidth).to.equal(8)
+    expect(def.layout.footerWidth).to.equal(8)
+    expect(def.layout.sidebarMobile).to.be.true
+    
+    expect(def.redaction.enabled).to.be.false
+    expect(def.redaction.hiddenPage).to.equal('^<!(--\\s?Hidden[\\s\\S]*?--)>')
+    expect(def.redaction.privateContent).to.equal('<!--\\s?Private([\\s\\S]*?)-->')
+    expect(def.redaction.futureContent).to.equal('<!(--\\s\\d{4}\\.\\d{2}\\.\\d{2}[\\s\\S]*?--)>([\\s\\S]*?)<!(--\\sEnd\\s--)>') 
   })
 
   it('should get the config as a whole', function () {

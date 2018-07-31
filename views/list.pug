@@ -10,26 +10,59 @@ block content
             a(href=item.page.urlForShow()) #{item.page.title}
           div.content.clearfix
             .meta
-              |Last update by&nbsp;
-              if hasGravatar()
-                img(src=gravatar().url(item.page.metadata.email, {s:16}))
-              b &nbsp;#{item.page.metadata.author},&nbsp;
-              b.date(title=item.page.metadata.date) #{item.page.metadata.relDate}
-              |&nbsp;&ndash;&nbsp;#{item.page.metadata.hash}
-            ul.page-actions
-              if !isAnonymous()
-                li
-                  a(href=item.page.urlForEdit(), title="Edit this page").btn.btn-default
-                    i.icon.ion-compose
-              li
-                a(href=item.page.urlForHistory(), title="Page history").btn.btn-default
-                  i.icon.ion-clock
-              if item.hashes
-                li
-                  a(href=`${item.page.urlForCompare()}/${item.hashes}`, title="Quick diff").btn.btn-default
-                    i.icon.ion-shuffle
-            .message
-              |&rarr; #{item.page.lastCommitMessage}
+              //- MOD reformat commit history if redact is enabled
+              if redactEnabled
+                  |Last updated&nbsp; 
+                  b.date(title="#{item.page.metadata.date}") #{item.page.metadata.relDate} 
+                  if !isAnonymous()
+                    |&nbsp;by&nbsp; 
+                    b #{item.page.metadata.author} 
+                    |&nbsp;&ndash;&nbsp; #{item.page.metadata.hash}
+              else
+                  |Last update by&nbsp;
+                  if hasGravatar()
+                    img(src=gravatar().url(item.page.metadata.email, {s:16}))
+                  b &nbsp;#{item.page.metadata.author},&nbsp;
+                  b.date(title=item.page.metadata.date) #{item.page.metadata.relDate}
+                  |&nbsp;&ndash;&nbsp;#{item.page.metadata.hash}
+            
+            if redactEnabled
+                if !isAnonymous()
+                  ul.page-actions
+                    li
+                      a(href=item.page.urlForEdit(), title="Edit this page").btn.btn-default
+                        i.icon.ion-compose
+                    li
+                      a(href=item.page.urlForHistory(), title="Page history").btn.btn-default
+                        i.icon.ion-clock
+                    if item.hashes
+                      li
+                        a(href=`${item.page.urlForCompare()}/${item.hashes}`, title="Quick diff").btn.btn-default
+                          i.icon.ion-shuffle
+                  if pageSummaries
+                    .message
+                      | #{item.summary}
+                  .message.commit-font
+                    |&rarr; #{item.page.lastCommitMessage}
+                else
+                  if pageSummaries
+                    .message
+                      | #{item.summary}
+            else
+                ul.page-actions
+                  if !isAnonymous()
+                    li
+                      a(href=item.page.urlForEdit(), title="Edit this page").btn.btn-default
+                        i.icon.ion-compose
+                  li
+                    a(href=item.page.urlForHistory(), title="Page history").btn.btn-default
+                      i.icon.ion-clock
+                  if item.hashes
+                    li
+                      a(href=`${item.page.urlForCompare()}/${item.hashes}`, title="Quick diff").btn.btn-default
+                        i.icon.ion-shuffle
+                .message
+                  |&rarr; #{item.page.lastCommitMessage}
 
     ul.paginator
       each pageNumber in pageNumbers
