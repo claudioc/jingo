@@ -3,7 +3,7 @@
 
 var yaml = require('js-yaml')
 
-var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations', 'aliases', 'layout', 'redaction']
+var configKeys = ['application', 'authentication', 'features', 'server', 'authorization', 'pages', 'customizations', 'assets', 'aliases', 'layout', 'redaction']
 var Config = require('../../lib/config')
 
 describe('Config', function () {
@@ -52,6 +52,9 @@ describe('Config', function () {
     expect(def.authentication.google.enabled).to.be.true
     expect(def.authentication.local.enabled).to.be.false
     expect(def.authentication.github.enabled).to.be.false
+    
+    expect(def.assets.css).to.equal('')
+    expect(def.assets.js).to.equal('')
     
     expect(def.layout.sidebarWidth).to.equal(2)
     expect(def.layout.mainWidth).to.equal(8)

@@ -40,6 +40,14 @@ Additional Configuration Options
 
   With this option, you can force redirection to only match an alias if the cases match. For example, if you want to have any link to "Introduction" to redirect to Home.md, when this option is disabled, links to "introduction" would also redirect to Home.md.
 
+#### assets.css (string: '')
+
+  With the assets.css string, you can add the file path to any number of css sheets to be imported on page rendering in the <head> element prior to the customization style. In this way, you can add dependencies to the customization style. Separate stylesheets should be delineated with a comma and all such sheets must be located in the mediaSubdir folder or they will not be imported.
+
+#### assets.js (string: '')
+
+  With the assets.js string, you can add the file path to any number of js files to be appended to the bottom of the body element on page rendering prior to the customization script. In this way, you can add local dependencies to the customization script. Separate javascript files should be delineated with a comma and all such files must be located in the mediaSubdir folder or they will not be imported.
+  
 #### aliases (map)
   
   If you would like to setup one or more aliases for a wiki entry, which will redirect to that page, you can include each alias and its associated page as a key:value pair in this map. Whenever a page request to an alias value is made, the server will return the page it is associated with and also include a line underneath the title of the page that indicates that the requested term redirects to this page. Since URLs cannot contain a space, all aliases with a word break need to replace that word break with a '-'. Whereas the alias should not contain .md, the page it redirects to must include .md in its name.

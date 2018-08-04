@@ -19,6 +19,10 @@ include mixins/links
       +asset("/css/style.css")
       +asset("/css/ionicons.min.css")
       +asset("/css/shCoreDefault.css")
+      //- MOD add css assets
+      if cssAssets.length
+        each sheet in cssAssets
+          +asset(sheet)
       block styles
       if hasCustomStyle()
         style.
@@ -87,6 +91,10 @@ include mixins/links
       script(src=proxyPath + "/vendor/jquery.min.js")
       +asset("/vendor/bootstrap/js/bootstrap.min.js")
       +asset("/js/app.js")
+      //- MOD add javascript assets
+      if jsAssets.length
+        each js in jsAssets
+          +asset(js)
       script.
         Jingo.init("#{proxyPath}");
       block scripts
