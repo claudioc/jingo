@@ -4,6 +4,8 @@ var router = require('express').Router()
 var path = require('path')
 var corsEnabler = require('../lib/cors-enabler')
 var models = require('../lib/models')
+var renderer = require('../lib/renderer') // MOD import renderer module
+var app = require('../lib/app').getInstance() // MOD import app instance for config
 
 models.use(Git)
 
@@ -39,18 +41,49 @@ function _getSearch (req, res) {
     }
 
     models.pages.findStringAsync(res.locals.term).then(function (items) {
-      items.forEach(function (item) {
-        if (item.trim() !== '') {
-          record = item.split(':')
-          res.locals.matches.push({
-            pageName: path.basename(record[0].replace(/\.md$/, '')),
-            line: record[1] ? ', L' + record[1] : '',
-            text: record.slice(2).join('')
-          })
-        }
-      })
+      // MOD run search results through redaction if enabled (slows response)
+      if (app.locals.config.get('redaction').enabled) {
+        var promiseArray = []
+        var termRegex
 
-      renderResults()
+        items.forEach(function (item) {
+          if (item.trim() !== '') {
+            // MOD retrieve page content and retest for search term after redaction
+            const record = item.split(':')
+            const nameOfPage = path.basename(record[0].replace(/\.md$/, ''))
+            const searchPage = new models.Page(nameOfPage)
+            promiseArray.push(searchPage.fetch().then(function () {
+              const redactedContent = renderer.redact(searchPage.content, res, app.locals.config)
+              termRegex = new RegExp(res.locals.term, 'i')
+              if (termRegex && termRegex.exec(redactedContent)) {
+                res.locals.matches.push({
+                  pageName: nameOfPage,
+                  line: record[1] ? ', L' + record[1] : '',
+                  text: record.slice(2).join('')
+                })
+              }
+            }))
+          }
+        })
+
+        // MOD wait for all page fetches to return
+        Promise.all(promiseArray).then(function () {
+          renderResults()
+        })
+      } else {
+        items.forEach(function (item) {
+          if (item.trim() !== '') {
+            record = item.split(':')
+            res.locals.matches.push({
+              pageName: path.basename(record[0].replace(/\.md$/, '')),
+              line: record[1] ? ', L' + record[1] : '',
+              text: record.slice(2).join('')
+            })
+          }
+        })
+
+        renderResults()
+      }
     })
   }
 

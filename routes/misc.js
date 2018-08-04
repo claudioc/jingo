@@ -3,6 +3,7 @@ var router = require('express').Router()
 var renderer = require('../lib/renderer')
 var fs = require('fs')
 var models = require('../lib/models')
+var app = require('../lib/app').getInstance() // MOD required to retrieve app configuration
 
 models.use(Git)
 
@@ -15,8 +16,11 @@ function _getSyntaxReference (req, res) {
 }
 
 function _postPreview (req, res) {
+  // MOD redact content prior to rendering
+  var pageContent = req.body.data
+  pageContent = renderer.redact(pageContent, res, app.locals.config)
   res.render('preview', {
-    content: renderer.render(req.body.data)
+    content: renderer.render(pageContent)
   })
 }
 
@@ -29,10 +33,23 @@ function _getExistence (req, res) {
   var result = []
   var page
   var n = req.query.data.length
+  const aliasMap = app.locals.config.get('aliases') // MOD import aliases
+  var nameOfPage
 
   req.query.data.forEach(function (pageName, idx) {
     (function (name, index) {
-      page = new models.Page(name)
+      // MOD remap alias key to its associated page before retrieving page model
+      nameOfPage = name
+      if (aliasMap) {
+        var aliasName = nameOfPage.toLowerCase()
+        if (app.locals.config.get('features').caseSensitiveAliases) {
+          aliasName = nameOfPage
+        }
+        if (aliasMap[aliasName]) {
+          nameOfPage = aliasMap[aliasName]
+        }
+      }
+      page = new models.Page(nameOfPage)
       if (!fs.existsSync(page.pathname)) {
         result.push(name)
       }
