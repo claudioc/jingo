@@ -42,11 +42,11 @@ Additional Configuration Options
 
 #### assets.css (string: '')
 
-  With the assets.css string, you can add the file path to any number of css sheets to be imported on page rendering in the <head> element prior to the customization style. In this way, you can add dependencies to the customization style. Separate stylesheets should be delineated with a comma and all such sheets must be located in the mediaSubdir folder or they will not be imported.
+  With the assets.css string, you can add the file path to any number of css sheets to be imported on page rendering in the \<head\> element prior to the customization style. In this way, you can add dependencies to the customization style. Separate stylesheets should be delineated with a comma and all such sheets must be located in the mediaSubdir folder or they will not be imported.
 
 #### assets.js (string: '')
 
-  With the assets.js string, you can add the file path to any number of js files to be appended to the bottom of the body element on page rendering prior to the customization script. In this way, you can add local dependencies to the customization script. Separate javascript files should be delineated with a comma and all such files must be located in the mediaSubdir folder or they will not be imported.
+  With the assets.js string, you can add the file path to any number of js files to be appended to the bottom of the \<body\> element on page rendering prior to the customization script. In this way, you can add local dependencies to the customization script. Separate javascript files should be delineated with a comma and all such files must be located in the mediaSubdir folder or they will not be imported.
   
 #### aliases (map)
   
