@@ -36,9 +36,9 @@ Additional Configuration Options
 
   With this option, the html rendered version of the first paragraph of each page will be included its listing when a user browses all the pages.
   
-#### features.caseSensitiveRedirects (boolean: false)
+#### features.caseSensitive (boolean: false)
 
-  With this option, you can force redirection to only match an alias if the cases match. For example, if you want to have any link to "Introduction" to redirect to Home.md, when this option is disabled, links to "introduction" would also redirect to Home.md.
+  With this option, you can force aliases and page linking to only match a page if the cases match. For example, if you want to have any link to "Introduction" to redirect to Home.md, when this option is disabled, links to "introduction" would also redirect to Home.md.
 
 #### assets.css (string: '')
 
