@@ -166,15 +166,15 @@ function _putPages (req, res) {
   if (app.locals.config.get('pages').title.fromFilename &&
       page.name.toLowerCase() !== req.body.pageTitle.toLowerCase()) {
     page.renameTo(req.body.pageTitle)
-          .then(savePage)
-          .catch(function (ex) {
-            errors = [{
-              param: 'pageTitle',
-              msg: 'A page with this name already exists.',
-              value: ''
-            }]
-            fixErrors()
-          })
+      .then(savePage)
+      .catch(function (ex) {
+        errors = [{
+          param: 'pageTitle',
+          msg: 'A page with this name already exists.',
+          value: ''
+        }]
+        fixErrors()
+      })
   } else {
     savePage()
   }
@@ -270,7 +270,6 @@ function _getRevert (req, res) {
       res.locals.title = '500 – Internal Server Error'
       res.statusCode = 500
       res.render('500.pug')
-      return
     }
   })
 }

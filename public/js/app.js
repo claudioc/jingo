@@ -223,8 +223,13 @@
     })
 
     $.getJSON(proxyPath + '/misc/existence', {data: pages}, function (result) {
-      $.each(result.data, function (href, a) {
-        $(selector + " a[href='" + proxyPath.split('/').join('\\/') + '\\/wiki\\/' + encodeURIComponent(a) + "']").addClass('absent')
+      $.each(result.data, function (href, a) { 
+        // MOD change quote convention if page contains ' in its name
+        if (a.indexOf("'")){
+          $(selector + ' a[href="' + proxyPath.split('/').join('\\/') + '\\/wiki\\/' + encodeURIComponent(a) + '"]').addClass('absent')
+        } else {
+          $(selector + " a[href='" + proxyPath.split('/').join('\\/') + '\\/wiki\\/' + encodeURIComponent(a) + "']").addClass('absent')
+        }
       })
     })
   }

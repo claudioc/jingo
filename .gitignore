@@ -2,3 +2,8 @@ node_modules/*
 config.yaml
 config.yml
 data/*
+.idea
+__pycache__/
+Dockerfile
+.dockerignore
+package-lock.json

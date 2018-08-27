@@ -25,7 +25,8 @@ function _getHistory (req, res) {
     return page.fetchHistory()
   }).then(function (history) {
     // FIXME better manage an error here
-    if (!page.error) {
+    // MOD add test to hide history page for anonymous users
+    if (!page.error && (req.locals.user || !app.locals.config.get('redaction').enabled)) {
       res.render('history', {
         items: history,
         title: 'History of ' + page.name,
@@ -47,10 +48,14 @@ function _getWiki (req, res) {
 
   pages.fetch(pagen).then(function () {
     pages.models.forEach(function (page) {
-      if (!page.error) {
+      // MOD test to see if content is redacted
+      const pageContent = renderer.redact(page.content, res, app.locals.config)
+      if (!page.error && pageContent) {
+        const renderedContent = renderer.render(pageContent) // MOD render content
         items.push({
           page: page,
-          hashes: page.hashes.length === 2 ? page.hashes.join('..') : ''
+          hashes: page.hashes.length === 2 ? page.hashes.join('..') : '',
+          summary: renderedContent.match(/<p>[\s\S]*?<\/p>/m) // MOD add first paragraph summary to item
         })
       }
     })
@@ -69,7 +74,26 @@ function _getWiki (req, res) {
 }
 
 function _getWikiPage (req, res) {
-  var page = new models.Page(req.params.page, req.params.version)
+  // MOD check if page is listed as an alias
+  var aliasMap = app.locals.config.get('aliases')
+  var nameOfPage = req.params.page
+  if (aliasMap) {
+    var aliasName = nameOfPage.toLowerCase()
+    if (app.locals.config.get('features').caseSensitive) {
+      aliasName = nameOfPage
+    }
+    if (aliasMap[aliasName]) {
+      nameOfPage = aliasMap[aliasName]
+    }
+  }
+  // MOD capitalize all words in page name
+  if (!app.locals.config.get('features').caseSensitive){
+    console.log(nameOfPage)
+    nameOfPage = nameOfPage.replace(/(^|\-)\w/g, function(l){ return l.toUpperCase() })
+    console.log(nameOfPage)
+  }
+
+  var page = new models.Page(nameOfPage, req.params.version)
 
   page.fetch().then(function () {
     if (!page.error) {
@@ -82,11 +106,27 @@ function _getWikiPage (req, res) {
       res.locals.notice = req.session.notice
       delete req.session.notice
 
-      res.render('show', {
-        page: page,
-        title: app.locals.config.get('application').title + ' – ' + page.title,
-        content: renderer.render('# ' + page.title + '\n' + page.content)
-      })
+      // MOD redact content
+      var pageContent = renderer.redact(page.content, res, app.locals.config)
+
+      // MOD add redirection and render content
+      if (pageContent) {
+        var renderedContent = renderer.render('# ' + page.title + '\n' + pageContent)
+        if (nameOfPage !== req.params.page) {
+          renderedContent = renderer.redirect(renderedContent, req.params.page, nameOfPage)
+        }
+
+        res.render('show', {
+          page: page,
+          title: app.locals.config.get('application').title + ' – ' + page.title,
+          content: renderedContent // MOD add rendered content
+        })
+      } else {
+        // MOD remove existence of page if all content is redacted
+        res.locals.title = '404 - Not found'
+        res.statusCode = 404
+        res.render('404.pug')
+      }
     } else {
       if (req.user) {
         // Try sorting out redirect loops with case insentive fs
@@ -105,7 +145,6 @@ function _getWikiPage (req, res) {
           res.locals.title = '404 - Not found'
           res.statusCode = 404
           res.render('404.pug')
-          return
         }
       }
     }
@@ -120,7 +159,7 @@ function _getCompare (req, res) {
   page.fetch().then(function () {
     return page.fetchRevisionsDiff(revisions)
   }).then(function (diff) {
-    if (!page.error) {
+    if (!page.error && (req.locals.user || !app.locals.config.get('redaction').enabled)) {
       var lines = []
       diff.split('\n').slice(4).forEach(function (line) {
         if (line.slice(0, 1) !== '\\') {
@@ -144,7 +183,6 @@ function _getCompare (req, res) {
       res.locals.title = '404 - Not found'
       res.statusCode = 404
       res.render('404.pug')
-      return
     }
   })
 
