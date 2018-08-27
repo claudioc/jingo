@@ -42,12 +42,16 @@ function _getExistence (req, res) {
       nameOfPage = name
       if (aliasMap) {
         var aliasName = nameOfPage.toLowerCase()
-        if (app.locals.config.get('features').caseSensitiveAliases) {
+        if (app.locals.config.get('features').caseSensitive) {
           aliasName = nameOfPage
         }
         if (aliasMap[aliasName]) {
           nameOfPage = aliasMap[aliasName]
         }
+      }
+      // MOD capitalize all words in page name
+      if (!app.locals.config.get('features').caseSensitive){
+        nameOfPage = nameOfPage.replace(/(^|\-)\w/g, function(l){ return l.toUpperCase() })
       }
       page = new models.Page(nameOfPage)
       if (!fs.existsSync(page.pathname)) {

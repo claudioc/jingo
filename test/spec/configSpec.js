@@ -38,7 +38,7 @@ describe('Config', function () {
     expect(def.features.codemirror).to.be.true
     expect(def.features.markitup).to.be.false
     expect(def.features.pageSummaries).to.be.true
-    expect(def.features.caseSensitiveAliases).to.be.false
+    expect(def.features.caseSensitive).to.be.false
 
     expect(def.server.hostname).to.equal('localhost')
     expect(def.server.port).to.equal(6067)
