@@ -8,6 +8,7 @@ ChangeLog
 ---------
 ### List of Modifications
 - fixed bug in gitExec when repo path contains one or more spaces
+- fixed bug with markMissingPagesAsAbsent request for pages with ' in the name
 - added redirection of synonyms to official page toggled in config
 - added sidebar, main and footer column width customization to config
 - added options to use regexp to redact exerpts of information for anonymous users to config
@@ -17,6 +18,7 @@ ChangeLog
 - added media folder to static routes on page
 - added override of standard favicon with any favicon in root of media folder
 - added option to serve files from local version rather than CDN
+- added option to disable case sensitivity in page links and aliases
 
 ### Mod Strategy
 All changes and/or additions have been marked with comments which begin with "// MOD" so as to make it easier to hunt down changes. Existing code has been preserved whenever possible through the use of configuration flags to enable the additional/optional functionality of this fork. Also, additional methods and modules have been employed using naming conventions so as to least possibly conflict with future changes to the main branch.
