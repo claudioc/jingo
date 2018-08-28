@@ -88,9 +88,7 @@ function _getWikiPage (req, res) {
   }
   // MOD capitalize all words in page name
   if (!app.locals.config.get('features').caseSensitive){
-    console.log(nameOfPage)
     nameOfPage = nameOfPage.replace(/(^|\-)\w/g, function(l){ return l.toUpperCase() })
-    console.log(nameOfPage)
   }
 
   var page = new models.Page(nameOfPage, req.params.version)
