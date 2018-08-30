@@ -19,6 +19,7 @@ ChangeLog
 - added override of standard favicon with any favicon in root of media folder
 - added option to serve files from local version rather than CDN
 - added option to disable case sensitivity in page links and aliases
+- added option to lift block elements outside of paragraphs during markdown rendering
 
 ### Mod Strategy
 All changes and/or additions have been marked with comments which begin with "// MOD" so as to make it easier to hunt down changes. Existing code has been preserved whenever possible through the use of configuration flags to enable the additional/optional functionality of this fork. Also, additional methods and modules have been employed using naming conventions so as to least possibly conflict with future changes to the main branch.
@@ -33,6 +34,10 @@ Additional Configuration Options
 #### application.serveLocal (boolean: false)
 
   With this option, you can use a local copy of a resource instead of a CDN. Currently, this only applies to the Ubuntu font families requested in the head of each page.
+
+#### application.percolateBlocks (string: "div, blockquote")
+
+  With this option, you can add other block elements to the list of block elements which are lifted out of their location in paragraphs during markdown rendering. Separate each element tag type you would like to be placed outside of paragraphs with a comma (and optional space). Without this option, only table blocks are lifted outside of paragraphs.
 
 #### features.pageSummaries (boolean: true)
 

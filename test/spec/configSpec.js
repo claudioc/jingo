@@ -32,6 +32,7 @@ describe('Config', function () {
     expect(def.application.loggingMode).to.equal(1)
     expect(def.application.pedanticMarkdown).to.be.true
     expect(def.application.gfmBreaks).to.be.true
+    expect(def.application.percolateBlocks).to.equal('div, blockquote')
     expect(def.application.staticWhitelist).to.equal('/\\.png$/i, /\\.jpg$/i, /\\.gif$/i')
     expect(def.application.proxyPath).to.equal('')
 
