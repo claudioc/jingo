@@ -55,6 +55,7 @@ var refspec = config.get('application').remote.split(/\s+/)
 Git.setup(config.get('application').git,
           config.get('application').repository,
           config.get('application').docSubdir,
+          config.get('application').mediaSubdir, // MOD add media subdirectory in config
           refspec, function (err, version) {
             if (err) {
               console.log(err)
