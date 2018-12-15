@@ -1,4 +1,4 @@
-# Version 1.9.0, Dec 15th, 2018
+# Version 1.9.0, 1.9.1 Dec 15th, 2018
 
 - Sanitize HTML by default, escaping it while rendering Markdown. Esplicitely enable html rendering again with the `allowHtml` option set to `true`. Remember that this will also enable rendering of <script> though, so beware (Jingo session cookie is http only)
 
