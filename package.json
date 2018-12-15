@@ -1,6 +1,6 @@
 {
   "name": "jingo",
-  "version": "1.8.5",
+  "version": "1.9.0",
   "description": "A nodejs based wiki engine",
   "author": "Claudio Cicali <claudio.cicali@gmail.com>",
   "keywords": [
@@ -48,9 +48,9 @@
     "express-validator": "^3.1.0",
     "gravatar": "^1.1.0",
     "js-yaml": "^3.1.0",
-    "lodash": "^2.4.2",
+    "lodash": "^4.17.11",
     "markdown-toc": "^0.11.7",
-    "marked": "^0.3.5",
+    "marked": "^0.3.19",
     "method-override": "^2.3.0",
     "morgan": "^1.5.0",
     "node-syntaxhighlighter": "*",

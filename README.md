@@ -2,8 +2,7 @@
 
 [ ![Codeship Status for claudioc/jingo](https://www.codeship.io/projects/4c413870-353e-0132-115c-220292a78f73/status)](https://www.codeship.io/projects/40997)
 
-JINGO
-=====
+# JINGO
 
 A **git based** _wiki engine_ written for **node.js**, with a decent design, a search capability and a good typography.
 
@@ -11,22 +10,20 @@ A **git based** _wiki engine_ written for **node.js**, with a decent design, a s
 
 <!-- toc -->
 
-Table of contents
------------------
+## Table of contents
 
-  * [Introduction](#introduction)
-  * [Features](#features)
-  * [Installation](#installation)
-  * [Authentication and Authorization](#authentication-and-authorization)
-  * [Known limitations](#known-limitations)
-  * [Customization](#customization)
-  * [Editing](#editing)
-  * [Configuration options reference](#configuration-options-reference)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Authentication and Authorization](#authentication-and-authorization)
+- [Known limitations](#known-limitations)
+- [Customization](#customization)
+- [Editing](#editing)
+- [Configuration options reference](#configuration-options-reference)
 
 <!-- toc stop -->
 
-Introduction
--------------
+## Introduction
 
 The aim of this wiki engine is to provide an easy way to create a centralized documentation area for people used to work with **git** and **markdown**. It should fit well into a development team without the burden to have to learn a complex and usually overkill application.
 
@@ -38,8 +35,7 @@ There is a demo server running at http://jingo.cica.li:6067/wiki/home
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024413/f53612c6-37d0-11e7-8dd2-01c9ed993cc6.png)
 
-Features
---------
+## Features
 
 - No database: Jingo uses a git repository as the document archive
 - Markdown for everything, [github flavored](http://github.github.com/github-flavored-markdown/)
@@ -68,8 +64,7 @@ For code syntax highlighting, Jingo uses the `node-syntaxhighlighter` module. Fo
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024414/f8470cb8-37d0-11e7-9c96-5193aca12591.png)
 
-Installation
-------------
+## Installation
 
 `npm install -g jingo` or download/clone the whole thing and run `npm install`.
 
@@ -105,8 +100,7 @@ If you want your wiki server to only listen to your `localhost`, set the configu
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/166692/26024415/fc211aea-37d0-11e7-9ae2-77ce32cedb07.png)
 
-Authentication and Authorization
---------------------------------
+## Authentication and Authorization
 
 You can enable the following strategies: _Google logins (OAuth2)_, _GitHub logins (OAuth2)_, _ldap logins_ or a simple, locally verified username/password credentials match (called "local").
 
@@ -114,23 +108,23 @@ The _Google Login_ and the _GitHub login_ uses OAuth 2 and that means that on a 
 
 For Google, follow these instructions (you need to be logged in in Google):
 
-* Open the [Google developer console](https://code.google.com/apis/console/)
-* Create a new project (you can leave the _Project id_ as it is). This will take a little while
-* Open the _Consent screen_ page and fill in the details (particularly, the _product name_)
-* Now open _APIs & auth_ => _Credentials_ and click on _Create new client id_
-* Here you need to specify the base URL of your jingo installation. Google will fill in automatically the other field
+- Open the [Google developer console](https://code.google.com/apis/console/)
+- Create a new project (you can leave the _Project id_ as it is). This will take a little while
+- Open the _Consent screen_ page and fill in the details (particularly, the _product name_)
+- Now open _APIs & auth_ => _Credentials_ and click on _Create new client id_
+- Here you need to specify the base URL of your jingo installation. Google will fill in automatically the other field
   with a `/oauth2callback` URL, which is fine
-* Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+- Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
 For GitHub, follow these instructions (you need to be logged in in GitHub):
 
-* Register a new application [here](https://github.com/settings/applications/new)
-* Enter whatever `Application name` you want
-* Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
-* Enter <your installation URL>/auth/github/callback as the `Authorization callback URL`
-* Press the `Register application` button
-* In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
-* Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
+- Register a new application [here](https://github.com/settings/applications/new)
+- Enter whatever `Application name` you want
+- Enter your installation URL (localhost is OK, for example "http://localhost:6767/")
+- Enter <your installation URL>/auth/github/callback as the `Authorization callback URL`
+- Press the `Register application` button
+- In the following page, on the top right corner, take note of the values for `Client ID` and `Client Secret`
+- Now you need to copy the `Client ID` and `Client secret` in your jingo config file in the proper places
 
 **Warning** In certain cases the Github authentication system return an empty email and Jingo is not happy about this. To avoid problems, when using Github set the `authorization.emptyEmailMatches` configuration option to `true`.
 
@@ -149,8 +143,7 @@ If `anonRead` is true, then anyone who can access the wiki can read anything. If
 
 The authentication is mandatory to edit pages from the web interface, but jingo works on a git repository; that means that you could skip the authentication altogether and edit pages with your editor and push to the remote that jingo is serving.
 
-Known limitations
------------------
+## Known limitations
 
 - The authentication is mandatory (no anonymous writing allowed). See also issue #4
 - The repository is "flat" (no directories or namespaces)
@@ -160,8 +153,7 @@ Known limitations
 
 Please note that at the moment it is quite "risky" to have someone else, other than jingo itself, have write access to the remote / branch jingo is pushing to. The push operation is supposed to always be successfull and there is no pull or fetch. You can of course manage to handle pull requests yourself.
 
-Customization
--------------
+## Customization
 
 You can customize jingo in four different ways:
 
@@ -172,12 +164,11 @@ You can customize jingo in four different ways:
 
 All these names are customizable via the `customizations` option in the config file (see [the reference](#configuration-options-reference)).
 
-Once read, all those files are cached (thus, not re-read for every page load, but kept in memory). This means that for every modification in _style.css and _script.js you need to restart the server (sorry, working on that).
+Once read, all those files are cached (thus, not re-read for every page load, but kept in memory). This means that for every modification in \_style.css and \_script.js you need to restart the server (sorry, working on that).
 
 This is not true for the footer and the sidebar but ONLY IF you edit those pages from jingo (which in that case will clear the cache by itself).
 
-Editing
--------
+## Editing
 
 To link to another Jingo wiki page, use the Jingo Page Link Tag.
 
@@ -185,8 +176,8 @@ To link to another Jingo wiki page, use the Jingo Page Link Tag.
 
 The above tag will create a link to the corresponding page file named `jingo-works.md`. The conversion is as follows:
 
-  1. Replace any spaces (U+0020) with dashes (U+002D)
-  2. Replace any slashes (U+002F) with dashes (U+002D)
+1. Replace any spaces (U+0020) with dashes (U+002D)
+2. Replace any slashes (U+002F) with dashes (U+002D)
 
 If you'd like the link text to be something that doesn't map directly to the page name, you can specify the actual page name after a pipe:
 
@@ -194,242 +185,253 @@ If you'd like the link text to be something that doesn't map directly to the pag
 
 The above tag will link to `Jingo-Works.md` using "How Jingo Works" as the link text.
 
-Images
-------
+## Images
 
 If you put images into the repository, Jingo will be able to serve them. You can enable Jingo to serve even other file types from the document directory: you need to change the `staticWhitelist` configuration option.
 
-Configuration options reference
--------------------------------
+## Configuration options reference
 
 #### application.title (string: "Jingo")
 
-  This will be showed on the upper left corner of all the pages, in the main toolbar
+This will be showed on the upper left corner of all the pages, in the main toolbar
 
 #### application.logo (string: "")
 
-  Supply the full URL to an image to be shown as the logo of your wiki. It will appear on the left of the page title in the navigation bar. Just set the `application.title` to an empty string to only show the Logo image. Please note that Jingo does not resize the image in any way (you can do it yourself using a custom CSS of course)
+Supply the full URL to an image to be shown as the logo of your wiki. It will appear on the left of the page title in the navigation bar. Just set the `application.title` to an empty string to only show the Logo image. Please note that Jingo does not resize the image in any way (you can do it yourself using a custom CSS of course)
 
 #### application.favicon (string: "")
 
-  Supply the full URL to an image to be shown as the favicon of your wiki. Please note that Jingo will try to get the mime type of the image from its extension (this can easily fail for a lot of reasons)
+Supply the full URL to an image to be shown as the favicon of your wiki. Please note that Jingo will try to get the mime type of the image from its extension (this can easily fail for a lot of reasons)
 
 #### application.repository (string: "")
 
-  Absolute path for your documents repository (mandatory).
+Absolute path for your documents repository (mandatory).
 
 #### application.docSubdir (string: "")
 
-  If your documents reside inside a directory of the repository, specify its name here.
+If your documents reside inside a directory of the repository, specify its name here.
 
 #### application.remote (string: "")
 
-  This is the name of the remote you want to push/pull to/from (optional). You can also specify a specific branch using the syntax “remotename branchname”. If you don’t specify a branch, Jingo will use master.
+This is the name of the remote you want to push/pull to/from (optional). You can also specify a specific branch using the syntax “remotename branchname”. If you don’t specify a branch, Jingo will use master.
 
 #### application.pushInterval (integer: 30)
 
-  Jingo will try to push to the remote (if present) every XX seconds
+Jingo will try to push to the remote (if present) every XX seconds
 
 #### application.secret (string: "change me")
 
-  Just provide a string to be used to crypt the session cookie
+Just provide a string to be used to crypt the session cookie
 
 #### application.git (string: "git")
 
-  You can specify a different git binary, if you use more than one in your system
+You can specify a different git binary, if you use more than one in your system
 
 #### application.skipGitCheck (boolean: false)
 
-  Jingo will refuse to start if a version of git is found which is known to be problematic. You can still force it to start anyway, providing `true` as the value for this option
+Jingo will refuse to start if a version of git is found which is known to be problematic. You can still force it to start anyway, providing `true` as the value for this option
 
 #### application.loggingMode (integer: 1)
 
-  Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development)
+Specifies how verbose the http logging should be. Accepts numeric values: `0` for no logging at all, `1` for the a combined log and `2` for a coincise, coloured log (good for development)
 
 #### application.pedanticMarkdown (boolean: true)
 
-  (the default was `false` in jingo < 1.1.0)
+(the default was `false` in jingo < 1.1.0)
 
-  The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. This produces some problems when rendering HTML embedded in a markdown document (see also issue https://github.com/claudioc/jingo/issues/48). By default we now want to use the original parser and not the modified one (pedantic: true).
+The markdown module we use (Marked) tries to overcome some "obscure" problems with the original Perl markdown parser by default. This produces some problems when rendering HTML embedded in a markdown document (see also issue https://github.com/claudioc/jingo/issues/48). By default we now want to use the original parser and not the modified one (pedantic: true).
 
-  With this option you can revert this decision if for some reason your documents are not rendered how you like.
+With this option you can revert this decision if for some reason your documents are not rendered how you like.
 
 #### application.gfmBreaks (boolean: true)
 
-  Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines)
+Enable [GFM line breaks](https://help.github.com/articles/github-flavored-markdown#newlines)
 
 #### application.proxyPath (string: "")
 
-  If you want jingo to work "behind" another website (for example in a /wiki directory of an already existing intranet), you need to configure it to be aware of that situation so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
+If you want jingo to work "behind" another website (for example in a /wiki directory of an already existing intranet), you need to configure it to be aware of that situation so that it can write all the outbound URLs accordingly. Use this option to pass it the name of the directory that you've configured in your proxy_pass option in nginx or apache. See also an nginx example in the /etc directory of the jingo source distribution.
 
-  Please note that jingo won't work correctly if this option is activated.
+Please note that jingo won't work correctly if this option is activated.
 
-#### authentication.staticWhitelist (string: "/\\.png$/i, /\\.jpg$/i, /\\.gif$/i")
+#### application.allowHtml (boolean: false) New since version 1.9.0
 
-  This is to enable jingo to serve any kind of static file (like images) from the repository. By default, Jingo will serve `*.md` files and `*.jpg, *.png, *.gif`. Provide the values as a comma separated list of regular expressions.
+Since version 1.9.0 Jingo sanitizes HTML by default, escaping it while rendering Markdown. Esplicitely enable html rendering again with the `allowHtml` option set to `true`. Remember that this will also enable rendering of `<script>` though, so beware!
+
+Also note that Jingo session cookie is http only and cannot be read by JavaScript.
+
+#### authentication.staticWhitelist (string: "/\\.png$/i, /\\.jpg$/i, /\\.gif\$/i")
+
+This is to enable jingo to serve any kind of static file (like images) from the repository. By default, Jingo will serve `*.md` files and `*.jpg, *.png, *.gif`. Provide the values as a comma separated list of regular expressions.
 
 #### authentication.google.enabled (boolean: true)
 
-  Enable or disable authentication via Google logins
+Enable or disable authentication via Google logins
 
 #### authentication.google.clientId
+
 #### authentication.google.clientSecret
 
-  Values required for Google OAuth2 authentication. Refer to a previous section of this document on how to set them up.
+Values required for Google OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
 #### authentication.google.redirectUrl (string: /oauth2callback)
 
-  Specifies a custom redirect URL for OAuth2 authentication instead of the default
+Specifies a custom redirect URL for OAuth2 authentication instead of the default
 
 #### authentication.github.enabled (boolean: false)
 
-  Enable or disable authentication via Github logins
+Enable or disable authentication via Github logins
 
 #### authentication.github.clientId
+
 #### authentication.github.clientSecret
 
-  Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
+Values required for GitHub OAuth2 authentication. Refer to a previous section of this document on how to set them up.
 
 #### authentication.google.redirectUrl (string: /auth/github/callback)
 
-  Specifies a custom redirect URL for OAuth2 authentication instead of the default
+Specifies a custom redirect URL for OAuth2 authentication instead of the default
 
 #### authentication.ldap.enabled (boolean: false)
 
-  Enable or disable authentication via LDAP logins
-  Requires manual installation of `passport-ldapauth` module via npm
+Enable or disable authentication via LDAP logins
+Requires manual installation of `passport-ldapauth` module via npm
 
 #### authentication.ldap.url
+
 #### authentication.ldap.bindDn
+
 #### authentication.ldap.bindCredentials
+
 #### authentication.ldap.searchBase
+
 #### authentication.ldap.searchFilter
+
 #### authentication.ldap.searchAttributes
 
 #### authentication.local.enabled (boolean: false)
 
-  The Local setup allows you to specify an array of username/password/email elements that will have access to the Wiki. All the accounts must resides in the configuration `authentication.local.accounts` array
+The Local setup allows you to specify an array of username/password/email elements that will have access to the Wiki. All the accounts must resides in the configuration `authentication.local.accounts` array
 
 #### authentication.local.[accounts].username
 
-  Provide any username you like, as a string
+Provide any username you like, as a string
 
 #### authentication.local.[accounts].passwordHash
 
-  Use an hash of your password. Create the hash with `jingo -# yourpassword`
+Use an hash of your password. Create the hash with `jingo -# yourpassword`
 
 #### authentication.local.[accounts].email
 
-  If you want to use Gravatar, provide your gravatar email here.
+If you want to use Gravatar, provide your gravatar email here.
 
 #### authentication.alone.enabled (deprecated)
 
-  Boolean, defaults to `false`
-  _The Alone authentication option is deprecated in favor of the Local one_
+Boolean, defaults to `false`
+_The Alone authentication option is deprecated in favor of the Local one_
 
 #### authentication.alone.username (deprecated)
 
-  Provide any username you like, as a string
-  _The Alone authentication option is deprecated in favor of the Local one_
+Provide any username you like, as a string
+_The Alone authentication option is deprecated in favor of the Local one_
 
 #### authentication.alone.passwordHash (deprecated)
 
-  Use an hash of your password. Create the hash with `jingo -# yourpassword`
-  _The Alone authentication option is deprecated in favor of the Local one_
+Use an hash of your password. Create the hash with `jingo -# yourpassword`
+_The Alone authentication option is deprecated in favor of the Local one_
 
 #### authentication.alone.email (deprecated)
 
-  If you want to use Gravatar, provide your gravatar email here.
-  _The Alone authentication option is deprecated in favor of the Local one_
+If you want to use Gravatar, provide your gravatar email here.
+_The Alone authentication option is deprecated in favor of the Local one_
 
 #### features.markitup (boolean: false)
 
-  DEPRECATED: markitup support has been removed as of version 1.8.0
+DEPRECATED: markitup support has been removed as of version 1.8.0
 
 #### features.codemirror (boolean: true)
 
-  Whether to enable Codemirror or not.
+Whether to enable Codemirror or not.
 
 #### features.gravatar (boolean: true)
 
-  Whether to enable gravatar support or not
+Whether to enable gravatar support or not
 
 #### server.hostname
 
-  This is the hostname used to build the URL for your wiki pages. The reason for these options to exist is due to the need for the OAuth2 authentication to work (it needs an endpoint to get back to)
+This is the hostname used to build the URL for your wiki pages. The reason for these options to exist is due to the need for the OAuth2 authentication to work (it needs an endpoint to get back to)
 
 #### server.port
 
-  Jingo will listen on this port
+Jingo will listen on this port
 
 #### server.localOnly
 
-  Set this to `true` if you want to accept connection only _from_ localhost (default false)
+Set this to `true` if you want to accept connection only _from_ localhost (default false)
 
 #### server.CORS.enabled (boolean: false)
 
-  Enable or disable CORS headers for accessing a page through an ajax call from an origin which is not the one which serves Jingo. Use this option if for example you want to embed a (rendered) page inside a page of another website.
+Enable or disable CORS headers for accessing a page through an ajax call from an origin which is not the one which serves Jingo. Use this option if for example you want to embed a (rendered) page inside a page of another website.
 
-  The configuration options for CORS are at the moment quite limited: via an Ajax call you can only read (GET) a wiki page (that is, the /wiki/NameOfYourPage path), or issue a search. Once you enable this option, all the wiki page will be accessible. Please note that no authentication check is made, which means that the Ajax calls will be denied if the `anonRead` configuration option will be `false` (all or nothing).
+The configuration options for CORS are at the moment quite limited: via an Ajax call you can only read (GET) a wiki page (that is, the /wiki/NameOfYourPage path), or issue a search. Once you enable this option, all the wiki page will be accessible. Please note that no authentication check is made, which means that the Ajax calls will be denied if the `anonRead` configuration option will be `false` (all or nothing).
 
-  You can also white-list origin via the following option (CORS.allowedOrigin)
+You can also white-list origin via the following option (CORS.allowedOrigin)
 
-#### server.CORS.allowedOrigin (string: "*")
+#### server.CORS.allowedOrigin (string: "\*")
 
-  Set the allowed origin for your CORS headers. All the Ajax calls to the wiki pages must come from this origin or they will be denied. The default is "*", which means that all the origins will be allowed
+Set the allowed origin for your CORS headers. All the Ajax calls to the wiki pages must come from this origin or they will be denied. The default is "\*", which means that all the origins will be allowed
 
 #### server.baseUrl
 
-  The baseUrl is usually automatically generated by Jingo (with "//" + hostname + ":" + port), but if for some reason you need to overrideit, you can use this option
+The baseUrl is usually automatically generated by Jingo (with "//" + hostname + ":" + port), but if for some reason you need to overrideit, you can use this option
 
 #### authorization.anonRead (boolean: true)
 
-  Enables/disables the anonymous access to the wiki content
+Enables/disables the anonymous access to the wiki content
 
 #### authorization.validMatches (string: ".+")
 
-  This is a regular expression which will be used against the user email account to be able to access the wiki. By default all emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
+This is a regular expression which will be used against the user email account to be able to access the wiki. By default all emails are OK, but you can for example set a filter so that only the hostname from your company will be allowed access.
 
 #### authorization.emptyEmailMatches (boolean: false)
 
-  If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway. Note that GitHub authentication usually requires this to be `true` (unless all wiki users have public email addresses on their GitHub accounts).
+If the endpoint doesn't provide the email address for the user, allow empty emails to authenticate anyway. Note that GitHub authentication usually requires this to be `true` (unless all wiki users have public email addresses on their GitHub accounts).
 
 #### pages.index (string: "Home")
 
-  Defines the page name for the index of the wiki
+Defines the page name for the index of the wiki
 
 #### pages.title.fromFilename (boolean: true)
 
-  If this is true, the title of each page will be derived from the document's filename. This is how Gollum works and from Jingo 1.0 this is now the default. An important consequence of this behavior is that now Jingo is able _to rename_ documents (according to the new name it will be eventually given to), while previously it was impossible.
+If this is true, the title of each page will be derived from the document's filename. This is how Gollum works and from Jingo 1.0 this is now the default. An important consequence of this behavior is that now Jingo is able _to rename_ documents (according to the new name it will be eventually given to), while previously it was impossible.
 
 #### pages.title.fromContent (boolean: false)
 
-  If this is true, the title of the document will be part of the document itself (the very first line). This is the default behavior of Jingo < 1.0 and the default is now false. If you have an old installation of Jingo, please set this value to true and `fromFilename` to false.
+If this is true, the title of the document will be part of the document itself (the very first line). This is the default behavior of Jingo < 1.0 and the default is now false. If you have an old installation of Jingo, please set this value to true and `fromFilename` to false.
 
 #### pages.title.asciiOnly (boolean: false)
 
-  If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using the transliteration module), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
+If this is set to true, Jingo will convert any non-Ascii character present in the title of the document to an ASCII equivalent (using the transliteration module), when creating the filename of the document. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
 #### pages.title.lowercase (boolean: false)
 
-  If this is set to true, Jingo will lowercase any character of the title when creating the filename. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
+If this is set to true, Jingo will lowercase any character of the title when creating the filename. Default was true for Jingo < 1.0 while for Jingo >= 1.0 the default is false
 
 #### pages.title.itemsPerPage (integer: 10)
 
-  This defines how many page item to show in the "list all page" page. Keep this value as low as possible for performance reasons.
+This defines how many page item to show in the "list all page" page. Keep this value as low as possible for performance reasons.
 
-#### customizations.sidebar (string: "_sidebar.md")
+#### customizations.sidebar (string: "\_sidebar.md")
 
-  Defines the name for the _sidebar_ component. Defaults to `_sidebar.md`. Please note that if you need to use a wiki coming from Github, this name should be set to `_Sidebar`
+Defines the name for the _sidebar_ component. Defaults to `_sidebar.md`. Please note that if you need to use a wiki coming from Github, this name should be set to `_Sidebar`
 
-#### customizations.footer (string: "_footer.md")
+#### customizations.footer (string: "\_footer.md")
 
-  Defines the name for the _footer_ component. Defaults to `_footer.md`. Please note that if you need to use a wiki coming from Github, this name should be set to '_Footer'
+Defines the name for the _footer_ component. Defaults to `_footer.md`. Please note that if you need to use a wiki coming from Github, this name should be set to '\_Footer'
 
-#### customizations.style (string: "_style.md")
+#### customizations.style (string: "\_style.md")
 
-  Defines the name for the customized _style_ CSS component. Defaults to `_style.css`.
+Defines the name for the customized _style_ CSS component. Defaults to `_style.css`.
 
-#### customizations.script (string: "_script.md")
+#### customizations.script (string: "\_script.md")
 
-  Defines the name for the customized _script_ JavaScript component. Defaults to `_script.js`.
+Defines the name for the customized _script_ JavaScript component. Defaults to `_script.js`.
