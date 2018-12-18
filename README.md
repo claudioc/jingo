@@ -255,7 +255,9 @@ Please note that jingo won't work correctly if this option is activated.
 
 #### application.allowHtml (boolean: false) New since version 1.9.0
 
-Since version 1.9.0 Jingo sanitizes HTML by default, escaping it while rendering Markdown. Esplicitely enable html rendering again with the `allowHtml` option set to `true`. Remember that this will also enable rendering of `<script>` though, so beware!
+Since version 1.9.0 Jingo sanitizes HTML by default, escaping it while rendering Markdown. Esplicitely enable html rendering again with the `allowHtml` option set to `true`. Remember that this will also enable, among all the other HTML elements, rendering of `<script>` though, so beware!
+
+Setting this option to `true` will generate a warning during Jingo startup.
 
 Also note that Jingo session cookie is http only and cannot be read by JavaScript.
 

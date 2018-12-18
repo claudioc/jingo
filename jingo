@@ -18,12 +18,13 @@ var pkg = require('./package')
 
 global.Git = require('./lib/gitmech')
 
-program.version(pkg.version)
-       .option('-c, --config <path>', 'Specify the config file')
-       .option('-#, --hash-string <string>', 'Create an hash for a string')
-       .option('-l, --local', 'Listen on localhost only')
-       .option('-s, --sample-config', 'Dumps a config file template and exits')
-       .parse(process.argv)
+program
+  .version(pkg.version)
+  .option('-c, --config <path>', 'Specify the config file')
+  .option('-#, --hash-string <string>', 'Create an hash for a string')
+  .option('-l, --local', 'Listen on localhost only')
+  .option('-s, --sample-config', 'Dumps a config file template and exits')
+  .parse(process.argv)
 
 if (program.sampleConfig) {
   console.log(config.sample())
@@ -52,41 +53,59 @@ if (!config.validate()) {
 
 var refspec = config.get('application').remote.split(/\s+/)
 
-Git.setup(config.get('application').git,
-          config.get('application').repository,
-          config.get('application').docSubdir,
-          refspec, function (err, version) {
-            if (err) {
-              console.log(err)
-              process.exit(-1)
-            }
+Git.setup(
+  config.get('application').git,
+  config.get('application').repository,
+  config.get('application').docSubdir,
+  refspec,
+  function (err, version) {
+    if (err) {
+      console.log(err)
+      process.exit(-1)
+    }
 
-            if (os.platform() === 'darwin' &&
-                !config.get('application').skipGitCheck &&
-                config.get('pages').title.fromFilename &&
-                !semver.satisfies(version, '>=1.8.5')) {
-              console.log('Your current setup uses the filename of the wiki page as the page title.')
-              console.log('Unfortunately this version of git (' + version + ".x) on OSX doesn't handle")
-              console.log('very well non ASCII characters used in filenames, therefore I rather not start.')
-              console.log('You can continue anyway, setting `application.skipGitCheck` to true in the')
-              console.log('config file but you should better upgrade your git. Thank you.')
-              process.exit(-1)
-            }
+    if (
+      os.platform() === 'darwin' &&
+      !config.get('application').skipGitCheck &&
+      config.get('pages').title.fromFilename &&
+      !semver.satisfies(version, '>=1.8.5')
+    ) {
+      console.log('Your current setup uses the filename of the wiki page as the page title.')
+      console.log('Unfortunately this version of git (' + version + ".x) on OSX doesn't handle")
+      console.log(
+        'very well non ASCII characters used in filenames, therefore I rather not start.'
+      )
+      console.log('You can continue anyway, setting `application.skipGitCheck` to true in the')
+      console.log('config file but you should better upgrade your git. Thank you.')
+      process.exit(-1)
+    }
 
-            start()
-          })
+    start()
+  }
+)
 
-function start () {
+function start() {
   var app = require('./lib/app').initialize(config)
 
-  var listenAddr = process.env.NW_ADDR || ''
+  var listenAddr = process.env.NW_ADDR || '';
   if (config.get('server').localOnly) {
-    listenAddr = 'localhost'
+    listenAddr = 'localhost';
   }
 
   http.createServer(app).listen(config.get('server').port, listenAddr, function () {
-    console.log((new Date()) + ' - Jingo%sserver v%s listening on port %s', config.get('server').localOnly ? ' (local) ' : ' ', program.version(), config.get('server').port)
+    console.log(
+      new Date() + ' - Jingo%sserver v%s listening on port %s',
+      config.get('server').localOnly ? ' (local) ' : ' ',
+      program.version(),
+      config.get('server').port
+    )
   })
+
+  if (config.get('application').allowHtml) {
+    console.log(
+      'Warning: using the configuration option `allowHtml: true` may have security implications; please consult the README for more info.'
+    )
+  }
 
   if (config.get('application').pushInterval && refspec.length > 0) {
     setInterval(function () {
