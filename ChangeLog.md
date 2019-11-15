@@ -1,3 +1,8 @@
+# Version 1.9.3 Novc 15th, 2019
+
+- Upgrade ecstatic to a safer version
+- Fixes a bug rendering for bracket tags (closes #261)
+
 # Version 1.9.0, 1.9.1 Dec 15th, 2018
 
 - Sanitize HTML by default, escaping it while rendering Markdown. Esplicitely enable html rendering again with the `allowHtml` option set to `true`. Remember that this will also enable rendering of <script> though, so beware (Jingo session cookie is http only)
