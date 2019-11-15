@@ -41,7 +41,8 @@ function _getSearch (req, res) {
     models.pages.findStringAsync(res.locals.term).then(function (items) {
       items.forEach(function (item) {
         if (item.trim() !== '') {
-          record = item.split(':')
+          // The null character is added natively by the `git grep` command
+          record = item.split(/\0/)
           res.locals.matches.push({
             pageName: path.basename(record[0].replace(/\.md$/, '')),
             line: record[1] ? ', L' + record[1] : '',

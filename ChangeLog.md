@@ -1,3 +1,7 @@
+# Version 1.9.4 Nov 15th, 2019
+
+- Fixes a bug in the search (closes #263)
+
 # Version 1.9.3 Novc 15th, 2019
 
 - Upgrade ecstatic to a safer version
