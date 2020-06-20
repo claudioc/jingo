@@ -1,3 +1,8 @@
+# Version 1.9.5 Jun 20th, 2020
+
+- Updates some dependencies
+- Merge PR 266
+
 # Version 1.9.4 Nov 15th, 2019
 
 - Fixes a bug in the search (closes #263)
