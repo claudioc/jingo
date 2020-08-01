@@ -1,3 +1,7 @@
+# Version 1.9.6 Aug 1st, 2020
+
+- Uses the safest yaml.safeLoad() method
+
 # Version 1.9.5 Jun 20th, 2020
 
 - Updates some dependencies
