@@ -183,7 +183,7 @@ If you'd like the link text to be something that doesn't map directly to the pag
 
     [[How Jingo works|Jingo Works]]
 
-The above tag will link to `Jingo-Works.md` using "How Jingo Works" as the link text.
+The above tag will link to `Jingo-Works.md` using "How Jingo works" as the link text.
 
 ## Images
 
