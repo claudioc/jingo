@@ -1,3 +1,7 @@
+# Version 1.9.7 Jan 16st, 2021
+
+- Update passport modules (@mzch)
+
 # Version 1.9.6 Aug 1st, 2020
 
 - Uses the safest yaml.safeLoad() method
