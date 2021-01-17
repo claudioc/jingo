@@ -1,8 +1,9 @@
 /* global Git */
 var router = require('express').Router()
 var renderer = require('../lib/renderer')
-var fs = require('fs')
 var models = require('../lib/models')
+var Promiser = require('bluebird')
+var fileExists = require('../lib/file_exists')
 
 models.use(Git)
 
@@ -22,24 +23,23 @@ function _postPreview (req, res) {
 
 function _getExistence (req, res) {
   if (!req.query.data) {
-    res.send(JSON.stringify({data: []}))
+    res.json({data: []})
     return
   }
 
   var result = []
-  var page
-  var n = req.query.data.length
 
-  req.query.data.forEach(function (pageName, idx) {
-    (function (name, index) {
-      page = new models.Page(name)
-      if (!fs.existsSync(page.pathname)) {
-        result.push(name)
+  Promiser.all(req.query.data.map(function (pageName) {
+    var page = new models.Page(pageName)
+    return fileExists.async(page.pathname)
+    .then(function (exists) {
+      if (!exists) {
+        result.push(pageName)
       }
-      if (index === (n - 1)) {
-        res.send(JSON.stringify({data: result}))
-      }
-    }(pageName, idx))
+    })
+  }))
+  .then(function () {
+    res.json({data: result})
   })
 }
 
