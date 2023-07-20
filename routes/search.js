@@ -55,7 +55,7 @@ function _getSearch (req, res) {
             promiseArray.push(searchPage.fetch().then(function () {
               const redactedContent = renderer.redact(searchPage.content, res, app.locals.config)
               termRegex = new RegExp(res.locals.term, 'i')
-              if (termRegex && termRegex.exec(redactedContent)) {
+              if (termRegex && termRegex.exec(redactedContent) && redactedContent.includes(record.slice(2).join(''))) {
                 res.locals.matches.push({
                   pageName: nameOfPage,
                   line: record[1] ? ', L' + record[1] : '',
