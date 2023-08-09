@@ -19,6 +19,10 @@ router.get('/wiki/:page/:version', _getWikiPage)
 router.get('/wiki/:page/compare/:revisions', _getCompare)
 
 function _getHistory (req, res) {
+
+  // MOD redact content of sidebar
+  res.locals._sidebar = renderer.redact(res.locals._sidebar, res, app.locals.config)
+
   var page = new models.Page(req.params.page)
 
   page.fetch().then(function () {
@@ -41,6 +45,10 @@ function _getHistory (req, res) {
 }
 
 function _getWiki (req, res) {
+
+  // MOD redact content of sidebar
+  res.locals._sidebar = renderer.redact(res.locals._sidebar, res, app.locals.config)
+
   var items = []
   var pagen = 0 | req.query.page
 
@@ -74,6 +82,7 @@ function _getWiki (req, res) {
 }
 
 function _getWikiPage (req, res) {
+
   // MOD check if page is listed as an alias
   var aliasMap = app.locals.config.get('aliases')
   var nameOfPage = req.params.page
@@ -90,6 +99,9 @@ function _getWikiPage (req, res) {
   if (!app.locals.config.get('features').caseSensitive){
     nameOfPage = nameOfPage.replace(/(^|\-)\w/g, function(l){ return l.toUpperCase() })
   }
+
+  // MOD redact content of sidebar
+  res.locals._sidebar = renderer.redact(res.locals._sidebar, res, app.locals.config)
 
   var page = new models.Page(nameOfPage, req.params.version)
 
@@ -150,6 +162,10 @@ function _getWikiPage (req, res) {
 }
 
 function _getCompare (req, res) {
+
+  // MOD redact content of sidebar
+  res.locals._sidebar = renderer.redact(res.locals._sidebar, res, app.locals.config)
+
   var revisions = req.params.revisions
 
   var page = new models.Page(req.params.page)
